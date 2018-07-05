@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 15:40:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/05 17:09:50 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/05 18:12:51 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,3 +23,6 @@ int	main(void)
 		free(line);
 	}
 }
+
+// 0 - ctrl + D
+// -1 - Error

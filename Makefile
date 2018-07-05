@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/05 15:40:15 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/05 18:30:57 by yvyliehz         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -18,7 +18,7 @@ SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 INC_LIB		=	-L./libft -lftprintf -ltermcap
 
-SRC			=	main.c\
+SRC			=	client/main.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\
@@ -85,7 +85,7 @@ re		:		fclean all
 
 $(DIROBJ):
 				@mkdir -p $(DIROBJ)
-				@mkdir -p $(DIROBJ)/builtins
+				@mkdir -p $(DIROBJ)/client
 				@mkdir -p $(DIROBJ)/ft_readline
 
 $(OBJ)	:		$(DIROBJ)%.o : $(DIRSRC)%.c $(HDR)
