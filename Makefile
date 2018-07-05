@@ -6,19 +6,33 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/05 18:30:57 by yvyliehz         ###   ########.fr        #
+#    Updated: 2018/07/05 21:38:39 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-NAME		=	taskmasterctl
-DIRSRC		=	./src/
-DIROBJ		=	./obj/
-INCLUDE		=	-I./inc/ -I./libft/includes
+NAME		=	taskmaster
+
+NAME_C		=	taskmasterctl
+NAME_D		=	taskmasterd
+
+DIRSRC_C	=	./src/client/
+DIRSRC_D	=	./src/daemon/
+
+DIROBJ		=	./obj
+DIROBJ_C	=	./obj/client/
+DIROBJ_D	=	./obj/daemon/
+
+INCLUDE_C	=	-I./inc/ -I./libft/includes
+INCLUDE_D	=	-I./inc/ -I./libft/includes
+
+INC_LIB_C	=	-L./libft -lftprintf -ltermcap
+INC_LIB_D	=	-L./libft -lftprintf
+
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
-INC_LIB		=	-L./libft -lftprintf -ltermcap
+LIBFT		=	libft/libftprintf.a
 
-SRC			=	client/main.c\
+SRC_C		=	main.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\
@@ -33,9 +47,14 @@ SRC			=	client/main.c\
 				ft_readline/ft_prompt.c\
 				ft_readline/ft_read.c
 
-HDR			=	inc/ft_readline.h
-LIBFT		=	libft/libftprintf.a
-OBJ			=	$(addprefix $(DIROBJ), $(SRC:.c=.o))
+SRC_D		=	main.c
+
+
+HDR_C		=	inc/ft_readline.h
+HDR_D		=	inc/daemon.h
+
+OBJ_C			=	$(addprefix $(DIROBJ_C), $(SRC_C:.c=.o))
+OBJ_D			=	$(addprefix $(DIROBJ_D), $(SRC_D:.c=.o))
 
 ifdef FLAGS
 	ifeq ($(FLAGS), no)
@@ -52,11 +71,17 @@ CC			=	gcc
 RM			=	rm -rf
 ECHO		=	echo
 
-all		:		lib $(NAME)
+all		:		$(NAME)
 
-$(NAME)	:		$(DIROBJ) $(OBJ) $(LIBFT)
-				@$(CC) $(INCLUDE) $(INC_LIB) $(CFLAGS) -O3 -o $(NAME) $(OBJ)
-				@$(ECHO) "\033[31m> \033[32m"$(NAME)": Compiled\033[0m"
+$(NAME)	:		$(NAME_C) $(NAME_D)
+
+$(NAME_C):		$(DIROBJ_C) $(OBJ_C) $(LIBFT)
+				@$(CC) $(INCLUDE_C) $(INC_LIB_C) $(CFLAGS) -o $(NAME_C) $(OBJ_C)
+				@$(ECHO) "\033[31m> \033[32m"$(NAME_C)": Compiled\033[0m"
+
+$(NAME_D):		$(DIROBJ_D) $(OBJ_D) $(LIBFT)
+				@$(CC) $(INCLUDE_D) $(INC_LIB_D) $(CFLAGS) -o $(NAME_D) $(OBJ_D)
+				@$(ECHO) "\033[31m> \033[32m"$(NAME_D)": Compiled\033[0m"
 
 lib		:
 				@$(MAKE) -C $(SUB_MAKE) -j3
@@ -65,28 +90,52 @@ $(LIBFT):		lib
 
 clean	:
 				@($(RM) $(DIROBJ))
+				@$(ECHO) "\033[31m> \033[33m"$(NAME)": Directory cleaned\033[0m"
 ifdef SUB_MAKE
 				@$(MAKE) -C $(SUB_MAKE) clean
 endif
-				@$(ECHO) "\033[31m> \033[33m"$(NAME)": Directory cleaned\033[0m"
 
+clean_c	:
+				@($(RM) $(DIROBJ_C))
+				@$(ECHO) "\033[31m> \033[33m"$(NAME_C)": Directory cleaned\033[0m"
 
+clean_d	:
+				@($(RM) $(DIROBJ_D))
+				@$(ECHO) "\033[31m> \033[33m"$(NAME_D)": Directory cleaned\033[0m"
 
-fclean	:		clean
+fclean	:		fclean_c fclean_d
 ifdef SUB_MAKE
 				@$(MAKE) -C $(SUB_MAKE) fclean
 endif
-				-@$(RM) $(NAME)
-				@$(ECHO) "\033[31m> \033[33m"$(NAME)": Remove executable\033[0m"
+
+fclean_c	:	clean_c
+				@$(ECHO) "\033[31m> \033[33m"$(NAME_C)": Remove executable\033[0m"
+				-@$(RM) $(NAME_C)
+
+fclean_d	:	clean_d
+				@$(ECHO) "\033[31m> \033[33m"$(NAME_D)": Remove executable\033[0m"
+				-@$(RM) $(NAME_D)
 
 re		:		fclean all
+
+re_c		:		fclean_c $(NAME_C)
+
+re_d		:		fclean_d $(NAME_D)
 
 .PHONY	:		all clean re
 
 $(DIROBJ):
 				@mkdir -p $(DIROBJ)
-				@mkdir -p $(DIROBJ)/client
-				@mkdir -p $(DIROBJ)/ft_readline
 
-$(OBJ)	:		$(DIROBJ)%.o : $(DIRSRC)%.c $(HDR)
-				@$(CC) $(INCLUDE) $(CFLAGS) -O3 -o $@ -c $<
+$(DIROBJ_C):	$(DIROBJ)
+				@mkdir -p $(DIROBJ_C)
+				@mkdir -p $(DIROBJ_C)/ft_readline
+
+$(DIROBJ_D):	$(DIROBJ)
+				@mkdir -p $(DIROBJ_D)
+
+$(OBJ_C):		$(DIROBJ_C)%.o : $(DIRSRC_C)%.c $(HDR_C)
+				@$(CC) $(INCLUDE_C) $(CFLAGS) -o $@ -c $<
+
+$(OBJ_D):		$(DIROBJ_D)%.o : $(DIRSRC_D)%.c $(HDR_D)
+				@$(CC) $(INCLUDE_D) $(CFLAGS) -o $@ -c $<
