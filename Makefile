@@ -32,7 +32,7 @@ SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 LIBFT		=	libft/libftprintf.a
 
-SRC_C		=	main.c\
+SRC_C		=	client.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\
