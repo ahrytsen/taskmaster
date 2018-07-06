@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 19:28:11 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 16:05:13 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/06 17:45:25 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@
 typedef struct	s_dconf
 {
 	pid_t		dpid;
-	uint16_t	port;
-	uint8_t		ip[4];
+	uint16_t		port;
+	uint8_t				ip[4];
+	int					socket_fd;
+	struct sockaddr_in	addr;
+	int			err_fd;
+	int			out_fd;
 }				t_dconf;
 
 typedef struct	s_proc
