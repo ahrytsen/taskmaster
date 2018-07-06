@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 15:14:49 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/06 15:16:58 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	chld_main(int ac, char **av)
 		exit(EXIT_FAILURE);
 	}
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(4000);
+	addr.sin_port = htons(7279);
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if(bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
 	{

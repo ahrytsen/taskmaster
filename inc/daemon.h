@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 19:28:11 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 16:05:13 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/06 16:59:28 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,19 @@ typedef struct	s_dconf
 typedef struct	s_proc
 {
 	char		**argv;
-	uint16_t	numproc;
+	uint16_t	numprocs;
+	mode_t 		umask;
+	char 		*workingdir;
 	uint8_t 	autostart;
 	uint8_t		autorestart;
-	int 		expected_status;
-	time_t		lt_success;
-	int 		rs_efforts;
-	int 		gf_stop_sig;
-	time_t 		t_after_gf_s;
-	char 		*log_out;
-	char 		*log_err;
+	int 		exitcodes;
+	time_t		starttime;
+	int 		startretries;
+	int 		stopsignal;
+	time_t 		stoptime;
+	char 		*stdout;
+	char 		*stderr;
 	char 		**env;
-	char 		*cwd;
-	mode_t 		umask;
 }				t_proc;
 
 #endif
