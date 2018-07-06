@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 19:28:11 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 17:45:25 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/06 18:18:34 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,12 @@
 # define	DAEMON_H
 
 # include <libft.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <sys/stat.h>
 # include <stdio.h>
+# include <fcntl.h>
+# include <errno.h>
 
 # define RS_A 0
 # define RS_N 1
@@ -22,13 +27,14 @@
 
 typedef struct	s_dconf
 {
-	pid_t		dpid;
-	uint16_t		port;
+	char				*config_file;
+	pid_t				dpid;
+	uint16_t			port;
 	uint8_t				ip[4];
-	int					socket_fd;
+	int					sock_id;
 	struct sockaddr_in	addr;
-	int			err_fd;
-	int			out_fd;
+	int					err_fd;
+	int					out_fd;
 }				t_dconf;
 
 typedef struct	s_proc
