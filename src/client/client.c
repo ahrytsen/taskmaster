@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 15:40:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 18:09:35 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/06 19:03:30 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include <netinet/in.h>
 #include <stdio.h>
 
-int 	send_commands(char **cmds, int sock)
+int		send_commands(char **cmds, int sock)
 {
 	size_t	size;
-	int 	i;
-	int 	ret;
-	char 	*tmp;
+	int		i;
+	int		ret;
+	char	*tmp;
 
 	i = -1;
 	ret = 0;
@@ -35,7 +35,7 @@ int 	send_commands(char **cmds, int sock)
 			ret = 1;
 			break ;
 		}
-		size = ft_strlen(cmds[i]);
+		size = ft_strlen(cmds[i]) + 1;
 		send(sock, &size, sizeof(size_t), 0);
 		send(sock, cmds[i], size, 0);
 	}
@@ -43,7 +43,7 @@ int 	send_commands(char **cmds, int sock)
 	return (ret);
 }
 
-int 	socket_connect(void)
+int		socket_connect(void)
 {
 	int					sock;
 	struct sockaddr_in	addr;
@@ -57,7 +57,7 @@ int 	socket_connect(void)
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(7279);
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-	if(connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
+	if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
 	{
 		perror("taskmasterctl: connect: ");
 		return (-1);
@@ -67,9 +67,9 @@ int 	socket_connect(void)
 
 int		main(void)
 {
-	char 	*line;
-	int 	sock;
-	char 	**cmds;
+	char	*line;
+	int		sock;
+	char	**cmds;
 
 	sock = socket_connect();
 	if (sock == -1)

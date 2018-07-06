@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 18:18:17 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/06 18:57:10 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,16 @@ void	chld_main(int ac, char **av)
 	size_t	size;
 
 	d_init(ac, av);
-	while ((sock = accept(get_dconf()->sock_id, NULL, NULL)) > 0)
+	sock = accept(get_dconf()->sock_id, NULL, NULL);
+	while (1)
 	{
-		if (recv(sock, &size, sizeof(size_t), 0)
-			&& recv(sock, &buf, size, 0))
+		if (recv(sock, &size, sizeof(size_t), 0) > 0)
+		{
+			recv(sock, buf, size, 0);
 			ft_dprintf(get_dconf()->out_fd, "%s\n", buf);
+		}
+		else
+			break ;
 	}
 	if (sock < 0)
 		ft_dprintf(get_dconf()->err_fd, "%s\n", strerror(errno));
