@@ -6,12 +6,24 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 18:57:10 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/06 20:57:12 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
+void	d_usage(char *av)
+{
+	ft_dprintf(2,
+	"taskmasterd -- run a set of applications as daemons.\n"
+	"\nUsage: %s [options]\n"
+	"\nOptions:\n"
+	"-c -- configuration file path (searches if not given)\n",
+	"-h -- print this usage message and exit\n"
+	"-n -- run in the foreground (same as 'nodaemon=true' in config file)\n",
+	av);
+	exit(1);
+}
 
 t_dconf	*get_dconf(void)
 {
@@ -20,12 +32,11 @@ t_dconf	*get_dconf(void)
 	return (&dconf);
 }
 
-void	d_init(int ac, char **av)
+void	d_init(void)
 {
-	(void)ac;
-	(void)av;
+	get_dconf()->config_file = "file.log";
 	get_dconf()->out_fd = open(get_dconf()->config_file,
-						O_CREAT | O_RDWR | O_APPEND);
+							O_CREAT | O_RDWR | O_APPEND);
 	get_dconf()->err_fd = get_dconf()->out_fd;
 	if ((get_dconf()->sock_id = socket(AF_INET, SOCK_STREAM, 0)) < 0
 		&& ft_dprintf(get_dconf()->err_fd, "%s\n", strerror(errno)))
@@ -39,13 +50,32 @@ void	d_init(int ac, char **av)
 		exit(EXIT_FAILURE);
 }
 
-void	chld_main(int ac, char **av)
+void	check_flags(int ac, char **av)
+{
+	int	i;
+
+	i = 0;
+	while (++i < ac)
+	{
+		if (*av[i] == '-')
+			while (1)
+			{
+
+			}
+		else
+		{
+			ft_dprintf(2, "taskmasterd: unexpected parameter: %s\n", av[i]);
+			d_usage(*av);
+		}
+	}
+}
+
+void	chld_main(void)
 {
 	int		sock;
 	char 	buf[2048];
 	size_t	size;
 
-	d_init(ac, av);
 	sock = accept(get_dconf()->sock_id, NULL, NULL);
 	while (1)
 	{
@@ -66,8 +96,8 @@ int		main(int ac, char **av)
 {
 	pid_t	p;
 
-	ft_bzero(get_dconf(), sizeof(t_dconf));
-	get_dconf()->config_file = "taskmasterd.log";
+	check_flags(ac, av);
+	d_init();
 	if ((p = fork()) > 0)
 		ft_printf("taskmaster: *Daemon started successully* [pid: %d]\n", p);
 	else if (!p)
@@ -76,8 +106,8 @@ int		main(int ac, char **av)
 		close(1);
 		close(2);
 		setsid();
-		umask(0);
-		chld_main(ac, av);
+		umask(S_IWGRP | S_IWOTH);
+		chld_main();
 	}
 	else
 		perror("(ERROR)taskmaster");

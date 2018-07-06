@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 18:22:59 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/06 20:43:13 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@
 # define RS_N 1
 # define RS_CRASH 2
 
+# define F_C 0b1
+# define F_N 0b10
+# define F_H 0b100
+
 typedef struct	s_dconf
 {
 	char				*config_file;
+	int					flags;
 	pid_t				dpid;
 	uint16_t			port;
 	uint8_t				ip[4];
