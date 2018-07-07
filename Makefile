@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/05 21:38:39 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/07 14:46:12 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -47,7 +47,9 @@ SRC_C		=	client.c\
 				ft_readline/ft_prompt.c\
 				ft_readline/ft_read.c
 
-SRC_D		=	main.c
+SRC_D		=	main.c\
+				d_flags.c\
+				d_init.c
 
 
 HDR_C		=	inc/ft_readline.h
@@ -104,6 +106,8 @@ clean_d	:
 				@$(ECHO) "\033[31m> \033[33m"$(NAME_D)": Directory cleaned\033[0m"
 
 fclean	:		fclean_c fclean_d
+				@($(RM) $(DIROBJ))
+				@$(ECHO) "\033[31m> \033[33m"$(NAME)": Directory cleaned\033[0m"
 ifdef SUB_MAKE
 				@$(MAKE) -C $(SUB_MAKE) fclean
 endif

@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/06 20:43:13 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/07 15:33:09 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@
 
 # define F_C 0b1
 # define F_N 0b10
-# define F_H 0b100
 
 typedef struct	s_dconf
 {
 	char				*config_file;
+	char				*out_log;
+	char				*err_log;
 	int					flags;
-	pid_t				dpid;
+	pid_t				pid;
 	uint16_t			port;
 	uint8_t				ip[4];
 	int					sock_id;
@@ -59,5 +60,17 @@ typedef struct	s_proc
 	char 		*stderr;
 	char 		**env;
 }				t_proc;
+
+/*
+**				d_flags.c
+*/
+void			d_usage(char *av);
+void			check_flags(int ac, char **av);
+/*
+**				d_init.c
+*/
+t_dconf			*get_dconf(void);
+void			demonaize(void);
+void			d_init(void);
 
 #endif
