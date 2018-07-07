@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 15:33:09 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/07 19:12:57 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@ typedef struct	s_proc
 	char 		**env;
 }				t_proc;
 
+typedef struct	s_dispatcher
+{
+	char	*cmd;
+	void	(*exec)(char**, int);
+}				t_disp;
+
 /*
 **				d_flags.c
 */
@@ -72,5 +78,15 @@ void			check_flags(int ac, char **av);
 t_dconf			*get_dconf(void);
 void			demonaize(void);
 void			d_init(void);
+/*
+**				commands.c
+*/
+void			d_status(char **av, int sock);
+void			d_start(char **av, int sock);
+void			d_stop(char **av, int sock);
+void			d_restart(char **av, int sock);
+void			d_reread(char **av, int sock);
+void			d_exit(char **av, int sock);
+void			d_err_cmd(char **av, int sock);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/07 14:46:12 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/07 18:19:34 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -49,7 +49,8 @@ SRC_C		=	client.c\
 
 SRC_D		=	main.c\
 				d_flags.c\
-				d_init.c
+				d_init.c\
+				commands.c
 
 
 HDR_C		=	inc/ft_readline.h
