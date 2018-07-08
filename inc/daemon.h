@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <yaml.h>
 
 # define RS_A 0
 # define RS_N 1
@@ -27,6 +28,8 @@
 
 # define F_C 0b1
 # define F_N 0b10
+
+# define GET_VARIABLE_NAME(Variable) (#Variable)
 
 typedef struct	s_dconf
 {
@@ -41,6 +44,7 @@ typedef struct	s_dconf
 	struct sockaddr_in	addr;
 	int					err_fd;
 	int					out_fd;
+	struct s_proc		*proc;
 }				t_dconf;
 
 typedef struct	s_proc
@@ -67,6 +71,12 @@ typedef struct	s_dispatcher
 	void	(*exec)(char**, int);
 }				t_disp;
 
+typedef struct	s_key_val
+{
+	char	*key;
+	char 	*val;
+//	char 	*proc;
+}				t_key_val;
 /*
 **				d_flags.c
 */
@@ -88,5 +98,8 @@ void			d_restart(char **av, int sock);
 void			d_reread(char **av, int sock);
 void			d_exit(char **av, int sock);
 void			d_err_cmd(char **av, int sock);
-
+/*
+**				parse_config.c
+*/
+void			parse_config(void);
 #endif

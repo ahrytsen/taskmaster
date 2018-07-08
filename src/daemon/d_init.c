@@ -49,7 +49,7 @@ t_dconf		*get_dconf(void)
 void		demonaize(void)
 {
 	if (!(get_dconf()->flags & F_N) && (get_dconf()->pid = fork()) > 0)
-		ft_printf("taskmaster: *Daemon started successully* [pid: %d]\n",
+		ft_printf("taskmaster: *Daemon started successfully* [pid: %d]\n",
 				get_dconf()->pid);
 	else if (!get_dconf()->pid && !(get_dconf()->flags & F_N))
 	{
@@ -63,17 +63,18 @@ void		demonaize(void)
 	if (get_dconf()->pid)
 		exit(get_dconf()->pid == -1 ? EXIT_FAILURE : EXIT_SUCCESS);
 	get_dconf()->pid = getpid();
-	ft_printf("taskmaster: *Daemon started successully* [pid: %d]\n",
+	ft_printf("taskmaster: *Daemon started successfully* [pid: %d]\n",
 			  get_dconf()->pid);
 }
 
 void		d_init(void)
 {
 	close(0);
-	!get_dconf()->config_file
-		? get_dconf()->config_file = "taskmasterd.conf" : 0;
-	get_dconf()->out_log = "tmd_out.log";
-	get_dconf()->err_log = "tmd_err.log";
+//	!get_dconf()->config_file
+//		? get_dconf()->config_file = "taskmasterd.conf" : 0;
+//	get_dconf()->out_log = "tmd_out.log";
+//	get_dconf()->err_log = "tmd_err.log";
+	parse_config();
 	open_logs();
 	prepare_socket();
 }

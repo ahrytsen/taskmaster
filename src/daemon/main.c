@@ -59,6 +59,8 @@ int		main(int ac, char **av)
 {
 	check_flags(ac, av);
 	d_init();
+	/*
 	demonaize();
 	main_loop();
-}
+	*/
+ }

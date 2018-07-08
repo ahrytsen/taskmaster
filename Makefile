@@ -23,10 +23,10 @@ DIROBJ_C	=	./obj/client/
 DIROBJ_D	=	./obj/daemon/
 
 INCLUDE_C	=	-I./inc/ -I./libft/includes
-INCLUDE_D	=	-I./inc/ -I./libft/includes
+INCLUDE_D	=	-I./inc/ -I./libft/includes -I /Users/yvyliehz/.brew/include
 
 INC_LIB_C	=	-L./libft -lftprintf -ltermcap
-INC_LIB_D	=	-L./libft -lftprintf
+INC_LIB_D	=	-L./libft -lftprintf -L /Users/yvyliehz/.brew/lib/ -lyaml
 
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
@@ -50,7 +50,8 @@ SRC_C		=	client.c\
 SRC_D		=	main.c\
 				d_flags.c\
 				d_init.c\
-				commands.c
+				commands.c\
+				parse_config.c
 
 
 HDR_C		=	inc/ft_readline.h
