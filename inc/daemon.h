@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <yaml.h>
+# include <stdbool.h>
 
 # define RS_A 0
 # define RS_N 1
@@ -29,7 +30,7 @@
 # define F_C 0b1
 # define F_N 0b10
 
-# define GET_VARIABLE_NAME(Variable) (#Variable)
+//# define GET_VARIABLE_NAME(Variable) (#Variable)
 
 typedef struct	s_dconf
 {
@@ -39,7 +40,7 @@ typedef struct	s_dconf
 	int					flags;
 	pid_t				pid;
 	uint16_t			port;
-	uint8_t				ip[4];
+	char				*ip;
 	int					sock_id;
 	struct sockaddr_in	addr;
 	int					err_fd;
@@ -49,20 +50,23 @@ typedef struct	s_dconf
 
 typedef struct	s_proc
 {
-	char		**argv;
-	uint16_t	numprocs;
-	mode_t 		umask;
-	char 		*workingdir;
-	uint8_t 	autostart;
-	uint8_t		autorestart;
-	int 		exitcodes;
-	time_t		starttime;
-	int 		startretries;
-	int 		stopsignal;
-	time_t 		stoptime;
-	char 		*stdout;
-	char 		*stderr;
-	char 		**env;
+	char 			*name;
+	char			**argv;
+	uint16_t		numprocs;
+	mode_t 			umask;
+	char 			*workingdir;
+	uint8_t 		autostart;
+	uint8_t			autorestart;
+	char 			exitcodes[255];
+	time_t			starttime;
+	int 			startretries;
+	int 			stopsignal;
+	time_t 			stoptime;
+	char 			*stdout;
+	char 			*stderr;
+	char 			**env;
+	struct s_proc	*next;
+	struct s_proc	*prev;
 }				t_proc;
 
 typedef struct	s_dispatcher
@@ -75,7 +79,8 @@ typedef struct	s_key_val
 {
 	char	*key;
 	char 	*val;
-//	char 	*proc;
+	t_proc	*proc;
+	int 	blocks;
 }				t_key_val;
 /*
 **				d_flags.c
