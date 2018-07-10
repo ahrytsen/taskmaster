@@ -6,13 +6,13 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 19:08:34 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 20:04:13 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 21:37:22 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-extern const t_conv		g_phelper[];
+extern const t_conv	g_phelper[];
 
 void	ft_fatal(int st, void (*exit_f)(int), const char *format, ...)
 {

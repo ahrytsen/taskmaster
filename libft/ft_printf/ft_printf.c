@@ -6,13 +6,13 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/29 16:08:02 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 19:50:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 21:38:23 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-const static t_conv		g_phelper[] =
+const t_conv			g_phelper[] =
 {
 	{"sS", &ft_str},
 	{"diD", &ft_int},

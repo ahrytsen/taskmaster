@@ -6,12 +6,12 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 17:51:39 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 23:50:36 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef		DAEMON_H
-# define	DAEMON_H
+#ifndef DAEMON_H
+# define DAEMON_H
 
 # include <libft.h>
 # include <sys/socket.h>

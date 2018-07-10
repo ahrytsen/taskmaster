@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 17:51:54 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 23:57:50 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static void	load_test_conf(void)
 	proc.numprocs = 1;
 	proc.jobs = ft_memalloc(sizeof(t_job) * proc.numprocs);
 	proc.jobs[0].status = ST_RUN;
+	ft_lstpush_back(&get_dconf()->proc, &proc, sizeof(proc));
 }
 
 void		d_init(void)

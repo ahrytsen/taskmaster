@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/03 20:19:57 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/10 19:55:37 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/10 22:29:13 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -45,7 +45,7 @@ OBJ		= $(addprefix $(DIROBJ), $(SRC:.c=.o))
 
 CC		= gcc
 
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -Ofast -flto=thin
 
 all: $(NAME)
 
@@ -55,7 +55,7 @@ $(NAME): $(DIROBJ) $(OBJ)
 	@echo "\033[31m> \033[32mlibftprintf: Compiled\033[0m"
 
 $(OBJ)	:		$(DIROBJ)%.o : $(DIRSRC)%.c $(HDR)
-				@$(CC) $(INCLUDE) $(CFLAGS) -Ofast -flto=thin -o $@ -c $<
+				@$(CC) $(INCLUDE) $(CFLAGS) -o $@ -c $<
 				@echo ".\c"
 
 clean:

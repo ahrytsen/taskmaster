@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 18:18:01 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 19:56:30 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 21:51:38 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,13 @@
 ssize_t	ft_print_buf(int fd, t_buf *pbuf, t_buf *pbuf_head)
 {
 	ssize_t	ret;
-	t_buf	*tmp;
+	char	*line;
 
-	ret = 0;
-	while (pbuf_head)
-	{
-		tmp = pbuf_head->next;
-		pbuf || fd >= 0 ? write(fd, pbuf_head->str, pbuf_head->len) : 0;
-		free(pbuf_head->str);
-		ret += pbuf_head->len;
-		free(pbuf_head);
-		pbuf_head = tmp;
-	}
-	return (pbuf || fd >= 0 ? ret : -1);
+	line = NULL;
+	if ((ret = ft_buftostr(&line, pbuf, pbuf_head)) > 0 && fd >= 0)
+		 write(fd, line, ret);
+	free(line);
+	return (ret);
 }
 
 void	ft_putchar_buf(t_buf **pbuf, int c)
