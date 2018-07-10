@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/03 20:19:57 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/06/07 18:55:58 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/10 19:55:37 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,9 +36,10 @@ SRC		= ft_lstpush_back.c ft_putstr.c ft_strmapi.c ft_lstpush_front.c		\
 		ft_iswhitespace.c ft_atoi_base.c ft_atol_base.c ft_strarr_free.c	\
 		\
 		ft_printf/ft_printf.c ft_printf/ft_phendler.c ft_printf/ft_pbuf.c	\
-		ft_printf/ft_pfloat.c ft_printf/ft_phelper.c
+		ft_printf/ft_pfloat.c ft_printf/ft_phelper.c ft_printf/ft_fatal.c	\
+		ft_printf/ft_pbuf_str.c
 
-HDR		= includes/libft.h includes/ft_printf.h #includes/ft_readline.h
+HDR		= includes/libft.h includes/ft_printf.h
 
 OBJ		= $(addprefix $(DIROBJ), $(SRC:.c=.o))
 

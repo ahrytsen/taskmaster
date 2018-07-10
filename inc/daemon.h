@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 16:45:25 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 17:51:39 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@
 # define F_C 0b1
 # define F_N 0b10
 
+# define ST_RUN 0b1
+# define ST_DONE 0b10
+# define ST_CRASH 0b100
+# define ST_STOP 0b1000
+
 # define GET_VAR(Variable) (#Variable)
 
 typedef struct	s_dconf
@@ -48,11 +53,18 @@ typedef struct	s_dconf
 	t_list				*proc;
 }				t_dconf;
 
+typedef struct	s_job
+{
+	int		status;
+	int		ex_st;
+	pid_t	pid;
+}				t_job;
+
 typedef struct	s_proc
 {
 	char 			*name;
 	char			**argv;
-	pid_t			pid[numprocs];
+	t_job			*jobs;
 	uint16_t		numprocs;
 	mode_t 			umask;
 	char 			*workingdir;

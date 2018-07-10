@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 12:11:45 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 17:32:56 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	main_loop(void)
 	size_t	size;
 
 	size = 0;
-	while ((sock = accept(get_dconf()->sock_id, NULL, NULL)) > 0)
+	while ((sock = accept(get_dconf()->sockfd, NULL, NULL)) > 0)
 	{
 		while ((ret = recv(sock, &size, sizeof(size_t), 0)) > 0)
 		{

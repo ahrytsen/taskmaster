@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 15:09:28 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 17:51:54 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	prepare_socket(void)
 	get_dconf()->addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(get_dconf()->sockfd, (struct sockaddr *)&get_dconf()->addr,
 			sizeof(get_dconf()->addr)) < 0
-		|| listen(get_dconf()->sock_id, 1) < 0)
+		|| listen(get_dconf()->sockfd, 1) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 }
 
@@ -81,6 +81,8 @@ static void	load_test_conf(void)
 	proc.name = "test";
 	proc.argv = ft_strsplit("~/supervisor/venv/test.sh", ' ');
 	proc.numprocs = 1;
+	proc.jobs = ft_memalloc(sizeof(t_job) * proc.numprocs);
+	proc.jobs[0].status = ST_RUN;
 }
 
 void		d_init(void)
