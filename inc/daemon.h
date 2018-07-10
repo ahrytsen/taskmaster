@@ -30,7 +30,7 @@
 # define F_C 0b1
 # define F_N 0b10
 
-//# define GET_VARIABLE_NAME(Variable) (#Variable)
+# define GET_VAR(Variable) (#Variable)
 
 typedef struct	s_dconf
 {
@@ -45,7 +45,7 @@ typedef struct	s_dconf
 	struct sockaddr_in	addr;
 	int					err_fd;
 	int					out_fd;
-	struct s_proc		*proc;
+	t_list				*proc;
 }				t_dconf;
 
 typedef struct	s_proc
@@ -66,8 +66,6 @@ typedef struct	s_proc
 	char 			*stdout;
 	char 			*stderr;
 	char 			**env;
-	struct s_proc	*next;
-	struct s_proc	*prev;
 }				t_proc;
 
 typedef struct	s_dispatcher
@@ -76,13 +74,21 @@ typedef struct	s_dispatcher
 	void	(*exec)(char**, int);
 }				t_disp;
 
+typedef struct	s_sig
+{
+	char	*signame;
+	int		sig;
+}				t_sig;
+
 typedef struct	s_key_val
 {
 	char	*key;
 	char 	*val;
-	t_proc	*proc;
 	int 	blocks;
+//	t_proc	*proc;
 }				t_key_val;
+
+
 /*
 **				d_flags.c
 */
