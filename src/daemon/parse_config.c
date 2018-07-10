@@ -11,33 +11,35 @@
 /* ************************************************************************** */
 
 #include <daemon.h>
-#include <assert.h>
-#include <yaml.h>
 
 static void	outputs()
 {
-	if (get_dconf()->proc)
+	t_list *tmp = get_dconf()->proc;
+
+	while (tmp)
 	{
-		ft_printf("name: %s\n", get_dconf()->proc->name);
-		if (get_dconf()->proc->argv)
+		ft_printf("name: %s\n", ((t_proc *)(tmp->content))->name);
+		if (((t_proc *)(tmp->content))->argv)
 		{
 			int i = -1;
-			while (get_dconf()->proc->argv[++i])
-				ft_printf("argv[%i]: %s\n", i, get_dconf()->proc->argv[i]);
+			while (((t_proc *)(tmp->content))->argv[++i])
+				ft_printf("argv[%i]: %s\n", i, ((t_proc *)(tmp->content))->argv[i]);
 		}
-		ft_printf("numproc: %i\n", get_dconf()->proc->numprocs);
-		ft_printf("umask: %i\n", get_dconf()->proc->umask);
-		ft_printf("workingdir: %s\n", get_dconf()->proc->workingdir);
-		ft_printf("autostart: %i\n", get_dconf()->proc->autostart);
-		ft_printf("autorestart: %i\n", get_dconf()->proc->autorestart);
-		ft_printf("starttime: %i\n", get_dconf()->proc->starttime);
-		ft_printf("startretries: %i\n", get_dconf()->proc->startretries);
-		ft_printf("stdout: %s\n", get_dconf()->proc->stdout);
-		ft_printf("stderr: %s\n", get_dconf()->proc->stderr);
+		ft_printf("numproc: %i\n", ((t_proc *)(tmp->content))->numprocs);
+		ft_printf("umask: %i\n", ((t_proc *)(tmp->content))->umask);
+		ft_printf("workingdir: %s\n", ((t_proc *)(tmp->content))->workingdir);
+		ft_printf("autostart: %i\n", ((t_proc *)(tmp->content))->autostart);
+		ft_printf("autorestart: %i\n", ((t_proc *)(tmp->content))->autorestart);
+		ft_printf("starttime: %i\n", ((t_proc *)(tmp->content))->starttime);
+		ft_printf("startretries: %i\n", ((t_proc *)(tmp->content))->startretries);
+		ft_printf("stdout: %s\n", ((t_proc *)(tmp->content))->stdout);
+		ft_printf("stderr: %s\n", ((t_proc *)(tmp->content))->stderr);
+		ft_printf("stopsignal: %i\n", ((t_proc *)(tmp->content))->stopsignal);
 		for (int i = 0; i < 255; i++)
-			if (get_dconf()->proc->exitcodes[i])
+			if (((t_proc *)(tmp->content))->exitcodes[i])
 				ft_printf("exitcode: %i\n", i);
 		ft_printf("\n--------------\n\n");
+		tmp = tmp->next;
 	}
 	ft_printf("logout: %s\n", get_dconf()->out_log);
 	ft_printf("logerr: %s\n", get_dconf()->err_log);
@@ -45,74 +47,91 @@ static void	outputs()
 	ft_printf("port: %i\n", get_dconf()->port);
 }
 
-//static void	record_config_proc(t_key_val *pair)
-//{
-//		if (ft_strequ(pair->key, "cmd"))
-//			pair->proc->argv = ft_strsplit(pair->val, ' ');
-//		else if (ft_strequ(pair->key, "numprocs"))
-//			pair->proc->numprocs = ft_atoi(pair->val);
-//		else if (ft_strequ(pair->key, "umask"))
-//			pair->proc->umask = ft_atoi(pair->val);
-//		else if (ft_strequ(pair->key, "workingdir"))
-//			pair->proc->workingdir = ft_strdup(pair->val);
-//		else if (ft_strequ(pair->key, "autostart"))
-//			pair->proc->umask = ft_atoi(pair->val);
-//		else if (ft_strequ(pair->key, "autorestart"))
-//			pair->proc->umask = ft_atoi(pair->val);
-//		else if (ft_strequ(pair->key, "exitcodes"))
-//			pair->proc->exitcodes[ft_atoi(pair->val)] = true;
-//		else if (ft_strequ(pair->key, "umask"))
-//			pair->proc->umask = ft_atoi(pair->val);
-//	ft_strdel(&pair->key);
-//	ft_strdel(&pair->val);
-//}
+static void	record_config_proc2(t_key_val *pair, t_proc *proc)
+{
+	int					i;
+	static const t_sig	sig[] = {{"HUP", SIGHUP}, {"INT", SIGINT},
+	{"QUIT", SIGQUIT}, {"ILL", SIGILL}, {"TRAP", SIGTRAP}, {"ABRT", SIGABRT},
+	{"EMT", SIGEMT}, {"FPE", SIGFPE}, {"KILL", SIGKILL}, {"BUS", SIGBUS},
+	{"SEGV", SIGSEGV}, {"SYS", SIGSYS}, {"PIPE", SIGPIPE}, {"ALRM", SIGALRM},
+	{"TERM", SIGTERM}, {"URG", SIGURG}, {"STOP", SIGSTOP}, {"TSTP", SIGTSTP},
+	{"CONT", SIGCONT}, {"CHLD", SIGCHLD}, {"TTIN", SIGTTIN}, {"TTOU", SIGTTOU},
+	{"IO", SIGIO}, {"XCPU", SIGXCPU}, {"XFSZ", SIGXFSZ}, {"VTALRM", SIGVTALRM},
+	{"PROF", SIGPROF}, {"WINCH", SIGWINCH}, {"INFO", SIGINFO},
+	{"USR1", SIGUSR1}, {"USR2", SIGUSR2}, {NULL, 0}};
 
-//static void		get_key_value(yaml_parser_t *parser, yaml_token_t *token, t_key_val	*pair)
-//{
-//	assert(yaml_parser_scan(*parser, token));
-//}
-//
-//static void 	read_proc_loop(yaml_parser_t *parser)
-//{
-//	yaml_token_t	token;
-//	t_key_val		pair;
-//
-//	ft_bzero(&pair, sizeof(t_key_val));
-//	get_dconf()->proc = ft_memalloc(sizeof(t_proc));
-//	pair.proc = get_dconf()->proc;
-//	pair.blocks = 0;
-//	while (1)
-//	{
-//		if (yaml_parser_scan(parser, &token) == 0)
-//			ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n");
-//		if (token.type == YAML_BLOCK_SEQUENCE_START_TOKEN ||
-//				token.type == YAML_BLOCK_MAPPING_START_TOKEN)
-//			++pair.blocks;
-//		if (token.type == YAML_BLOCK_END_TOKEN)
-//			--pair.blocks;
-//		if (pair.blocks == 0 && ft_printf("ASD\n"))
-//			break ;
-//		if (token.type == YAML_KEY_TOKEN)
-//			ft_strdel(&pair.key);
-//		if (token.type == YAML_SCALAR_TOKEN)
-//		{
-//			if (pair.proc->name == NULL)
-//				pair.proc->name = ft_strdup((char *)token.data.scalar.value);
-//			else if (pair.key == NULL)
-//				pair.key = ft_strdup((char *)token.data.scalar.value);
-//			else
-//				pair.val = ft_strdup((char *)token.data.scalar.value);
-//		}
-//		if (pair.key && pair.val)
-//			record_config(&pair);
-//		if (token.type == YAML_STREAM_END_TOKEN)
-//			break ;
-//		yaml_token_delete(&token);
-//	}
-//	yaml_token_delete(&token);
-//}
+	i = -1;
+	if (ft_strequ(pair->key, "stderr"))
+		proc->stderr = ft_strdup(pair->val);
+	else if (ft_strequ(pair->key, "stopsignal"))
+	{
+		while (sig[++i].signame)
+			if (ft_strequ(pair->val, sig[i].signame))
+				proc->stopsignal = sig[i].sig;
+	}
+	else
+		ft_printf("KEY: %s\nVALUE: %s\n", pair->key, pair->val);
+}
 
-static void		read_proc_config(yaml_parser_t *parser)
+static void	record_config_proc(t_key_val *pair, t_proc *proc)
+{
+		if (ft_strequ(pair->key, "cmd"))
+			proc->argv = ft_strsplit(pair->val, ' ');
+		else if (ft_strequ(pair->key, "numprocs"))
+			proc->numprocs = ft_atoi(pair->val);
+		else if (ft_strequ(pair->key, "umask"))
+			proc->umask = ft_atol(pair->val);
+		else if (ft_strequ(pair->key, "workingdir"))
+			proc->workingdir = ft_strdup(pair->val);
+		else if (ft_strequ(pair->key, "autostart"))
+			proc->autostart = ft_strequ(pair->val, "true") ? 1 : 0;
+		else if (ft_strequ(pair->key, "autorestart"))
+			proc->autorestart = ft_strequ(pair->val, "expected") ? 1 : 0;
+		else if (ft_strequ(pair->key, "exitcodes"))
+			proc->exitcodes[ft_atoi(pair->val)] = true;
+		else if (ft_strequ(pair->key, "startretries"))
+			proc->startretries = ft_atol(pair->val);
+		else if (ft_strequ(pair->key, "starttime"))
+			proc->starttime = ft_atol(pair->val);
+		else if (ft_strequ(pair->key, "stoptime"))
+			proc->stoptime = ft_atol(pair->val);
+		else if (ft_strequ(pair->key, "stdout"))
+			proc->stdout = ft_strdup(pair->val);
+		else
+			record_config_proc2(pair, proc);
+}
+
+static void	read_one_proc(yaml_parser_t *parser, t_key_val *pair, char *name)
+{
+	yaml_token_t	token;
+	t_proc			proc;
+
+	ft_bzero(&proc, sizeof(t_proc));
+	proc.name = ft_strdup(name);
+	while (1)
+	{
+		if (yaml_parser_scan(parser, &token) == 0)
+			ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n");
+		if (token.type == YAML_BLOCK_SEQUENCE_START_TOKEN)
+			++pair->blocks;
+		else if (token.type == YAML_BLOCK_END_TOKEN)
+			--pair->blocks;
+		if (token.type == YAML_KEY_TOKEN)
+			ft_strdel(&pair->key);
+		else if (token.type == YAML_SCALAR_TOKEN)
+			!pair->key ? pair->key = ft_strdup((char*)token.data.scalar.value) :
+			(pair->val = (char*)token.data.scalar.value);
+		else if (token.type == YAML_BLOCK_END_TOKEN && pair->blocks == 0)
+			break ;
+		if (pair->key && pair->val)
+			record_config_proc(pair, &proc);
+		yaml_token_delete(&token);
+	}
+	ft_strdel(&pair->key);
+	ft_lstpush_back(&get_dconf()->proc, &proc, sizeof(t_proc));
+}
+
+static void read_processes(yaml_parser_t *parser)
 {
 	yaml_token_t	token;
 	t_key_val		pair;
@@ -125,18 +144,15 @@ static void		read_proc_config(yaml_parser_t *parser)
 		if (token.type == YAML_KEY_TOKEN)
 			ft_strdel(&pair.key);
 		else if (token.type == YAML_SCALAR_TOKEN)
-			pair.key == NULL ?
-					pair.key = ft_strdup((char*)token.data.scalar.value) :
-			(pair.val = ft_strdup((char*)token.data.scalar.value));
-		else if (token.type == YAML_STREAM_END_TOKEN)
+		{
+			pair.blocks = 1;
+			read_one_proc(parser, &pair, (char *)token.data.scalar.value);
+		}
+		else if (token.type == YAML_BLOCK_END_TOKEN)
 			break ;
-//		if (pair.key && pair.val)
-//			record_config_proc(&pair);
 		yaml_token_delete(&token);
 	}
 	yaml_token_delete(&token);
-	ft_strdel(&pair.key);
-	ft_strdel(&pair.val);
 }
 
 static void		record_config_daemon(t_key_val *pair)
@@ -149,7 +165,6 @@ static void		record_config_daemon(t_key_val *pair)
 		get_dconf()->port = ft_atoi(pair->val);
 	else if (ft_strequ(pair->key, "ip"))
 		get_dconf()->ip = ft_strdup(pair->val);
-	ft_strdel(&pair->val);
 }
 
 
@@ -165,10 +180,12 @@ static void		read_daemon_config(yaml_parser_t *parser)
 			ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n");
 		if (token.type == YAML_KEY_TOKEN)
 			ft_strdel(&pair.key);
+		else if (token.type == YAML_SCALAR_TOKEN && pair.key == NULL &&
+				ft_strequ((char*)token.data.scalar.value, "programs"))
+			read_processes(parser);
 		else if (token.type == YAML_SCALAR_TOKEN)
-			pair.key == NULL ?
-			pair.key = ft_strdup((char*)token.data.scalar.value) :
-			(pair.val = ft_strdup((char*)token.data.scalar.value));
+			!pair.key ? pair.key = ft_strdup((char*)token.data.scalar.value) :
+			(pair.val = (char*)token.data.scalar.value);
 		else if (token.type == YAML_STREAM_END_TOKEN)
 			break ;
 		if (pair.key && pair.val)
@@ -177,27 +194,12 @@ static void		read_daemon_config(yaml_parser_t *parser)
 	}
 	yaml_token_delete(&token);
 	ft_strdel(&pair.key);
-	ft_strdel(&pair.val);
-}
-
-static void		read_config(FILE *fp)
-{
-	yaml_parser_t	parser;
-
-	if(!yaml_parser_initialize(&parser))
-		ft_fatal(EXIT_FAILURE, exit, "Failed to initialize parser\n");
-	yaml_parser_set_input_file(&parser, fp);
-	read_daemon_config(&parser);
-	read_proc_config(&parser);
-//	ft_printf("%s\n%s\n", get_dconf()->out_log, get_dconf()->err_log);
-	yaml_parser_delete(&parser);
-	outputs();
-	system("leaks taskmasterd");
 }
 
 void			parse_config(void)
 {
 	FILE			*fp;
+	yaml_parser_t	parser;
 
 	if (!get_dconf()->config_file && access("taskmasterd.conf", F_OK) == 0)
 		get_dconf()->config_file = "taskmasterd.conf";
@@ -206,6 +208,13 @@ void			parse_config(void)
 	if ((fp = fopen(get_dconf()->config_file, "r")) == NULL)
 		ft_fatal(EXIT_FAILURE, exit, "%s: %s\n", strerror(errno),
 				 get_dconf()->config_file);
-	read_config(fp);
+	get_dconf()->proc = NULL; //TODO: delete
+	if(!yaml_parser_initialize(&parser))
+		ft_fatal(EXIT_FAILURE, exit, "Failed to initialize parser\n");
+	yaml_parser_set_input_file(&parser, fp);
+	read_daemon_config(&parser);
+	yaml_parser_delete(&parser);
+	outputs();
+//	system("leaks taskmasterd");
 	fclose(fp);
 }

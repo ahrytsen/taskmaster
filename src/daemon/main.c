@@ -20,7 +20,6 @@ void	exec_cmd(char *cmd, int sock)
 								{"stop", d_stop}, {"restart", d_restart},
 								{"reread", d_reread}, {"d_exit", d_exit},
 								{NULL, d_err_cmd}};
-
 	i = 0;
 	if (!(av = ft_strsplit(cmd, ' ')))
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
