@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 16:06:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 11:37:05 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,87 +112,125 @@ static void	outputs()
 //	yaml_token_delete(&token);
 //}
 
-static void		read_proc_config(yaml_parser_t *parser)
+/* static void		read_proc_config(yaml_parser_t *parser) */
+/* { */
+/* 	yaml_token_t	token; */
+/* 	t_key_val		pair; */
+
+/* 	ft_bzero(&pair, sizeof(t_key_val)); */
+/* 	while (1) */
+/* 	{ */
+/* 		if (yaml_parser_scan(parser, &token) == 0) */
+/* 			ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n"); */
+/* 		if (token.type == YAML_KEY_TOKEN) */
+/* 			ft_strdel(&pair.key); */
+/* 		else if (token.type == YAML_SCALAR_TOKEN) */
+/* 			pair.key == NULL ? */
+/* 					pair.key = ft_strdup((char*)token.data.scalar.value) : */
+/* 			(pair.val = ft_strdup((char*)token.data.scalar.value)); */
+/* 		else if (token.type == YAML_STREAM_END_TOKEN) */
+/* 			break ; */
+/* //		if (pair.key && pair.val) */
+/* //			record_config_proc(&pair); */
+/* 		yaml_token_delete(&token); */
+/* 	} */
+/* 	yaml_token_delete(&token); */
+/* 	ft_strdel(&pair.key); */
+/* 	ft_strdel(&pair.val); */
+/* } */
+
+/* static void		record_config_daemon(t_key_val *pair) */
+/* { */
+/* 	if (ft_strequ(pair->key, "logout")) */
+/* 		get_dconf()->out_log = ft_strdup(pair->val); */
+/* 	else if (ft_strequ(pair->key, "logerr")) */
+/* 		get_dconf()->err_log = ft_strdup(pair->val); */
+/* 	else if (ft_strequ(pair->key, "port")) */
+/* 		get_dconf()->port = ft_atoi(pair->val); */
+/* 	else if (ft_strequ(pair->key, "ip")) */
+/* 		get_dconf()->ip = ft_strdup(pair->val); */
+/* 	ft_strdel(&pair->val); */
+/* } */
+
+
+static void		read_daemon_config(yaml_document_t *document)
 {
-	yaml_token_t	token;
+//	yaml_token_t	token;
 	t_key_val		pair;
+	yaml_node_t		*node;
+	int i = 1;
 
 	ft_bzero(&pair, sizeof(t_key_val));
-	while (1)
+	/* while (1) */
+	/* { */
+	/* 	if (yaml_parser_scan(parser, &token) == 0) */
+	/* 		ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n"); */
+	/* 	if (token.type == YAML_KEY_TOKEN) */
+	/* 		ft_strdel(&pair.key); */
+	/* 	else if (token.type == YAML_SCALAR_TOKEN) */
+	/* 		pair.key == NULL ? */
+	/* 		pair.key = ft_strdup((char*)token.data.scalar.value) : */
+	/* 		(pair.val = ft_strdup((char*)token.data.scalar.value)); */
+	/* 	else if (token.type == YAML_STREAM_END_TOKEN) */
+	/* 		break ; */
+	/* 	if (pair.key && pair.val) */
+	/* 		record_config_daemon(&pair); */
+	/* 	yaml_token_delete(&token); */
+	/* } */
+	/* yaml_token_delete(&token); */
+	/* ft_strdel(&pair.key); */
+	/* ft_strdel(&pair.val); */
+	while(1)
 	{
-		if (yaml_parser_scan(parser, &token) == 0)
-			ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n");
-		if (token.type == YAML_KEY_TOKEN)
-			ft_strdel(&pair.key);
-		else if (token.type == YAML_SCALAR_TOKEN)
-			pair.key == NULL ?
-					pair.key = ft_strdup((char*)token.data.scalar.value) :
-			(pair.val = ft_strdup((char*)token.data.scalar.value));
-		else if (token.type == YAML_STREAM_END_TOKEN)
-			break ;
-//		if (pair.key && pair.val)
-//			record_config_proc(&pair);
-		yaml_token_delete(&token);
+		node = yaml_document_get_node(document, i);
+		if(!node)
+			break;
+		ft_printf("\n%d) TAG: %s\n", i, node->tag);
+		if(node->type == YAML_SCALAR_NODE)
+			ft_printf("Scalar: %s\n", node->data.scalar.value);
+		else if(node->type == YAML_NO_NODE)
+			ft_printf("NO_NODE: =(\n");
+		else if(node->type == YAML_SEQUENCE_NODE)
+		{
+			yaml_node_item_t *start = node->data.sequence.items.start;
+			yaml_node_item_t *end = node->data.sequence.items.end;
+			ft_printf("SEQUENCE: ");
+			while (start != end)
+				ft_printf("%d, ", *start++);
+			ft_printf("\n");
+		}
+		else if(node->type == YAML_MAPPING_NODE)
+		{
+			yaml_node_pair_t *start = node->data.mapping.pairs.start;
+			yaml_node_pair_t *end = node->data.mapping.pairs.end;
+			ft_printf("MAPPING:\n");
+			while (start != end)
+			{
+				ft_printf("key:%d, value:%d\n", start->key, start->value);
+				start++;
+			}
+			ft_printf("\n");
+		}
+		i++;
 	}
-	yaml_token_delete(&token);
-	ft_strdel(&pair.key);
-	ft_strdel(&pair.val);
-}
-
-static void		record_config_daemon(t_key_val *pair)
-{
-	if (ft_strequ(pair->key, "logout"))
-		get_dconf()->out_log = ft_strdup(pair->val);
-	else if (ft_strequ(pair->key, "logerr"))
-		get_dconf()->err_log = ft_strdup(pair->val);
-	else if (ft_strequ(pair->key, "port"))
-		get_dconf()->port = ft_atoi(pair->val);
-	else if (ft_strequ(pair->key, "ip"))
-		get_dconf()->ip = ft_strdup(pair->val);
-	ft_strdel(&pair->val);
-}
-
-
-static void		read_daemon_config(yaml_parser_t *parser)
-{
-	yaml_token_t	token;
-	t_key_val		pair;
-
-	ft_bzero(&pair, sizeof(t_key_val));
-	while (1)
-	{
-		if (yaml_parser_scan(parser, &token) == 0)
-			ft_fatal(EXIT_FAILURE, exit, "Config file is not valid\n");
-		if (token.type == YAML_KEY_TOKEN)
-			ft_strdel(&pair.key);
-		else if (token.type == YAML_SCALAR_TOKEN)
-			pair.key == NULL ?
-			pair.key = ft_strdup((char*)token.data.scalar.value) :
-			(pair.val = ft_strdup((char*)token.data.scalar.value));
-		else if (token.type == YAML_STREAM_END_TOKEN)
-			break ;
-		if (pair.key && pair.val)
-			record_config_daemon(&pair);
-		yaml_token_delete(&token);
-	}
-	yaml_token_delete(&token);
-	ft_strdel(&pair.key);
-	ft_strdel(&pair.val);
 }
 
 static void		read_config(FILE *fp)
 {
 	yaml_parser_t	parser;
+	yaml_document_t	document;
 
 	if(!yaml_parser_initialize(&parser))
 		ft_fatal(EXIT_FAILURE, exit, "Failed to initialize parser\n");
 	yaml_parser_set_input_file(&parser, fp);
-	read_daemon_config(&parser);
-	read_proc_config(&parser);
+	if (!yaml_parser_load(&parser, &document))
+		ft_fatal(EXIT_FAILURE, exit, "Failed to parse document\n");
+	read_daemon_config(&document);
+	//read_proc_config(&parser);
 //	ft_printf("%s\n%s\n", get_dconf()->out_log, get_dconf()->err_log);
+	yaml_document_delete(&document);
 	yaml_parser_delete(&parser);
-	outputs();
-	system("leaks taskmasterd");
+//	outputs();
 }
 
 void			parse_config(void)

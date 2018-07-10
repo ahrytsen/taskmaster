@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 19:53:27 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 12:11:45 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,9 @@ void	main_loop(void)
 
 int		main(int ac, char **av)
 {
+	ft_bzero(get_dconf(), sizeof(t_dconf));
 	check_flags(ac, av);
 	d_init();
-	/*
 	demonaize();
 	main_loop();
-	*/
  }

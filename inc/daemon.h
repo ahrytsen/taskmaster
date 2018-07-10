@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 19:12:57 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 16:45:25 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct	s_dconf
 	pid_t				pid;
 	uint16_t			port;
 	char				*ip;
-	int					sock_id;
+	int					sockfd;
 	struct sockaddr_in	addr;
 	int					err_fd;
 	int					out_fd;
@@ -52,6 +52,7 @@ typedef struct	s_proc
 {
 	char 			*name;
 	char			**argv;
+	pid_t			pid[numprocs];
 	uint16_t		numprocs;
 	mode_t 			umask;
 	char 			*workingdir;
@@ -94,9 +95,17 @@ t_dconf			*get_dconf(void);
 void			demonaize(void);
 void			d_init(void);
 /*
-**				commands.c
+**				exchange.c
+*/
+void			send_msg(int sock, char	*msg);
+
+/*
+**				d_status.c
 */
 void			d_status(char **av, int sock);
+/*
+**				commands.c
+*/
 void			d_start(char **av, int sock);
 void			d_stop(char **av, int sock);
 void			d_restart(char **av, int sock);

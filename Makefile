@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/07 18:19:34 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/10 10:03:05 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -23,10 +23,10 @@ DIROBJ_C	=	./obj/client/
 DIROBJ_D	=	./obj/daemon/
 
 INCLUDE_C	=	-I./inc/ -I./libft/includes
-INCLUDE_D	=	-I./inc/ -I./libft/includes -I /Users/yvyliehz/.brew/include
+INCLUDE_D	=	-I./inc/ -I./libft/includes -I ~/.brew/include
 
 INC_LIB_C	=	-L./libft -lftprintf -ltermcap
-INC_LIB_D	=	-L./libft -lftprintf -L /Users/yvyliehz/.brew/lib/ -lyaml
+INC_LIB_D	=	-L./libft -lftprintf -L ~/.brew/lib/ -lyaml
 
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a

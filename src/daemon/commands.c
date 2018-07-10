@@ -12,21 +12,6 @@
 
 #include <daemon.h>
 
-void	d_status(char **av, int sock)
-{
-	size_t	size;
-	char	*msg;
-
-	(void)av;
-	msg = "'d_status' called on server side\n";
-	ft_dprintf(1, "'d_status' called\n");
-	size = ft_strlen(msg) + 1;
-	send(sock, &size, sizeof(size_t), 0);
-	send(sock, msg, size, 0);
-	size = 0;
-	send(sock, &size, sizeof(size_t), 0);
-}
-
 void	d_start(char **av, int sock)
 {
 	size_t	size;
