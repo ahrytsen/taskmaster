@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/16 18:18:01 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 21:51:38 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/11 10:17:55 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ ssize_t	ft_print_buf(int fd, t_buf *pbuf, t_buf *pbuf_head)
 
 	line = NULL;
 	if ((ret = ft_buftostr(&line, pbuf, pbuf_head)) > 0 && fd >= 0)
-		 write(fd, line, ret);
+		write(fd, line, ret);
 	free(line);
 	return (ret);
 }

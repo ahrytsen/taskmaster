@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 23:57:50 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/11 20:14:45 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,14 @@ static void	load_test_conf(void)
 
 	proc.name = "test";
 	proc.argv = ft_strsplit("~/supervisor/venv/test.sh", ' ');
-	proc.numprocs = 1;
+	proc.numprocs = 0;
+	proc.jobs = ft_memalloc(sizeof(t_job) * proc.numprocs);
+	proc.jobs[0].status = ST_RUN;
+	ft_lstpush_back(&get_dconf()->proc, &proc, sizeof(proc));
+
+	proc.name = "CAT";
+	proc.argv = ft_strsplit("/bin/cat -e", ' ');
+	proc.numprocs = 3;
 	proc.jobs = ft_memalloc(sizeof(t_job) * proc.numprocs);
 	proc.jobs[0].status = ST_RUN;
 	ft_lstpush_back(&get_dconf()->proc, &proc, sizeof(proc));

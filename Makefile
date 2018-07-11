@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/10 17:45:12 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/11 20:42:31 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -53,7 +53,9 @@ SRC_D		=	main.c\
 				commands.c\
 				parse_config.c\
 				d_status.c\
-				exchange.c
+				d_start.c\
+				exchange.c\
+				proc_utils.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h
