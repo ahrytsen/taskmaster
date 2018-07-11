@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/07 18:19:34 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/11 16:57:38 by yvyliehz         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -51,7 +51,7 @@ SRC_D		=	main.c\
 				d_flags.c\
 				d_init.c\
 				commands.c\
-				parse_config.c
+				parse_config_tree.c
 
 
 HDR_C		=	inc/ft_readline.h
