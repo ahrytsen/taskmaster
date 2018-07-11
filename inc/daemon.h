@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef		DAEMON_H
-# define	DAEMON_H
+#ifndef DAEMON_H
+# define DAEMON_H
 
 # include <libft.h>
 # include <sys/socket.h>
@@ -29,8 +29,6 @@
 
 # define F_C 0b1
 # define F_N 0b10
-
-# define GET_VAR(Variable) (#Variable)
 
 typedef struct	s_dconf
 {
@@ -50,21 +48,21 @@ typedef struct	s_dconf
 
 typedef struct	s_proc
 {
-	char 			*name;
-	char			**argv;
-	uint16_t		numprocs;
-	mode_t 			umask;
-	char 			*workingdir;
-	uint8_t 		autostart;
-	uint8_t			autorestart;
-	char 			exitcodes[255];
-	time_t			starttime;
-	int 			startretries;
-	int 			stopsignal;
-	time_t 			stoptime;
-	char 			*stdout;
-	char 			*stderr;
-	char 			**env;
+	char		*name;
+	char		**argv;
+	uint16_t	numprocs;
+	mode_t		umask;
+	char		*workingdir;
+	uint8_t		autostart;
+	uint8_t		autorestart;
+	char		exitcodes[255];
+	time_t		starttime;
+	int			startretries;
+	int			stopsignal;
+	time_t		stoptime;
+	char		*stdout;
+	char		*stderr;
+	char		**env;
 }				t_proc;
 
 typedef struct	s_dispatcher
@@ -81,23 +79,15 @@ typedef struct	s_sig
 
 typedef struct	s_yaml_tree
 {
-	char			*key;
-	t_list			*value;
-	enum			value_type
+	char	*key;
+	t_list	*value;
+	enum	e_type
 	{
 		singular_val,
 		sequence_val,
 		mapping_val
-	}				type;
+	}		type;
 }				t_yaml_tree;
-
-typedef struct	s_key_val
-{
-	char	*key;
-	char 	*val;
-	int 	blocks;
-//	t_proc	*proc;
-}				t_key_val;
 /*
 **				d_flags.c
 */
