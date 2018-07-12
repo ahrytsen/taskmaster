@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/12 10:24:16 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/12 19:21:13 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -32,7 +32,7 @@ SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 LIBFT		=	libft/libftprintf.a
 
-SRC_C		=	client.c\
+SRC_C		=	main.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\

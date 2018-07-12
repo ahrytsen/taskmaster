@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/12 15:51:53 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/12 19:47:23 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,13 @@ void		record_config_proc(t_proc *proc, t_yaml_tree *node)
 	if (ft_strequ(node->key, "cmd"))
 		proc->argv = ft_strsplit(node->value->content, ' ');
 	else if (ft_strequ(node->key, "numprocs"))
+	{
+		free(proc->jobs);
 		proc->numprocs = ft_atoi(node->value->content);
+		proc->numprocs > 0
+			? (int)(proc->jobs = ft_memalloc(sizeof(t_job) * proc->numprocs))
+			: (proc->numprocs = 0);
+	}
 	else if (ft_strequ(node->key, "umask"))
 		proc->umask = ft_atol(node->value->content);
 	else if (ft_strequ(node->key, "workingdir"))

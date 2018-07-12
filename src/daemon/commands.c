@@ -70,6 +70,7 @@ void	d_exit(char **av, int sock)
 	send(sock, msg, size, 0);
 	size = 0;
 	send(sock, &size, sizeof(size_t), 0);
+	close(get_dconf()->sockfd);
 	exit(0);
 }
 

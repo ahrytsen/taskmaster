@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 15:40:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 19:58:02 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 20:01:46 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		socket_connect(void)
 
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(7279);
+	addr.sin_port = htons(7278);
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	if (sock == -1)
 		perror("taskmasterctl: socket");

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 17:32:56 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 20:11:56 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	exec_cmd(char *cmd, int sock)
 	while (disp[i].cmd && ft_strcmp(disp[i].cmd, *av))
 		i++;
 	disp[i].exec(av, sock);
+	ft_strarr_free(av);
 }
 
 void	main_loop(void)
@@ -59,6 +60,7 @@ int		main(int ac, char **av)
 	ft_bzero(get_dconf(), sizeof(t_dconf));
 	check_flags(ac, av);
 	d_init();
-//	demonaize();
-//	main_loop();
- }
+//	outputs();
+	demonaize();
+	main_loop();
+}

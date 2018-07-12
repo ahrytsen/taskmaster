@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 12:07:48 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 11:34:25 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 19:22:55 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,6 @@ void	ft_prociter(t_list *lst, int sock, void (*f)(t_proc*, int, int))
 	}
 }
 
-<<<<<<< HEAD
-//void	proc_start_chld(t_proc *proc)
-//{
-//
-//}
-=======
 void	proc_start_chld(t_proc *proc)
 {
 	pid_t		pid;
@@ -66,4 +60,3 @@ void	proc_start_chld(t_proc *proc)
 	execve(proc->argv[0], proc->argv, environ);
 	exit(1);
 }
->>>>>>> dev_ahrytsen

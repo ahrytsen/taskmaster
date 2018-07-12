@@ -6,11 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2018/07/12 10:25:45 by ahrytsen         ###   ########.fr       */
-=======
-/*   Updated: 2018/07/12 14:55:49 by ahrytsen         ###   ########.fr       */
->>>>>>> dev_ahrytsen
+/*   Updated: 2018/07/12 19:22:32 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +23,6 @@ static void	proc_start(t_proc *proc, int id, int sock)
 	{
 		pipe(fd);
 		if ((proc->jobs[i].pid = fork()) > 0)
-<<<<<<< HEAD
-			ft_asprintf(&line, "");
-=======
 		{
 			ft_asprintf(&line, "%s: starting...\n", proc->argv[0]);
 			proc->jobs[i].status = ST_RUN;
@@ -41,7 +34,6 @@ static void	proc_start(t_proc *proc, int id, int sock)
 		}
 		else
 			ft_asprintf(&line, "%s: error while fork()\n", proc->argv[0]);
->>>>>>> dev_ahrytsen
 		send_msg(sock, line);
 		free(line);
 		if (id >= 0)
