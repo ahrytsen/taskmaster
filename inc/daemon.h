@@ -92,15 +92,17 @@ typedef struct	s_sig
 	int		sig;
 }				t_sig;
 
-typedef struct	s_key_val
+typedef struct	s_yaml_tree
 {
 	char	*key;
-	char 	*val;
-	int 	blocks;
-//	t_proc	*proc;
-}				t_key_val;
-
-
+	t_list	*value;
+	enum	e_type
+	{
+		singular_val,
+		sequence_val,
+		mapping_val
+	}		type;
+}				t_yaml_tree;
 /*
 **				d_flags.c
 */
@@ -134,4 +136,9 @@ void			d_err_cmd(char **av, int sock);
 **				parse_config.c
 */
 void			parse_config(void);
+t_list			*read_mapping(yaml_parser_t *parser);
+/*
+**				debug.c										TODO:delete
+*/
+void			output_parse_tree(t_list *parse_lst);
 #endif
