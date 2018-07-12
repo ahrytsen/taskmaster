@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 17:17:18 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/12 15:12:04 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ typedef struct	s_dconf
 typedef struct	s_job
 {
 	int		status;
+	int		std_in;
+	int		std_out;
+	int		std_err;
 	int		ex_st;
 	pid_t	pid;
 	time_t	t;
@@ -106,11 +109,6 @@ typedef struct	s_yaml_tree
 	}		type;
 }				t_yaml_tree;
 
-typedef struct	s_env_pair
-{
-	char	*key;
-	char	*val;
-}				t_env_pair;
 /*
 **				d_flags.c
 */
@@ -126,6 +124,7 @@ void			d_init(void);
 **				proc_utils.c
 */
 t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
+void			proc_start_chld(t_proc *proc);
 void			ft_prociter(t_list *lst, int sock,
 							void (*f)(t_proc*, int, int));
 /*
