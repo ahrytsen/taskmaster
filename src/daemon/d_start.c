@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 10:07:06 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 10:25:45 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	proc_start(t_proc *proc, int id, int sock)
 	while (i < proc->numprocs + (proc->numprocs ? 0 : 1))
 	{
 		if ((proc->jobs[i].pid = fork()) > 0)
-			ft_asprintf(&line, "")
+			ft_asprintf(&line, "");
 		send_msg(sock, line);
 		free(line);
 		if (id >= 0)

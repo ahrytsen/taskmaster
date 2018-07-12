@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/11 20:42:31 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/12 10:24:16 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -51,7 +51,9 @@ SRC_D		=	main.c\
 				d_flags.c\
 				d_init.c\
 				commands.c\
-				parse_config.c\
+				parse_config_tree.c\
+				record_config.c\
+				debug.c\
 				d_status.c\
 				d_start.c\
 				exchange.c\
