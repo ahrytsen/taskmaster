@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 10:07:06 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 14:55:49 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,25 @@
 static void	proc_start(t_proc *proc, int id, int sock)
 {
 	int		i;
+	int		fd[2];
 	char	*line;
 
 	i = id < 0 ? 0 : id;
 	while (i < proc->numprocs + (proc->numprocs ? 0 : 1))
 	{
+		pipe(fd);
 		if ((proc->jobs[i].pid = fork()) > 0)
-			ft_asprintf(&line, "")
+		{
+			ft_asprintf(&line, "%s: starting...\n", proc->argv[0]);
+			proc->jobs[i].status = ST_RUN;
+		}
+		else if (!proc->jobs[i].pid)
+		{
+			dup2(fd[0], 0);
+			proc_start_chld(proc);
+		}
+		else
+			ft_asprintf(&line, "%s: error while fork()\n", proc->argv[0]);
 		send_msg(sock, line);
 		free(line);
 		if (id >= 0)
@@ -37,7 +49,6 @@ static void	proc_start_byname(t_list *lst, char *name, int sock)
 
 	if ((proc = get_proc_byname(lst, name, &id)))
 	{
-
 		proc_start(proc, id, sock);
 	}
 	else

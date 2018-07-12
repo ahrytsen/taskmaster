@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/11 19:51:30 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 15:12:04 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ typedef struct	s_dconf
 typedef struct	s_job
 {
 	int		status;
+	int		std_in;
+	int		std_out;
+	int		std_err;
 	int		ex_st;
 	pid_t	pid;
 	time_t	t;
@@ -116,6 +119,7 @@ void			d_init(void);
 **				proc_utils.c
 */
 t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
+void			proc_start_chld(t_proc *proc);
 void			ft_prociter(t_list *lst, int sock,
 							void (*f)(t_proc*, int, int));
 /*
