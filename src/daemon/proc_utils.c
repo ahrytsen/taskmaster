@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 12:07:48 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/11 20:13:49 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 10:07:08 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,9 @@ void	ft_prociter(t_list *lst, int sock, void (*f)(t_proc*, int, int))
 		(*f)(lst->content, -1, sock);
 		lst = lst->next;
 	}
+}
+
+void	proc_start_chld(t_proc *proc)
+{
+
 }

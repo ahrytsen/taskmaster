@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:02:43 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/11 20:19:47 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 09:54:13 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	proc_status(t_proc *proc, int id, int sock)
 						proc->name, i, status_to_str(proc->jobs[i].status),
 						proc->jobs[i].pid)
 			: ft_asprintf(&line, "%s\t\t%8s\tpid:%d\tuptime: \n", proc->name,
-						status_to_str(proc->jobs[id].status),
+						status_to_str(proc->jobs[i].status),
 						proc->jobs[i].pid);
 		send_msg(sock, line);
 		free(line);
