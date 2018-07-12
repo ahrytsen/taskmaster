@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-static void	outputs()
-{
+#include <daemon.h>
+
+//static void	outputs()
+//{
 //	while (tmp)
 //	{
 //		ft_printf("name: %s\n", ((t_proc *)(tmp->content))->name);
@@ -41,7 +43,13 @@ static void	outputs()
 //	ft_printf("logerr: %s\n", get_dconf()->err_log);
 //	ft_printf("ip: %s\n", get_dconf()->ip);
 //	ft_printf("port: %i\n", get_dconf()->port);
+//}
 
+static void		record_string_value(char *var, char *value)
+{
+	free(var);
+	var = value;
+	value = NULL;
 }
 
 //static void	record_config_proc2(t_key_val *pair, t_proc *proc)
@@ -98,14 +106,59 @@ static void	outputs()
 //			record_config_proc2(pair, proc);
 //}
 //
-//static void		record_config_daemon(t_key_val *pair)
-//{
-//	if (ft_strequ(pair->key, "logout"))
-//		get_dconf()->out_log = ft_strdup(pair->value);
-//	else if (ft_strequ(pair->key, "logerr"))
-//		get_dconf()->err_log = ft_strdup(pair->value);
-//	else if (ft_strequ(pair->key, "port"))
-//		get_dconf()->port = ft_atoi(pair->value);
-//	else if (ft_strequ(pair->key, "ip"))
-//		get_dconf()->ip = ft_strdup(pair->value);
-//}
+
+static void		record_config_daemon(t_list	*lst)
+{
+	t_yaml_tree	*tmp;
+
+	tmp = lst->content;
+	if (tmp->type != singular_val)
+		return ;
+	if (ft_strequ(tmp->key, "logout"))
+		get_dconf()->out_log = tmp->value->content;
+	else if (ft_strequ(tmp->key, "logerr"))
+		get_dconf()->err_log = tmp->value->content;
+	else if (ft_strequ(tmp->key, "port"))
+	{
+		get_dconf()->port = ft_atoi(tmp->value->content);
+		free(tmp->value->content);
+	}
+	else if (ft_strequ(tmp->key, "ip"))
+		get_dconf()->ip = tmp->value->content;
+	tmp->value->content = NULL;
+}
+
+static t_proc	*find_proc(char *proc_name)
+{
+	t_list	*tmp;
+
+	tmp = get_dconf()->proc;
+	while (tmp)
+	{
+		if (ft_strequ(((t_proc *)tmp->content)->name, proc_name))
+			return (tmp->content);
+		tmp = tmp->next;
+	}
+	ft_lstpush_back()
+	return ()
+}
+
+static void		record_one_proc(t_list *proc)
+{
+	t_list	*proc;
+//	while ()
+}
+
+void			record_config(t_list *parse_lst)
+{
+	while (parse_lst)
+	{
+//		if (((t_yaml_tree *)parse_lst->content)->type == mapping_val)
+//			;
+		if (!ft_strequ(((t_yaml_tree *)parse_lst->content)->key, "programs"))
+			record_config_daemon(parse_lst);
+		else
+			record_one_proc(((t_yaml_tree *)parse_lst->content)->value);
+		parse_lst = parse_lst->next;
+	}
+}

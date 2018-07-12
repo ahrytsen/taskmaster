@@ -115,6 +115,10 @@ void			d_err_cmd(char **av, int sock);
 void			parse_config(void);
 t_list			*read_mapping(yaml_parser_t *parser);
 /*
+**				record_config.c
+*/
+void			record_config(t_list *parse_lst);
+/*
 **				debug.c										TODO:delete
 */
 void			output_parse_tree(t_list *parse_lst);

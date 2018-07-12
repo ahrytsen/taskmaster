@@ -104,6 +104,7 @@ static t_list	*read_config(FILE *fp)
 	}
 	yaml_event_delete(&event);
 	yaml_parser_delete(&parser);
+	output_parse_tree(parse_lst);
 	return (parse_lst);
 }
 
@@ -118,7 +119,7 @@ void			parse_config(void)
 	if ((fp = fopen(get_dconf()->config_file, "r")) == NULL)
 		ft_fatal(EXIT_FAILURE, exit, "%s: %s\n", strerror(errno),
 				get_dconf()->config_file);
-	read_config(fp);
+	record_config(read_config(fp));
 //	system("leaks taskmasterd");
 	fclose(fp);
 }
