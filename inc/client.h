@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isnumeric_str.c                                 :+:      :+:    :+:   */
+/*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/05 21:24:57 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/11 20:03:38 by ahrytsen         ###   ########.fr       */
+/*   Created: 2018/07/12 17:47:43 by yvyliehz          #+#    #+#             */
+/*   Updated: 2018/07/12 17:55:39 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef TASKMASTER_CLIENT_H
+# define TASKMASTER_CLIENT_H
 
-int	ft_isnumeric_str(char *str)
-{
-	if (!str)
-		return (0);
-	while (*str)
-		if (!ft_isdigit(*str++))
-			return (0);
-	return (1);
-}
+# include <libft.h>
+# include <ft_readline.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <stdio.h>
+# include <errno.h>
+
+#endif

@@ -6,13 +6,13 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/29 16:08:02 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/27 12:06:00 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 21:38:23 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-const static t_conv		g_phelper[] =
+const t_conv			g_phelper[] =
 {
 	{"sS", &ft_str},
 	{"diD", &ft_int},
@@ -46,7 +46,7 @@ const static t_color	g_colors[] =
 	{"{b_white}", "\033[107m"}, {NULL, NULL}
 };
 
-static const char	*ft_get_format(va_list *ap, const char *format, t_arg *arg)
+const char	*ft_get_format(va_list *ap, const char *format, t_arg *arg)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ static const char	*ft_get_format(va_list *ap, const char *format, t_arg *arg)
 	return (*format ? ++format : format);
 }
 
-static void			ft_get_color(const char **format, t_buf **pbuf)
+void		ft_get_color(const char **format, t_buf **pbuf)
 {
 	int	i;
 
@@ -95,7 +95,7 @@ static void			ft_get_color(const char **format, t_buf **pbuf)
 	}
 }
 
-int					ft_printf(const char *format, ...)
+int			ft_printf(const char *format, ...)
 {
 	t_arg		arg;
 	va_list		ap;
@@ -122,7 +122,7 @@ int					ft_printf(const char *format, ...)
 	return (ft_print_buf(1, pbuf[1], pbuf[0]));
 }
 
-int					ft_dprintf(int fd, const char *format, ...)
+int			ft_dprintf(int fd, const char *format, ...)
 {
 	t_arg		arg;
 	va_list		ap;
@@ -149,8 +149,7 @@ int					ft_dprintf(int fd, const char *format, ...)
 	return (ft_print_buf(fd, pbuf[1], pbuf[0]));
 }
 
-void				ft_fatal(int st, void (*exit_f)(int),
-							const char *format, ...)
+int			ft_asprintf(char **line, const char *format, ...)
 {
 	t_arg		arg;
 	va_list		ap;
@@ -174,34 +173,5 @@ void				ft_fatal(int st, void (*exit_f)(int),
 		else
 			ft_putchar_buf(&pbuf[1], *format++);
 	format ? va_end(ap) : 0;
-	ft_print_buf(2, pbuf[1], pbuf[0]);
-	exit_f(st);
+	return (ft_buftostr(line, pbuf[1], pbuf[0]));
 }
-/*
-**int					ft_asprintf(char *str, const char *format, ...)
-**{
-**	t_arg		arg;
-**	va_list		ap;
-**	t_buf		*pbuf[2];
-**	int			i;
-**
-**	pbuf[0] = format ? ft_newbuf() : NULL;
-**	format ? va_start(ap, format) : 0;
-**	pbuf[1] = pbuf[0];
-**	while (pbuf[1] && *format)
-**		if (*format == '%' && !(i = 0))
-**		{
-**			format = ft_get_format(&ap, format + 1, &arg);
-**			while (g_phelper[i].conv && !ft_strchr(g_phelper[i].conv, arg.spec))
-**				i++;
-**			(!arg.spec || !g_phelper[i].conv) ? ft_undef(&pbuf[1], &ap, &arg)
-**				: g_phelper[i].ft_phelper(&pbuf[1], &ap, &arg);
-**		}
-**		else if (*format == '{')
-**			ft_get_color(&format, &pbuf[1]);
-**		else
-**			ft_putchar_buf(&pbuf[1], *format++);
-**	format ? va_end(ap) : 0;
-**	return (ft_print_buf(pbuf[1], pbuf[0]));
-**}
-*/

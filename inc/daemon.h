@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   daemon.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 19:12:57 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 17:17:18 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@
 # define F_C 0b1
 # define F_N 0b10
 
+# define ST_RUN 0b1
+# define ST_DONE 0b10
+# define ST_CRASH 0b100
+# define ST_STOP 0b1000
+
+# define GET_VAR(Variable) (#Variable)
+
 typedef struct	s_dconf
 {
 	char				*config_file;
@@ -39,30 +46,40 @@ typedef struct	s_dconf
 	pid_t				pid;
 	uint16_t			port;
 	char				*ip;
-	int					sock_id;
+	int					sockfd;
 	struct sockaddr_in	addr;
 	int					err_fd;
 	int					out_fd;
 	t_list				*proc;
 }				t_dconf;
 
+typedef struct	s_job
+{
+	int		status;
+	int		ex_st;
+	pid_t	pid;
+	time_t	t;
+}				t_job;
+
 typedef struct	s_proc
 {
-	char		*name;
-	char		**argv;
-	uint16_t	numprocs;
-	mode_t		umask;
-	char		*workingdir;
-	uint8_t		autostart;
-	uint8_t		autorestart;
-	char		exitcodes[255];
-	time_t		starttime;
-	int			startretries;
-	int			stopsignal;
-	time_t		stoptime;
-	char		*stdout;
-	char		*stderr;
-	char		**env;
+	char 				*name;
+	char				**argv;
+	t_job				*jobs;
+	uint16_t			numprocs;
+	mode_t 				umask;
+	char 				*workingdir;
+	uint8_t 			autostart;
+	uint8_t				autorestart;
+	char 				exitcodes[255];
+	time_t				starttime;
+	int 				startretries;
+	int 				stopsignal;
+	time_t 				stoptime;
+	char 				*stdout;
+	char 				*stderr;
+	char 				*stdin;
+	char				**env;
 }				t_proc;
 
 typedef struct	s_dispatcher
@@ -88,6 +105,12 @@ typedef struct	s_yaml_tree
 		mapping_val
 	}		type;
 }				t_yaml_tree;
+
+typedef struct	s_env_pair
+{
+	char	*key;
+	char	*val;
+}				t_env_pair;
 /*
 **				d_flags.c
 */
@@ -100,9 +123,22 @@ t_dconf			*get_dconf(void);
 void			demonaize(void);
 void			d_init(void);
 /*
-**				commands.c
+**				proc_utils.c
+*/
+t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
+void			ft_prociter(t_list *lst, int sock,
+							void (*f)(t_proc*, int, int));
+/*
+**				exchange.c
+*/
+void			send_msg(int sock, char	*msg);
+/*
+**				d_status.c
 */
 void			d_status(char **av, int sock);
+/*
+**				commands.c
+*/
 void			d_start(char **av, int sock);
 void			d_stop(char **av, int sock);
 void			d_restart(char **av, int sock);
@@ -118,8 +154,18 @@ t_list			*read_mapping(yaml_parser_t *parser);
 **				record_config.c
 */
 void			record_config(t_list *parse_lst);
+void			record_string_value(t_yaml_tree *node, char **var);
+/*
+**				record_config_proc.c
+*/
+void			record_config_proc(t_proc *proc, t_yaml_tree *node);
 /*
 **				debug.c										TODO:delete
 */
 void			output_parse_tree(t_list *parse_lst);
+void			outputs();
+/*
+**				free_config_tree.c
+*/
+void			free_config_tree(void *content, size_t size);
 #endif

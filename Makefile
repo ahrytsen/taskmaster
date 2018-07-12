@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/12 09:38:33 by yvyliehz         ###   ########.fr        #
+#    Updated: 2018/07/12 10:24:16 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -23,10 +23,10 @@ DIROBJ_C	=	./obj/client/
 DIROBJ_D	=	./obj/daemon/
 
 INCLUDE_C	=	-I./inc/ -I./libft/includes
-INCLUDE_D	=	-I./inc/ -I./libft/includes -I /Users/yvyliehz/.brew/include
+INCLUDE_D	=	-I./inc/ -I./libft/includes -I ~/.brew/include
 
 INC_LIB_C	=	-L./libft -lftprintf -ltermcap
-INC_LIB_D	=	-L./libft -lftprintf -L /Users/yvyliehz/.brew/lib/ -lyaml
+INC_LIB_D	=	-L./libft -lftprintf -L ~/.brew/lib/ -lyaml
 
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
@@ -53,8 +53,13 @@ SRC_D		=	main.c\
 				commands.c\
 				parse_config_tree.c\
 				record_config.c\
-				debug.c
-
+				record_config_proc.c\
+				free_config_tree.c\
+				debug.c\
+				d_status.c\
+				d_start.c\
+				exchange.c\
+				proc_utils.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h

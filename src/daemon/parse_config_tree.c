@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   d_init.c                                           :+:      :+:    :+:   */
+/*   parse_config_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 16:06:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/12 16:09:38 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static t_list	*read_config(FILE *fp)
 	}
 	yaml_event_delete(&event);
 	yaml_parser_delete(&parser);
-	output_parse_tree(parse_lst);
+//	output_parse_tree(parse_lst);
 	return (parse_lst);
 }
 
@@ -120,6 +120,5 @@ void			parse_config(void)
 		ft_fatal(EXIT_FAILURE, exit, "%s: %s\n", strerror(errno),
 				get_dconf()->config_file);
 	record_config(read_config(fp));
-//	system("leaks taskmasterd");
 	fclose(fp);
 }

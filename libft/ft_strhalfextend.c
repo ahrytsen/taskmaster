@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isnumeric_str.c                                 :+:      :+:    :+:   */
+/*   ft_strextend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/05 21:24:57 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/11 20:03:38 by ahrytsen         ###   ########.fr       */
+/*   Created: 2017/12/08 14:18:20 by ahrytsen          #+#    #+#             */
+/*   Updated: 2017/12/15 16:56:19 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isnumeric_str(char *str)
+char	*ft_strhalfextend(char *s1, char *s2)
 {
-	if (!str)
-		return (0);
-	while (*str)
-		if (!ft_isdigit(*str++))
-			return (0);
-	return (1);
+	char *res;
+
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	return (res);
 }

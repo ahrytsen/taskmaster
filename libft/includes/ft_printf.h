@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/09 19:54:49 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/05/07 12:58:40 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 21:37:09 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ typedef struct	s_arg
 int				ft_printf(const char *format, ...);
 int				ft_dprintf(int fd, const char *format, ...);
 void			ft_fatal(int st, void (*exit_f)(int), const char *format, ...);
-/*
-**int				ft_asprintf(char *str, const char *format, ...);
-*/
+int				ft_asprintf(char **line, const char *format, ...);
+
+const char		*ft_get_format(va_list *ap, const char *format, t_arg *arg);
+void			ft_get_color(const char **format, t_buf **pbuf);
 /*
 **				Buffer managment!
 */
@@ -66,6 +67,7 @@ void			ft_putchar_buf(t_buf **pbuf, int c);
 void			ft_putustr_buf(t_buf **pbuf, int *str, ssize_t len);
 void			ft_putstr_buf(t_buf **pbuf, char *str, ssize_t len);
 ssize_t			ft_print_buf(int fd, t_buf *pbuf, t_buf *pbuf_head);
+ssize_t			ft_buftostr(char **line, t_buf *pbuf, t_buf *pbuf_head);
 /*
 **				Helpers!
 */

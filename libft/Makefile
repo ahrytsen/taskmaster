@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/03 20:19:57 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/06/07 18:55:58 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/10 22:29:13 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -34,17 +34,19 @@ SRC		= ft_lstpush_back.c ft_putstr.c ft_strmapi.c ft_lstpush_front.c		\
 		ft_sort_params.c ft_strdup_arr.c ft_isalnum_str.c ft_isalpha_str.c	\
 		ft_isnumeric_str.c ft_isascii_str.c ft_isprint_str.c				\
 		ft_iswhitespace.c ft_atoi_base.c ft_atol_base.c ft_strarr_free.c	\
+		ft_strhalfextend.c                                                  \
 		\
 		ft_printf/ft_printf.c ft_printf/ft_phendler.c ft_printf/ft_pbuf.c	\
-		ft_printf/ft_pfloat.c ft_printf/ft_phelper.c
+		ft_printf/ft_pfloat.c ft_printf/ft_phelper.c ft_printf/ft_fatal.c	\
+		ft_printf/ft_pbuf_str.c
 
-HDR		= includes/libft.h includes/ft_printf.h #includes/ft_readline.h
+HDR		= includes/libft.h includes/ft_printf.h
 
 OBJ		= $(addprefix $(DIROBJ), $(SRC:.c=.o))
 
 CC		= gcc
 
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -Ofast -flto=thin
 
 all: $(NAME)
 
@@ -54,7 +56,7 @@ $(NAME): $(DIROBJ) $(OBJ)
 	@echo "\033[31m> \033[32mlibftprintf: Compiled\033[0m"
 
 $(OBJ)	:		$(DIROBJ)%.o : $(DIRSRC)%.c $(HDR)
-				@$(CC) $(INCLUDE) $(CFLAGS) -Ofast -flto=thin -o $@ -c $<
+				@$(CC) $(INCLUDE) $(CFLAGS) -o $@ -c $<
 				@echo ".\c"
 
 clean:

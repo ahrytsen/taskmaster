@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/28 05:35:20 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/04/27 12:09:34 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/10 19:50:20 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@
 int				ft_printf(const char *format, ...);
 int				ft_dprintf(int fd, const char *format, ...);
 void			ft_fatal(int st, void (*exit_f)(int), const char *format, ...);
-/*
-**int				ft_asprintf(char *str, const char *format, ...);
-*/
+int				ft_asprintf(char **line, const char *format, ...);
 /*
 **				Get_Next_Line
 */
@@ -124,6 +122,7 @@ size_t			ft_strlen_c(char const *s, char c);
 int				ft_wcharlen(int c);
 size_t			ft_strulen(int *s);
 char			*ft_strextend(char *s1, char *s2);
+char			*ft_strhalfextend(char *s1, char *s2);
 char			*ft_ultoa_base(size_t value, int base, char st_l);
 long			ft_atol(const char *str);
 char			*ft_ltoa(long value);

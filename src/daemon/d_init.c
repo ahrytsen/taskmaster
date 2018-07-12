@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/07 16:06:42 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/11 20:14:45 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@ static void	open_logs(void)
 
 static void	prepare_socket(void)
 {
-	if ((get_dconf()->sock_id = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+	if ((get_dconf()->sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	get_dconf()->addr.sin_family = AF_INET;
-	get_dconf()->addr.sin_port = htons(7279);
+	get_dconf()->addr.sin_port = htons(get_dconf()->port
+									? get_dconf()->port : 7279);
 	get_dconf()->addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	if (bind(get_dconf()->sock_id, (struct sockaddr *)&get_dconf()->addr,
+	if (bind(get_dconf()->sockfd, (struct sockaddr *)&get_dconf()->addr,
 			sizeof(get_dconf()->addr)) < 0
-		|| listen(get_dconf()->sock_id, 1) < 0)
+		|| listen(get_dconf()->sockfd, 1) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 }
 
@@ -67,14 +68,36 @@ void		demonaize(void)
 			  get_dconf()->pid);
 }
 
+static void	load_test_conf(void)
+{
+	t_proc	proc;
+
+	ft_bzero(&proc, sizeof(t_proc));
+	!get_dconf()->config_file
+		? get_dconf()->config_file = "taskmasterd.conf" : 0;
+	get_dconf()->out_log = "tmd_out.log";
+	get_dconf()->err_log = "tmd_err.log";
+
+	proc.name = "test";
+	proc.argv = ft_strsplit("~/supervisor/venv/test.sh", ' ');
+	proc.numprocs = 0;
+	proc.jobs = ft_memalloc(sizeof(t_job) * proc.numprocs);
+	proc.jobs[0].status = ST_RUN;
+	ft_lstpush_back(&get_dconf()->proc, &proc, sizeof(proc));
+
+	proc.name = "CAT";
+	proc.argv = ft_strsplit("/bin/cat -e", ' ');
+	proc.numprocs = 3;
+	proc.jobs = ft_memalloc(sizeof(t_job) * proc.numprocs);
+	proc.jobs[0].status = ST_RUN;
+	ft_lstpush_back(&get_dconf()->proc, &proc, sizeof(proc));
+}
+
 void		d_init(void)
 {
 	close(0);
-//	!get_dconf()->config_file
-//		? get_dconf()->config_file = "taskmasterd.conf" : 0;
-//	get_dconf()->out_log = "tmd_out.log";
-//	get_dconf()->err_log = "tmd_err.log";
 	parse_config();
+	load_test_conf();
 	open_logs();
 	prepare_socket();
 }
