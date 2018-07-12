@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/10 23:50:36 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/11 19:51:30 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct	s_job
 	int		status;
 	int		ex_st;
 	pid_t	pid;
+	time_t	t;
 }				t_job;
 
 typedef struct	s_proc
@@ -115,10 +116,15 @@ t_dconf			*get_dconf(void);
 void			demonaize(void);
 void			d_init(void);
 /*
+**				proc_utils.c
+*/
+t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
+void			ft_prociter(t_list *lst, int sock,
+							void (*f)(t_proc*, int, int));
+/*
 **				exchange.c
 */
 void			send_msg(int sock, char	*msg);
-
 /*
 **				d_status.c
 */

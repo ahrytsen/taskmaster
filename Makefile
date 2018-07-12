@@ -6,11 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2018/07/10 17:45:12 by ahrytsen         ###   ########.fr        #
-=======
-#    Updated: 2018/07/11 16:57:38 by yvyliehz         ###   ########.fr        #
->>>>>>> парсинговые_потуги
+#    Updated: 2018/07/11 20:42:31 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -55,14 +51,11 @@ SRC_D		=	main.c\
 				d_flags.c\
 				d_init.c\
 				commands.c\
-<<<<<<< HEAD
 				parse_config.c\
 				d_status.c\
-				exchange.c
-=======
-				parse_config_tree.c
-
->>>>>>> парсинговые_потуги
+				d_start.c\
+				exchange.c\
+				proc_utils.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h
