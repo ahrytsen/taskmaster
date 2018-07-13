@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   daemon.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/06 18:22:50 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 15:12:04 by ahrytsen         ###   ########.fr       */
+/*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
+/*   Updated: 2018/07/13 19:15:16 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <errno.h>
 # include <yaml.h>
 # include <stdbool.h>
+# include <time.h>
+# include <signal.h>
 
 # define RS_A 0
 # define RS_N 1
@@ -30,10 +32,10 @@
 # define F_C 0b1
 # define F_N 0b10
 
+# define ST_STOP 0b0
 # define ST_RUN 0b1
 # define ST_DONE 0b10
 # define ST_CRASH 0b100
-# define ST_STOP 0b1000
 
 # define GET_VAR(Variable) (#Variable)
 
@@ -136,10 +138,16 @@ void			send_msg(int sock, char	*msg);
 */
 void			d_status(char **av, int sock);
 /*
-**				commands.c
+**				d_start.c
 */
 void			d_start(char **av, int sock);
+/*
+**				d_stop.c
+*/
 void			d_stop(char **av, int sock);
+/*
+**				commands.c
+*/
 void			d_restart(char **av, int sock);
 void			d_reread(char **av, int sock);
 void			d_exit(char **av, int sock);
@@ -158,6 +166,10 @@ void			record_string_value(t_yaml_tree *node, char **var);
 **				record_config_proc.c
 */
 void			record_config_proc(t_proc *proc, t_yaml_tree *node);
+/*
+**				check_config.c
+*/
+int				check_config(void);
 /*
 **				debug.c										TODO:delete
 */

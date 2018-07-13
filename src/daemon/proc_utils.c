@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 12:07:48 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 19:22:55 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/13 19:02:22 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	proc_start_chld(t_proc *proc)
 	extern char	**environ;
 
 	pid = getpid();
+	signal(SIGCHLD, SIG_DFL); //del
 	setpgid(pid, pid);
 	execve(proc->argv[0], proc->argv, environ);
 	exit(1);

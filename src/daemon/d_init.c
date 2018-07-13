@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 20:06:00 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/13 19:01:31 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		demonaize(void)
 void		d_init(void)
 {
 	close(0);
+	signal(SIGCHLD, SIG_IGN); //del
 	parse_config();
 	open_logs();
 	prepare_socket();

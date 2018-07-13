@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/12 19:21:13 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/13 19:13:22 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -55,9 +55,11 @@ SRC_D		=	main.c\
 				record_config.c\
 				record_config_proc.c\
 				free_config_tree.c\
+				check_config.c\
 				debug.c\
 				d_status.c\
 				d_start.c\
+				d_stop.c\
 				exchange.c\
 				proc_utils.c
 
