@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/13 19:13:22 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/14 11:42:45 by yvyliehz         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -33,6 +33,7 @@ SUB_OBJ		=	libftprintf.a
 LIBFT		=	libft/libftprintf.a
 
 SRC_C		=	main.c\
+				c_flags.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\

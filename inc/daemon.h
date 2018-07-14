@@ -24,6 +24,7 @@
 # include <stdbool.h>
 # include <time.h>
 # include <signal.h>
+# include <arpa/inet.h>
 
 # define RS_A 0
 # define RS_N 1
