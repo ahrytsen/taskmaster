@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 12:07:48 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/13 19:02:22 by ahrytsen         ###   ########.fr       */
+
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,19 @@ void	proc_start_chld(t_proc *proc)
 	setpgid(pid, pid);
 	execve(proc->argv[0], proc->argv, environ);
 	exit(1);
+}
+
+void	proc_action_byname(t_list *lst, char *name, int sock,
+							void (*action)(t_proc*, int, int))
+{
+	t_proc	*proc;
+	int		id;
+
+	if ((proc = get_proc_byname(lst, name, &id)))
+		action(proc, id, sock);
+	else
+	{
+		send_msg(sock, name);
+		send_msg(sock, ": ERROR (no such process)\n");
+	}
 }

@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/13 19:13:22 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/14 13:38:53 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -15,10 +15,11 @@ NAME		=	taskmaster
 NAME_C		=	taskmasterctl
 NAME_D		=	taskmasterd
 
+DIRSRC		=	./src/
 DIRSRC_C	=	./src/client/
 DIRSRC_D	=	./src/daemon/
 
-DIROBJ		=	./obj
+DIROBJ		=	./obj/
 DIROBJ_C	=	./obj/client/
 DIROBJ_D	=	./obj/daemon/
 
@@ -31,6 +32,8 @@ INC_LIB_D	=	-L./libft -lftprintf -L ~/.brew/lib/ -lyaml
 SUB_MAKE	=	./libft/
 SUB_OBJ		=	libftprintf.a
 LIBFT		=	libft/libftprintf.a
+
+SRC			=	exchange.c
 
 SRC_C		=	main.c\
 				\
@@ -60,14 +63,14 @@ SRC_D		=	main.c\
 				d_status.c\
 				d_start.c\
 				d_stop.c\
-				exchange.c\
 				proc_utils.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h
 
-OBJ_C			=	$(addprefix $(DIROBJ_C), $(SRC_C:.c=.o))
-OBJ_D			=	$(addprefix $(DIROBJ_D), $(SRC_D:.c=.o))
+OBJ			=	$(addprefix $(DIROBJ), $(SRC:.c=.o))
+OBJ_C		=	$(addprefix $(DIROBJ_C), $(SRC_C:.c=.o))
+OBJ_D		=	$(addprefix $(DIROBJ_D), $(SRC_D:.c=.o))
 
 ifdef FLAGS
 	ifeq ($(FLAGS), no)
@@ -88,12 +91,12 @@ all		:		$(NAME)
 
 $(NAME)	:		$(NAME_C) $(NAME_D)
 
-$(NAME_C):		$(DIROBJ_C) $(OBJ_C) $(LIBFT)
-				@$(CC) $(INCLUDE_C) $(INC_LIB_C) $(CFLAGS) -o $(NAME_C) $(OBJ_C)
+$(NAME_C):		$(DIROBJ_C) $(OBJ) $(OBJ_C) $(LIBFT)
+				@$(CC) $(INCLUDE_C) $(INC_LIB_C) $(CFLAGS) -o $(NAME_C) $(OBJ_C) $(OBJ)
 				@$(ECHO) "\033[31m> \033[32m"$(NAME_C)": Compiled\033[0m"
 
-$(NAME_D):		$(DIROBJ_D) $(OBJ_D) $(LIBFT)
-				@$(CC) $(INCLUDE_D) $(INC_LIB_D) $(CFLAGS) -o $(NAME_D) $(OBJ_D)
+$(NAME_D):		$(DIROBJ_D) $(OBJ) $(OBJ_D) $(LIBFT)
+				@$(CC) $(INCLUDE_D) $(INC_LIB_D) $(CFLAGS) -o $(NAME_D) $(OBJ_D) $(OBJ)
 				@$(ECHO) "\033[31m> \033[32m"$(NAME_D)": Compiled\033[0m"
 
 lib		:
@@ -148,6 +151,9 @@ $(DIROBJ_C):	$(DIROBJ)
 
 $(DIROBJ_D):	$(DIROBJ)
 				@mkdir -p $(DIROBJ_D)
+
+$(OBJ):			$(DIROBJ)%.o : $(DIRSRC)%.c $(HDR_D)
+				@$(CC) $(INCLUDE_D) $(CFLAGS) -o $@ -c $<
 
 $(OBJ_C):		$(DIROBJ_C)%.o : $(DIRSRC_C)%.c $(HDR_C)
 				@$(CC) $(INCLUDE_C) $(CFLAGS) -o $@ -c $<

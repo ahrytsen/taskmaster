@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/03 20:19:57 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/10 22:29:13 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/14 16:06:50 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -34,7 +34,7 @@ SRC		= ft_lstpush_back.c ft_putstr.c ft_strmapi.c ft_lstpush_front.c		\
 		ft_sort_params.c ft_strdup_arr.c ft_isalnum_str.c ft_isalpha_str.c	\
 		ft_isnumeric_str.c ft_isascii_str.c ft_isprint_str.c				\
 		ft_iswhitespace.c ft_atoi_base.c ft_atol_base.c ft_strarr_free.c	\
-		ft_strhalfextend.c                                                  \
+		ft_strhalfextend.c  ft_arrstr.c                                     \
 		\
 		ft_printf/ft_printf.c ft_printf/ft_phendler.c ft_printf/ft_pbuf.c	\
 		ft_printf/ft_pfloat.c ft_printf/ft_phelper.c ft_printf/ft_fatal.c	\

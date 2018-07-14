@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/13 19:15:16 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/14 21:50:27 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,14 @@
 # include <stdbool.h>
 # include <time.h>
 # include <signal.h>
+# include <pthread.h>
 
-# define RS_A 0
-# define RS_N 1
-# define RS_CRASH 2
+//# define RS_A 0
+//# define RS_N 1
+//# define RS_CRASH 2
 
 # define F_C 0b1
 # define F_N 0b10
-
-# define ST_STOP 0b0
-# define ST_RUN 0b1
-# define ST_DONE 0b10
-# define ST_CRASH 0b100
-
-# define GET_VAR(Variable) (#Variable)
 
 typedef struct	s_dconf
 {
@@ -53,17 +47,32 @@ typedef struct	s_dconf
 	int					err_fd;
 	int					out_fd;
 	t_list				*proc;
+	pthread_t 			serv_thread;
+	pthread_mutex_t 	dmutex;
 }				t_dconf;
 
 typedef struct	s_job
 {
-	int		status;
-	int		std_in;
-	int		std_out;
-	int		std_err;
-	int		ex_st;
-	pid_t	pid;
-	time_t	t;
+	enum			e_status
+	{
+		stop = 0,
+		start,
+		run,
+		done,
+		crash,
+		fail,
+		fatal
+	}				status;
+	int				std_in;
+	int				std_out;
+	int				std_err;
+	int				ex_st;
+	pid_t			pid;
+	time_t			t;
+	pthread_t 		serv_thread;
+	int 			startretries;
+	pthread_mutex_t jmutex;
+	struct s_proc	*proc;
 }				t_job;
 
 typedef struct	s_proc
@@ -85,6 +94,7 @@ typedef struct	s_proc
 	char 				*stderr;
 	char 				*stdin;
 	char				**env;
+	pthread_mutex_t 	pmutex;
 }				t_proc;
 
 typedef struct	s_dispatcher
@@ -129,10 +139,14 @@ t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
 void			proc_start_chld(t_proc *proc);
 void			ft_prociter(t_list *lst, int sock,
 							void (*f)(t_proc*, int, int));
+void			proc_action_byname(t_list *lst, char *name, int sock,
+									void (*action)(t_proc*, int, int));
+void			*wait_routine(void *data);
 /*
-**				exchange.c
+**				../exchange.c
 */
 void			send_msg(int sock, char	*msg);
+ssize_t			recive_msg(char **line, int sock);
 /*
 **				d_status.c
 */

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 20:11:56 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/14 21:49:36 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,17 @@ void	main_loop(void)
 	int		sock;
 	int		ret;
 	char	*cmd;
-	size_t	size;
 
-	size = 0;
 	while ((sock = accept(get_dconf()->sockfd, NULL, NULL)) > 0)
 	{
-		while ((ret = recv(sock, &size, sizeof(size_t), 0)) > 0)
+		while ((ret = recive_msg(&cmd, sock)) > 0)
 		{
-			if (!(cmd = ft_memalloc(size * sizeof(char))))
-				ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
-			if ((ret = recv(sock, cmd, size, 0)) > 0)
-				exec_cmd(cmd, sock);
+			exec_cmd(cmd, sock);
 			free(cmd);
 		}
 		if (ret < 0)
 			break ;
+		close(sock);
 	}
 	if (sock < 0 || ret < 0)
 			ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
