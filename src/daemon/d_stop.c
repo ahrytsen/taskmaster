@@ -1,56 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   d_start.c                                          :+:      :+:    :+:   */
+/*   d_stop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/13 17:55:00 by ahrytsen         ###   ########.fr       */
+/*   Created: 2018/07/13 18:43:41 by ahrytsen          #+#    #+#             */
+/*   Updated: 2018/07/13 19:13:57 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
-static void	proc_start(t_proc *proc, int id, int sock)
+static void	proc_stop(t_proc *proc, int id, int sock)
 {
 	int		i;
-	int		fd[2];
 	char	*line;
 
 	i = id < 0 ? 0 : id;
 	while (i < proc->numprocs + (proc->numprocs ? 0 : 1))
 	{
-		pipe(fd);
-		if ((proc->jobs[i].pid = fork()) > 0)
-		{
-			ft_asprintf(&line, "%s: starting...\n", proc->argv[0]);
-			proc->jobs[i].status = ST_RUN;
-			proc->jobs[i].t = time(NULL);
-		}
-		else if (!proc->jobs[i].pid)
-		{
-			dup2(fd[0], 0);
-			proc_start_chld(proc);
-		}
-		else
-			ft_asprintf(&line, "%s: error while fork()\n", proc->argv[0]);
+		ft_asprintf(&line, "%s: stoping...\n", proc->argv[0]);
+		proc->jobs[i].status = ST_STOP;
+		proc->jobs[i].t = time(NULL);
 		send_msg(sock, line);
 		free(line);
+		kill(proc->jobs[i].pid, proc->stopsignal);
 		if (id >= 0)
 			break ;
 		i++;
 	}
 }
 
-static void	proc_start_byname(t_list *lst, char *name, int sock)
+static void	proc_stop_byname(t_list *lst, char *name, int sock)
 {
 	t_proc	*proc;
 	int		id;
 
 	if ((proc = get_proc_byname(lst, name, &id)))
 	{
-		proc_start(proc, id, sock);
+		proc_stop(proc, id, sock);
 	}
 	else
 	{
@@ -59,13 +48,13 @@ static void	proc_start_byname(t_list *lst, char *name, int sock)
 	}
 }
 
-void	d_start(char **av, int sock)
+void	d_stop(char **av, int sock)
 {
-	ft_dprintf(1, "'d_start' called\n");
+	ft_dprintf(1, "'d_stop' called\n");
 	if (!*++av)
-		send_msg(sock, "Error: start requires a process name\n");
+		send_msg(sock, "Error: stop requires a process name\n");
 	else
 		while (*av)
-			proc_start_byname(get_dconf()->proc, *av++, sock);
+			proc_stop_byname(get_dconf()->proc, *av++, sock);
 	send_msg(sock, NULL);
 }

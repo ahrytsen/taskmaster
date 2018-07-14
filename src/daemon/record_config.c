@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/12 17:17:18 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/12 19:38:36 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ static t_proc	*find_proc(char *proc_name)
 	t_proc	*procp;
 
 	ft_bzero(&proc, sizeof(t_proc));
-	int i = 0;			//TODO: delete
-	procp = get_proc_byname(get_dconf()->proc, proc_name, &i);
+	procp = get_proc_byname(get_dconf()->proc, proc_name, NULL);
 	if (procp == NULL)
 		procp = ft_lstpush_back(&get_dconf()->proc, &proc,
 								sizeof(t_proc))->content;

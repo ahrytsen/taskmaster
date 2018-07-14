@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:02:43 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 09:54:13 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/13 19:04:43 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*status_to_str(int st)
 {
 	if (st & ST_RUN)
 		return ("RUNNING");
-	else if (st & ST_STOP)
+	else if (!st)
 		return ("STOPPED");
 	else if (st & ST_CRASH)
 		return ("CRASHED");
@@ -26,23 +26,39 @@ static char	*status_to_str(int st)
 		return ("UNKNOWN");
 }
 
+static char	*get_uptime(time_t diff)
+{
+	char		*tmp;
+	struct tm	*res;
+
+	res = gmtime(&diff);
+	ft_asprintf(&tmp, "%.2d:%.2d:%.2d", res->tm_hour, res->tm_min, res->tm_sec);
+	return (tmp);
+}
+
 static void	proc_status(t_proc *proc, int id, int sock)
 {
-	int		i;
-	char	*line;
+	int			i;
+	char		*line;
+	char		*tmp;
 
 	i = id < 0 ? 0 : id;
-	while (i < proc->numprocs + (proc->numprocs ? 0 : 1))
+	while (i < proc->numprocs)
 	{
-		proc->numprocs > 1
-			? ft_asprintf(&line, "%s:%d\t\t%8s\tpid:%d\tuptime: \n",
-						proc->name, i, status_to_str(proc->jobs[i].status),
-						proc->jobs[i].pid)
-			: ft_asprintf(&line, "%s\t\t%8s\tpid:%d\tuptime: \n", proc->name,
-						status_to_str(proc->jobs[i].status),
-						proc->jobs[i].pid);
+		ft_asprintf(&tmp, proc->numprocs > 1 ? "%s:%d" : "%s", proc->name, i);
+		ft_asprintf(&line, "%-30.29s%-10s", tmp,
+					status_to_str(proc->jobs[i].status));
 		send_msg(sock, line);
-		free(line);
+		ft_memdel((void**)&line);
+		ft_memdel((void**)&tmp);
+		if (proc->jobs[i].status & ST_RUN
+			&& (tmp = get_uptime(time(NULL) - proc->jobs[i].t)))
+			ft_asprintf(&line, "pid:%6d uptime:%9s\n", proc->jobs[i].pid, tmp);
+		else
+			ft_asprintf(&line, "%-.24s\n", ctime(&proc->jobs[i].t));
+		send_msg(sock, line);
+		ft_memdel((void**)&line);
+		ft_memdel((void**)&tmp);
 		if (id >= 0)
 			break ;
 		i++;
