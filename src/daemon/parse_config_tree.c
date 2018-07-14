@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 16:09:38 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/14 10:11:26 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,6 @@ void			parse_config(void)
 		ft_fatal(EXIT_FAILURE, exit, "%s: %s\n", strerror(errno),
 				get_dconf()->config_file);
 	record_config(read_config(fp));
+//	outputs();
 	fclose(fp);
 }

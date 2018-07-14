@@ -6,11 +6,26 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/12 15:51:53 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/14 10:09:57 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
+
+static void	record_exitcodes(t_proc *proc, t_yaml_tree *node)
+{
+	t_list	*tmp;
+
+	if (node->type != sequence_val)
+		return ;
+	tmp = node->value;
+	ft_bzero(&proc->exitcodes, 255);
+	while (tmp)
+	{
+		proc->exitcodes[ft_atoi(tmp->content)] = true;
+		tmp = tmp->next;
+	}
+}
 
 static void	record_config_env(t_proc *proc, t_yaml_tree *node)
 {
@@ -60,10 +75,7 @@ static void	record_config_signal(t_proc *proc, t_yaml_tree *node)
 static void	record_config_proc2(t_proc *proc, t_yaml_tree *node)
 {
 	if (ft_strequ(node->key, "exitcodes"))
-	{
-		ft_bzero(&proc->exitcodes, 255);
-		proc->exitcodes[ft_atoi(node->value->content)] = true;
-	}
+		record_exitcodes(proc, node);
 	if (ft_strequ(node->key, "starttime"))
 		proc->starttime = ft_atol(node->value->content);
 	else if (ft_strequ(node->key, "stoptime"))
