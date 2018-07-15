@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/14 13:38:53 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/15 19:04:18 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -63,7 +63,8 @@ SRC_D		=	main.c\
 				d_status.c\
 				d_start.c\
 				d_stop.c\
-				proc_utils.c
+				proc_utils.c\
+				service_routines.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h
@@ -80,7 +81,7 @@ CFLAGS		=
 CFLAGS		=	-Wall -Wextra -Werror -g
 	endif
 else
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -D_REENTERANT
 endif
 
 CC			=	gcc

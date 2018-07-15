@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 22:35:53 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/14 22:39:34 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/15 19:07:15 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int is_successful(t_job *job)
 {
+	int		st;
+
 	while (1)
 	{
 		sleep(job->proc->starttime);
@@ -48,12 +50,7 @@ void	*wait_routine(void *data)
 	int		st;
 
 	job = data;
-	while (1)
-	{
-
-
-	}
-	if (!st)
+	if (is_successful(job))
 		waitpid(job->pid, &st, WUNTRACED);
 //	pthread_exit(&job->ex_st);
 	return (NULL);
