@@ -1,16 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 15:40:40 by ahrytsen          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/07/14 22:19:51 by ahrytsen         ###   ########.fr       */
+=======
+/*   Updated: 2018/07/14 19:22:34 by yvyliehz         ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <client.h>
+
+t_cconf		*get_cconf(void)
+{
+	static t_cconf	cconf;
+
+	return (&cconf);
+}
 
 void	get_response(int sock)
 {
@@ -30,22 +41,39 @@ void	get_response(int sock)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 }
 
+static uint32_t	get_addr()
+{
+	struct hostent	*h;
+
+	if ((h = gethostbyname(get_cconf()->addr)) == NULL)
+		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
+	return (*((uint32_t *)h->h_addr));
+}
+
 int		socket_connect(void)
 {
 	int					sock;
 	struct sockaddr_in	addr;
 
+	ft_printf("Addr: %s\nPort: %i\n", get_cconf()->addr, get_cconf()->port);
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	addr.sin_family = AF_INET;
+<<<<<<< HEAD
 	addr.sin_port = htons(7272);
 	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+=======
+	addr.sin_port = htons(get_cconf()->port ? get_cconf()->port : 7279);
+	if (get_cconf()->addr && get_cconf()->type == ip)
+		addr.sin_addr.s_addr = inet_addr(get_cconf()->addr);
+	else if (get_cconf()->addr && get_cconf()->type == domain)
+		addr.sin_addr.s_addr = get_addr();
+	else
+		addr.sin_addr.s_addr = INADDR_LOOPBACK;
+>>>>>>> master
 	if (sock == -1)
-		perror("taskmasterctl: socket");
+		ft_fatal(1, exit, "%s\n", strerror(errno));
 	else if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-	{
-		perror("taskmasterctl: connect");
-		return (-1);
-	}
+		ft_fatal(1, exit, "%s\n", strerror(errno));
 	return (sock);
 }
 
@@ -77,15 +105,15 @@ int		send_commands(char **cmds, int sock)
 	return (ret);
 }
 
-int		main(void)
+int		main(int ac, char **av)
 {
 	char	*line;
-	int		sock;
+	int		sock = 0;
 	char	**cmds;
 
+	ft_bzero(get_cconf(), sizeof(t_cconf));
+	check_flags(ac, av);
 	sock = socket_connect();
-	if (sock == -1)
-		exit(EXIT_FAILURE);
 	while (ft_readline(0, &line) > 0)
 	{
 		cmds = ft_strsplit(line, ';');

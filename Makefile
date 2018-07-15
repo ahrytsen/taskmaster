@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/15 19:04:18 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/15 15:59:08 by yvyliehz         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,6 +36,7 @@ LIBFT		=	libft/libftprintf.a
 SRC			=	exchange.c
 
 SRC_C		=	main.c\
+				c_flags.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\
@@ -57,7 +58,7 @@ SRC_D		=	main.c\
 				parse_config_tree.c\
 				record_config.c\
 				record_config_proc.c\
-				free_config_tree.c\
+				free_config.c\
 				check_config.c\
 				debug.c\
 				d_status.c\

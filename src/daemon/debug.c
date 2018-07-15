@@ -36,6 +36,7 @@ void	outputs()
 	while (tmp)
 	{
 		ft_printf("name: %s\n", ((t_proc *)(tmp->content))->name);
+		ft_printf("cmd: %s\n", ((t_proc *)(tmp->content))->cmd);
 		if (((t_proc *)(tmp->content))->argv)
 		{
 			int i = -1;
@@ -51,6 +52,7 @@ void	outputs()
 		ft_printf("startretries: %i\n", ((t_proc *)(tmp->content))->startretries);
 		ft_printf("stdout: %s\n", ((t_proc *)(tmp->content))->stdout);
 		ft_printf("stderr: %s\n", ((t_proc *)(tmp->content))->stderr);
+		ft_printf("stdin: %s\n", ((t_proc *)(tmp->content))->stdin);
 		ft_printf("stopsignal: %i\n", ((t_proc *)(tmp->content))->stopsignal);
 		for (int i = 0; i < 255; i++)
 			if (((t_proc *)(tmp->content))->exitcodes[i])

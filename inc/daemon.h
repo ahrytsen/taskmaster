@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   daemon.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/14 21:50:27 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/15 18:05:27 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdbool.h>
 # include <time.h>
 # include <signal.h>
+# include <arpa/inet.h>
 # include <pthread.h>
 
 //# define RS_A 0
@@ -77,6 +78,7 @@ typedef struct	s_job
 
 typedef struct	s_proc
 {
+	char 				*cmd;
 	char 				*name;
 	char				**argv;
 	t_job				*jobs;
@@ -159,6 +161,7 @@ void			d_start(char **av, int sock);
 **				d_stop.c
 */
 void			d_stop(char **av, int sock);
+void			proc_stop(t_proc *proc, int id, int sock);
 /*
 **				commands.c
 */
@@ -190,7 +193,13 @@ int				check_config(void);
 void			output_parse_tree(t_list *parse_lst);
 void			outputs();
 /*
-**				free_config_tree.c
+**				free_config.c
 */
 void			free_config_tree(void *content, size_t size);
+void			free_config_proc(void *content, size_t size);
+void			free_config_daemon(void);
+/*
+**				d_reload.c
+*/
+void			d_reload(char **av, int sock);
 #endif

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/14 10:09:57 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/15 15:42:50 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,11 @@ void		record_config_proc(t_proc *proc, t_yaml_tree *node)
 	if (!node->value->content)
 		return ;
 	if (ft_strequ(node->key, "cmd"))
+	{
+		ft_strarr_free(proc->argv);
 		proc->argv = ft_strsplit(node->value->content, ' ');
+		record_string_value(node, &proc->cmd);
+	}
 	else if (ft_strequ(node->key, "numprocs"))
 		proc->numprocs = ft_atoi(node->value->content);
 	else if (ft_strequ(node->key, "umask"))
@@ -107,7 +111,14 @@ void		record_config_proc(t_proc *proc, t_yaml_tree *node)
 	else if (ft_strequ(node->key, "autostart"))
 		proc->autostart = ft_strequ(node->value->content, "true") ? 1 : 0;
 	else if (ft_strequ(node->key, "autorestart"))
-		proc->autorestart = ft_strequ(node->value->content, "expected") ? 1 : 0;
+	{
+		if (ft_strequ(node->value->content, "true"))
+			proc->autorestart = 2;
+		else if (ft_strequ(node->value->content, "unexpected"))
+			proc->autorestart = 1;
+		else
+			proc->autorestart = 0;
+	}
 	else if (ft_strequ(node->key, "startretries"))
 		proc->startretries = ft_atol(node->value->content);
 	else

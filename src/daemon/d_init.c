@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   d_init.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/13 19:01:31 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/15 17:48:08 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ static void	prepare_socket(void)
 	get_dconf()->addr.sin_family = AF_INET;
 	get_dconf()->addr.sin_port = htons(get_dconf()->port
 									? get_dconf()->port : 7279);
-	get_dconf()->addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	if (get_dconf()->ip)
+		get_dconf()->addr.sin_addr.s_addr = inet_addr(get_dconf()->ip);
+	else
+		get_dconf()->addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(get_dconf()->sockfd, (struct sockaddr *)&get_dconf()->addr,
 			sizeof(get_dconf()->addr)) < 0
 		|| listen(get_dconf()->sockfd, 1) < 0)

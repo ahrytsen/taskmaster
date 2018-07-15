@@ -16,8 +16,8 @@ static char	*ft_search_builtin(char *line)
 {
 	int					i;
 	int					len;
-	const static char	*builtins[] = {"echo", "cd", "fg", "setenv", "unsetenv",
-									"env", "exit", NULL};
+	const static char	*builtins[] = {"start", "status", "stop", "restart",
+										"exit", "reload", "d_exit", NULL};
 
 	i = 0;
 	if (!line)

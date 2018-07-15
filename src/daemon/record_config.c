@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/12 19:38:36 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/15 15:42:50 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,4 @@ void			record_config(t_list *parse_lst)
 		tmp = tmp->next;
 	}
 	ft_lstdel(&parse_lst, free_config_tree);
-//	outputs();
 }

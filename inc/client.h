@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 17:47:43 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/12 17:55:39 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/14 17:12:33 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,27 @@
 # include <netinet/in.h>
 # include <stdio.h>
 # include <errno.h>
+# include <regex.h>
+# include <arpa/inet.h>
+# include <netdb.h>
 
+typedef struct	s_cconf
+{
+	uint16_t	port;
+	char		*addr;
+	enum 		e_type
+	{
+		domain,
+		ip
+	}			type;
+}				t_cconf;
+
+/*
+**				main.c
+*/
+t_cconf			*get_cconf(void);
+/*
+**				c_flags.c
+*/
+void			check_flags(int ac, char **av);
 #endif
