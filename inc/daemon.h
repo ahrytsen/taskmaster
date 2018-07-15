@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   daemon.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 18:05:27 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/15 16:03:22 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@
 # include <signal.h>
 # include <arpa/inet.h>
 # include <pthread.h>
-
-//# define RS_A 0
-//# define RS_N 1
-//# define RS_CRASH 2
 
 # define F_C 0b1
 # define F_N 0b10
@@ -73,6 +69,7 @@ typedef struct	s_job
 	pthread_t 		serv_thread;
 	int 			startretries;
 	pthread_mutex_t jmutex;
+	char			*error;
 	struct s_proc	*proc;
 }				t_job;
 
@@ -143,7 +140,10 @@ void			ft_prociter(t_list *lst, int sock,
 							void (*f)(t_proc*, int, int));
 void			proc_action_byname(t_list *lst, char *name, int sock,
 									void (*action)(t_proc*, int, int));
-void			*wait_routine(void *data);
+/*
+**				service_routines.c
+*/
+void			*proc_service(void *data);
 /*
 **				../exchange.c
 */
