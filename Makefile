@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/15 15:59:08 by yvyliehz         ###   ########.fr        #
+#    Updated: 2018/07/15 19:25:35 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -65,7 +65,8 @@ SRC_D		=	main.c\
 				d_start.c\
 				d_stop.c\
 				proc_utils.c\
-				service_routines.c
+				service_routines.c\
+				d_reload.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h
