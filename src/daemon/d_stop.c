@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   d_stop.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 18:43:41 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/13 19:13:57 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/15 18:16:45 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
-static void	proc_stop(t_proc *proc, int id, int sock)
+void	proc_stop(t_proc *proc, int id, int sock)
 {
 	int		i;
 	char	*line;
@@ -20,12 +20,13 @@ static void	proc_stop(t_proc *proc, int id, int sock)
 	i = id < 0 ? 0 : id;
 	while (i < proc->numprocs + (proc->numprocs ? 0 : 1))
 	{
-		ft_asprintf(&line, "%s: stoping...\n", proc->argv[0]);
+		ft_asprintf(&line, "%s: stoping...\n", proc->name);
 		proc->jobs[i].status = ST_STOP;
 		proc->jobs[i].t = time(NULL);
 		send_msg(sock, line);
 		free(line);
-		kill(proc->jobs[i].pid, proc->stopsignal);
+		if (proc->jobs[i].pid)
+			kill(proc->jobs[i].pid, proc->stopsignal);
 		if (id >= 0)
 			break ;
 		i++;

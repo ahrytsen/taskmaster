@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/12 20:11:56 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/15 18:28:30 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	exec_cmd(char *cmd, int sock)
 	static const t_disp	disp[] = {{"status", d_status}, {"start", d_start},
 								{"stop", d_stop}, {"restart", d_restart},
 								{"reread", d_reread}, {"d_exit", d_exit},
-								{NULL, d_err_cmd}};
+								{"reload", d_reload}, {NULL, d_err_cmd}};
 	i = 0;
+
 	if (!(av = ft_strsplit(cmd, ' ')))
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	while (disp[i].cmd && ft_strcmp(disp[i].cmd, *av))

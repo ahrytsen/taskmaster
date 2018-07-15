@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/14 11:42:45 by yvyliehz         ###   ########.fr        #
+#    Updated: 2018/07/15 15:59:08 by yvyliehz         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -55,14 +55,15 @@ SRC_D		=	main.c\
 				parse_config_tree.c\
 				record_config.c\
 				record_config_proc.c\
-				free_config_tree.c\
+				free_config.c\
 				check_config.c\
 				debug.c\
 				d_status.c\
 				d_start.c\
 				d_stop.c\
 				exchange.c\
-				proc_utils.c
+				proc_utils.c\
+				d_reload.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h
