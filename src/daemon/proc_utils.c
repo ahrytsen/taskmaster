@@ -50,15 +50,58 @@ void	ft_prociter(t_list *lst, int sock, void (*f)(t_proc*, int, int))
 	}
 }
 
-void	proc_start_chld(t_proc *proc)
+int		proc_start_prnt(t_job *job)
 {
-	pid_t		pid;
-	extern char	**environ;
+	close(get_dconf()->service_pipe[0]);
+	time(&job->t);
+	if ((job->pid < 0 && !(job->pid = 0)
+		&& ft_asprintf(&job->error, "%s:%zu: error while fork()",
+					job->proc->name, job - job->proc->jobs))
+		|| get_next_line(get_dconf()->service_pipe[1], &job->error))
+	{
+		!job->proc->stdin ? close(job->p_in[1]) : 0;
+		!job->proc->stdout ? close(job->p_out[0]) : 0;
+		!job->proc->stderr ? close(job->p_err[0]) : 0;
+	}
+	else
+	{
+		pthread_mutex_lock(&get_dconf()->dmutex);
+		ft_dprintf(2, "%s:%d starting...\n", job->proc->name,
+				   job - job->proc->jobs);
+		pthread_mutex_unlock(&get_dconf()->dmutex);
+		sleep(job->proc->starttime);
+	}
+	job->pid ? waitpid(job->pid, &job->ex_st, WNOHANG) : (job->pid = 0);
+	close(get_dconf()->service_pipe[1]);
+	return (job->pid ? 0 : -1);
+}
+
+void	proc_start_chld(t_job *job)
+{
+	pid_t	pid;
 
 	pid = getpid();
-	signal(SIGCHLD, SIG_DFL); //del
+	umask(job->proc->umask);
+	chdir(job->proc->workingdir);
+	close(get_dconf()->service_pipe[1]);
+	while (*(job->proc->env))
+		putenv(*(job->proc->env)++);
 	setpgid(pid, pid);
-	execve(proc->argv[0], proc->argv, environ);
+	if (job->proc->stdin)
+		job->p_in[1] = open(job->proc->stdin, O_RDWR | O_CLOEXEC);
+	dup2(job->p_in[1], 0);
+	if (job->proc->stdout)
+		job->p_out[0] = open(job->proc->stdout,
+							O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
+	dup2(job->p_out[0], 1);
+	if (job->proc->stderr)
+		job->p_err[0] = open(job->proc->stderr,
+							O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
+	dup2(job->p_err[0], 2);
+	fcntl(get_dconf()->service_pipe[0], F_SETFD, FD_CLOEXEC);
+	execvp(job->proc->argv[0], job->proc->argv);
+	ft_dprintf(get_dconf()->service_pipe[0], "%s: %s",
+			job->proc->cmd, strerror(errno));
 	exit(1);
 }
 

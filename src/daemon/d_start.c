@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 15:52:00 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/16 20:40:52 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@ static void	proc_start(t_proc *proc, int id, int sock)
 	i = id < 0 ? 0 : id;
 	while (i < proc->numprocs + (proc->numprocs ? 0 : 1))
 	{
-		if (proc->jobs[i]->status == run || proc->jobs[i]->satus == start)
-			ft_asprintf(&line, "ERROR: %s: olready running\n", proc->argv[0]);
+		line = NULL;
+		if (proc->jobs[i].pid)
+			ft_asprintf(&line, "ERROR: %s:%d olready running\n", proc->name, i);
 		else
 		{
 			pthread_create(&proc->jobs[i].serv_thread, NULL, proc_service,
 							proc->jobs + i);
-			ft_asprintf(&line, "%s: starting...\n", proc->argv[0]);
+			pthread_detach(proc->jobs[i].serv_thread);
+			id >= 0 ? ft_asprintf(&line, "%s:%d starting...\n", proc->name, i) : 0;
 		}
-		send_msg(sock, line);
+		line ? send_msg(sock, line) : 0;
 		free(line);
 		if (id >= 0)
 			break ;
@@ -38,7 +40,6 @@ static void	proc_start(t_proc *proc, int id, int sock)
 
 void		d_start(char **av, int sock)
 {
-	ft_dprintf(1, "'d_start' called\n");
 	if (!*++av)
 		send_msg(sock, "Error: start requires a process name\n");
 	else if (ft_arrstr(av, "all"))

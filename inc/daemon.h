@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 16:03:22 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/16 17:41:57 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,14 @@ typedef struct	s_dconf
 	t_list				*proc;
 	pthread_t 			serv_thread;
 	pthread_mutex_t 	dmutex;
+	int					service_pipe[2];
 }				t_dconf;
 
 typedef struct	s_job
 {
+	int		p_in[2];
+	int		p_out[2];
+	int		p_err[2];
 	enum			e_status
 	{
 		stop = 0,
@@ -60,9 +64,6 @@ typedef struct	s_job
 		fail,
 		fatal
 	}				status;
-	int				std_in;
-	int				std_out;
-	int				std_err;
 	int				ex_st;
 	pid_t			pid;
 	time_t			t;
@@ -135,7 +136,8 @@ void			d_init(void);
 **				proc_utils.c
 */
 t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
-void			proc_start_chld(t_proc *proc);
+int				proc_start_prnt(t_job *job);
+void			proc_start_chld(t_job *job);
 void			ft_prociter(t_list *lst, int sock,
 							void (*f)(t_proc*, int, int));
 void			proc_action_byname(t_list *lst, char *name, int sock,

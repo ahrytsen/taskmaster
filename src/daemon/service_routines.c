@@ -6,80 +6,84 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 22:35:53 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 18:25:11 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/16 21:19:38 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
-static int is_successful(t_job *job)
+static int	proc_watch(t_job *job)
 {
-	int		st;
+	int	st;
 
-	sleep(job->proc->starttime);
-	if (!waitpid(job->pid, &st, WNOHANG | WUNTRACED))
+	while (waitpid(job->pid, &st, WUNTRACED))
 	{
-		pthread_mutex_lock(&get_dconf()->dmutex);
-		ft_dprintf(2, "%s:%zu successfuly started\n", job->proc->name,
-				   job - job->proc->jobs);
-		pthread_mutex_unlock(&get_dconf()->dmutex);
 		pthread_mutex_lock(&job->jmutex);
-		job->ex_st = 0;
-		job->status = run;
+		job->ex_st = st;
 		pthread_mutex_unlock(&job->jmutex);
-		return (1);
+		if (WIFEXITED(st))
+			break ;
 	}
-	else
-	{
-		pthread_mutex_lock(&get_dconf()->dmutex);
-		ft_dprintf(2, "%:%zu start failed :(\n", job->proc->name,
-				   job - job->proc->jobs);
-		pthread_mutex_unlock(&get_dconf()->dmutex);
-	}
-	return (0);
-}
-
-static void	update_job_status(t_job)
-{
-
+	st < 256 && job->proc->exitcodes[st]
 }
 
 static int	create_chld(t_job *job)
 {
-	int		p_in[2];
-	int		p_out[2];
-	int		p_err[2];
+	int ret;
 
-	if ()pipe(fd);
-	if ((job->pid = fork()) > 0)
-	{
-		ft_dprintf(2, "%s: starting...\n", proc->name);
-		job->status = start;
-		time(&job->t);
-	}
-	else if (!proc->jobs[i].pid)
-	{
-		dup2(fd[0], 0);
-		proc_start_chld(proc);
-	}
+	ret = 0;
+	pthread_mutex_lock(&job->proc->pmutex);
+	pthread_mutex_lock(&job->jmutex);
+	job->status = start;
+	job->proc->stdin ? 0 : pipe(job->p_in);
+	job->proc->stdout ? 0 : pipe(job->p_out);
+	job->proc->stderr ? 0 : pipe(job->p_err);
+	ft_memdel((void**)&job->error);
+	pipe(get_dconf()->service_pipe);
+	if ((job->pid = fork()))
+		ret = proc_start_prnt(job);
 	else
+		proc_start_chld(job);
+	pthread_mutex_unlock(&job->jmutex);
+	pthread_mutex_unlock(&job->proc->pmutex);
+	return (ret);
+}
+
+static int proc_spawn(t_job *job)
+{
+	int	st;
+	int	i;
+
+	i = 0;
+	while (i++ <= job->proc->startretries)
 	{
-		ft_asprintf(&job->error, "%s: error while fork()\n", proc->argv[0]);
+		st = create_chld(job);
+		pthread_mutex_lock(&get_dconf()->dmutex);
+		pthread_mutex_lock(&job->jmutex);
+		!st ? ft_dprintf(2, "%s:%zu successfuly started\n", job->proc->name,
+						job - job->proc->jobs)
+			: ft_dprintf(2, "%:%zu start failed :(\n", job->proc->name,
+						job - job->proc->jobs);
+		job->status = !st ? run : fail;
+		pthread_mutex_unlock(&job->jmutex);
+		pthread_mutex_unlock(&get_dconf()->dmutex);
+		if (!st)
+			return (0);
 	}
+	return (-1);
 }
 
 void	*proc_service(void *data)
 {
 	t_job	*job;
-	int		i;
+	int		st;
 
 	job = data;
-	while (1)
+	while (!proc_spawn(job))
 	{
-		!(ret = is_successful(job)) && job->startretries;
-		job->startretries--;
-	}
-	if (ret)
-		waitpid(job->pid, &st, WUNTRACED);
 
+		if (proc_watch(job))
+			break ;
+	}
+	return (NULL);
 }
