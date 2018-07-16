@@ -66,7 +66,8 @@ SRC_D		=	main.c\
 				d_stop.c\
 				proc_utils.c\
 				service_routines.c\
-				d_reload.c
+				d_reload.c\
+				d_help.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h

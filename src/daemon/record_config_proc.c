@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/15 15:42:50 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/16 14:35:05 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,18 @@ static void	record_config_proc2(t_proc *proc, t_yaml_tree *node)
 		record_string_value(node, &proc->stdout);
 	else if (ft_strequ(node->key, "stdin"))
 		record_string_value(node, &proc->stdin);
+	else if (ft_strequ(node->key, "numprocs"))
+		proc->numprocs = ft_atoi(node->value->content);
+	else if (ft_strequ(node->key, "umask"))
+		proc->umask = ft_atoi_base(node->value->content, 8);
 	else if (ft_strequ(node->key, "env"))
 		record_config_env(proc, node);
 	else if (ft_strequ(node->key, "stopsignal"))
 		record_config_signal(proc, node);
+	if (proc->numprocs > get_dconf()->max_numprocs)
+		get_dconf()->max_numprocs = proc->numprocs;
+	if ((int)ft_strlen(proc->name) > get_dconf()->max_namelen)
+		get_dconf()->max_namelen = ft_strlen(proc->name);
 }
 
 void		record_config_proc(t_proc *proc, t_yaml_tree *node)
@@ -102,10 +110,6 @@ void		record_config_proc(t_proc *proc, t_yaml_tree *node)
 		proc->argv = ft_strsplit(node->value->content, ' ');
 		record_string_value(node, &proc->cmd);
 	}
-	else if (ft_strequ(node->key, "numprocs"))
-		proc->numprocs = ft_atoi(node->value->content);
-	else if (ft_strequ(node->key, "umask"))
-		proc->umask = ft_atol(node->value->content);
 	else if (ft_strequ(node->key, "workingdir"))
 		record_string_value(node, &proc->workingdir);
 	else if (ft_strequ(node->key, "autostart"))

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 17:48:08 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/16 14:35:38 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ static void	prepare_socket(void)
 {
 	if ((get_dconf()->sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "socket: %s\n", strerror(errno));
+	if (setsockopt(get_dconf()->sockfd, SOL_SOCKET, SO_REUSEADDR,
+			&(int){1}, sizeof(int)) < 0)
+		ft_fatal(EXIT_FAILURE, exit, "setsockopt(SO_REUSEADDR) failed");
 	get_dconf()->addr.sin_family = AF_INET;
 	get_dconf()->addr.sin_port = htons(get_dconf()->port
 									? get_dconf()->port : 7279);
@@ -76,6 +79,7 @@ void		d_init(void)
 	close(0);
 	signal(SIGCHLD, SIG_IGN); //del
 	parse_config();
+//	outputs();
 	open_logs();
 	prepare_socket();
 }

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 18:05:27 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/16 14:35:05 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct	s_dconf
 	t_list				*proc;
 	pthread_t 			serv_thread;
 	pthread_mutex_t 	dmutex;
+	int 				max_namelen;
+	int 				max_numprocs;
 }				t_dconf;
 
 typedef struct	s_job
@@ -147,8 +149,8 @@ void			*wait_routine(void *data);
 /*
 **				../exchange.c
 */
-void			send_msg(int sock, char	*msg);
-ssize_t			recive_msg(char **line, int sock);
+int send_msg(int sock, char *msg);
+ssize_t			receive_msg(char **line, int sock);
 /*
 **				d_status.c
 */
@@ -202,4 +204,8 @@ void			free_config_daemon(void);
 **				d_reload.c
 */
 void			d_reload(char **av, int sock);
+/*
+**				d_help.c
+*/
+void			d_help(char **av, int sock);
 #endif
