@@ -45,6 +45,6 @@ void			check_flags(int ac, char **av);
 /*
 **				../exchange.c
 */
-int send_msg(int sock, char *msg);
+void send_msg(int sock, char *msg);
 ssize_t			receive_msg(char **line, int sock);
 #endif

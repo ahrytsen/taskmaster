@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/16 14:35:05 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/17 13:43:43 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void			*wait_routine(void *data);
 /*
 **				../exchange.c
 */
-int send_msg(int sock, char *msg);
+void			send_msg(int sock, char *msg);
 ssize_t			receive_msg(char **line, int sock);
 /*
 **				d_status.c
@@ -159,6 +159,7 @@ void			d_status(char **av, int sock);
 **				d_start.c
 */
 void			d_start(char **av, int sock);
+void			proc_start(t_proc *proc, int id, int sock);
 /*
 **				d_stop.c
 */

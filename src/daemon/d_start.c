@@ -12,7 +12,7 @@
 
 #include <daemon.h>
 
-static void	proc_start(t_proc *proc, int id, int sock)
+void	proc_start(t_proc *proc, int id, int sock)
 {
 	int		i;
 	int		fd[2];
@@ -45,7 +45,7 @@ static void	proc_start(t_proc *proc, int id, int sock)
 	}
 }
 
-void		d_start(char **av, int sock)
+void	d_start(char **av, int sock)
 {
 	ft_dprintf(1, "'d_start' called\n");
 	if (!*++av)

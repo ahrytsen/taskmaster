@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 15:40:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/16 17:48:23 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/17 10:18:04 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,7 @@ int		send_commands(char **cmds, int sock)
 			ret = 1;
 			break ;
 		}
-		if (send_msg(sock, cmds[i]) == -1)
-			ft_fatal(EXIT_SUCCESS, exit, "%s\n", strerror(errno));
+		send_msg(sock, cmds[i]);
 		get_response(sock);
 	}
 	ft_strarr_free(cmds);
