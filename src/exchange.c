@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exchange.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 15:10:59 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/14 21:46:15 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/17 10:02:21 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ void	send_msg(int sock, char *msg)
 
 	size = msg ? (ft_strlen(msg) + 1) : 0;
 	send(sock, &size, sizeof(size_t), 0);
-	size ? send(sock, msg, size, 0) : 0;
+	if (size)
+		send(sock, msg, size, 0);
 }
 
-ssize_t	recive_msg(char **line, int sock)
+ssize_t	receive_msg(char **line, int sock)
 {
 	size_t	size;
 	ssize_t	ret;

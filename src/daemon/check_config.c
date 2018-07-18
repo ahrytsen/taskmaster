@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   check_config.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 15:09:40 by ahrytsen          #+#    #+#             */
 /*   Updated: 2018/07/18 13:29:46 by ahrytsen         ###   ########.fr       */
@@ -35,14 +35,14 @@ static int	check_jobs(t_proc *proc)
 	return (0);
 }
 
-int			check_config(void)
+int			check_config(t_dconf *conf)
 {
 	t_list	*lst;
 	t_proc	*proc;
 
-	lst = get_dconf()->proc;
-	get_dconf()->port ? 0 : (get_dconf()->port = 7279);
-	if (pthread_mutex_init(&get_dconf()->dmutex, NULL)
+	lst = conf->proc;
+	get_dconf()->port ? 0 : (conf->port = 7279);
+	if (pthread_mutex_init(&conf->dmutex, NULL)
 		&& ft_dprintf(2, "%s: mutex init failed\n", "daemon config"))
 		return (-1);
 	while (lst)

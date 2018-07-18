@@ -30,6 +30,9 @@ static void	prepare_socket(void)
 {
 	if ((get_dconf()->sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "socket: %s\n", strerror(errno));
+	if (setsockopt(get_dconf()->sockfd, SOL_SOCKET, SO_REUSEADDR,
+			&(int){1}, sizeof(int)) < 0)
+		ft_fatal(EXIT_FAILURE, exit, "setsockopt(SO_REUSEADDR) failed");
 	get_dconf()->addr.sin_family = AF_INET;
 	get_dconf()->addr.sin_port = htons(get_dconf()->port
 									? get_dconf()->port : 7279);
@@ -74,7 +77,7 @@ void		demonaize(void)
 void		d_init(void)
 {
 	close(0);
-	parse_config();
+	parse_config(get_dconf());
 	open_logs();
 	prepare_socket();
 }

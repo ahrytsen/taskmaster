@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 17:47:43 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/14 17:12:33 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/16 11:32:59 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,9 @@ t_cconf			*get_cconf(void);
 **				c_flags.c
 */
 void			check_flags(int ac, char **av);
+/*
+**				../exchange.c
+*/
+void send_msg(int sock, char *msg);
+ssize_t			receive_msg(char **line, int sock);
 #endif

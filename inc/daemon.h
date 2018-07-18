@@ -47,6 +47,8 @@ typedef struct	s_dconf
 	pthread_t 			serv_thread;
 	pthread_mutex_t 	dmutex;
 	int					service_pipe[2];
+	int 				max_namelen;
+	int 				max_numprocs;
 }				t_dconf;
 
 typedef struct	s_job
@@ -155,8 +157,8 @@ void			*proc_service(void *data);
 /*
 **				../exchange.c
 */
-void			send_msg(int sock, char	*msg);
-ssize_t			recive_msg(char **line, int sock);
+void			send_msg(int sock, char *msg);
+ssize_t			receive_msg(char **line, int sock);
 /*
 **				d_status.c
 */
@@ -165,6 +167,7 @@ void			d_status(char **av, int sock);
 **				d_start.c
 */
 void			d_start(char **av, int sock);
+void			proc_start(t_proc *proc, int id, int sock);
 /*
 **				d_stop.c
 */
@@ -180,12 +183,12 @@ void			d_err_cmd(char **av, int sock);
 /*
 **				parse_config.c
 */
-void			parse_config(void);
+void            parse_config(t_dconf *conf);
 t_list			*read_mapping(yaml_parser_t *parser);
 /*
 **				record_config.c
 */
-void			record_config(t_list *parse_lst);
+void            record_config(t_list *parse_lst, t_dconf *conf);
 void			record_string_value(t_yaml_tree *node, char **var);
 /*
 **				record_config_proc.c
@@ -194,7 +197,7 @@ void			record_config_proc(t_proc *proc, t_yaml_tree *node);
 /*
 **				check_config.c
 */
-int				check_config(void);
+int             check_config(t_dconf *conf);
 /*
 **				debug.c										TODO:delete
 */
@@ -210,4 +213,9 @@ void			free_config_daemon(void);
 **				d_reload.c
 */
 void			d_reload(char **av, int sock);
+/*
+**				d_help.c
+*/
+void			d_help(char **av, int sock);
+
 #endif

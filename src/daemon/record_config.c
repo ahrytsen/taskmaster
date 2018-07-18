@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/15 15:42:50 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 12:47:51 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void			record_string_value(t_yaml_tree *node, char **var)
 	node->value->content = NULL;
 }
 
-static void		record_config_daemon(t_list *lst)
+static void		record_config_daemon(t_list *lst, t_dconf *conf)
 {
 	t_yaml_tree	*tmp;
 
@@ -29,36 +29,35 @@ static void		record_config_daemon(t_list *lst)
 	if (tmp->type != singular_val || !tmp->value->content)
 		return ;
 	if (ft_strequ(tmp->key, "logout"))
-		record_string_value(tmp, &get_dconf()->out_log);
+		record_string_value(tmp, &conf->out_log);
 	else if (ft_strequ(tmp->key, "logerr"))
-		record_string_value(tmp, &get_dconf()->err_log);
+		record_string_value(tmp, &conf->err_log);
 	else if (ft_strequ(tmp->key, "port"))
-		get_dconf()->port = ft_atoi(tmp->value->content);
+		conf->port = ft_atoi(tmp->value->content);
 	else if (ft_strequ(tmp->key, "ip"))
-		record_string_value(tmp, &get_dconf()->ip);
+		record_string_value(tmp, &conf->ip);
 }
 
-static t_proc	*find_proc(char *proc_name)
+static t_proc	*find_proc(char *proc_name, t_dconf *conf)
 {
 	t_proc	proc;
 	t_proc	*procp;
 
 	ft_bzero(&proc, sizeof(t_proc));
-	procp = get_proc_byname(get_dconf()->proc, proc_name, NULL);
+	procp = get_proc_byname(conf->proc, proc_name, NULL);
 	if (procp == NULL)
-		procp = ft_lstpush_back(&get_dconf()->proc, &proc,
-								sizeof(t_proc))->content;
+		procp = ft_lstpush_back(&conf->proc, &proc, sizeof(t_proc))->content;
 	return (procp);
 }
 
-static void		record_one_proc(t_list *procs)
+static void		record_one_proc(t_list *procs, t_dconf *conf)
 {
 	t_proc	*proc;
 	t_list	*node;
 
 	while (procs)
 	{
-		proc = find_proc(((t_yaml_tree *)procs->content)->key);
+		proc = find_proc(((t_yaml_tree *) procs->content)->key, conf);
 		if (proc->name == NULL)
 		{
 			proc->name = ((t_yaml_tree *)procs->content)->key;
@@ -74,7 +73,7 @@ static void		record_one_proc(t_list *procs)
 	}
 }
 
-void			record_config(t_list *parse_lst)
+void			record_config(t_list *parse_lst, t_dconf *conf)
 {
 	t_list	*tmp;
 
@@ -82,9 +81,9 @@ void			record_config(t_list *parse_lst)
 	while (tmp)
 	{
 		if (!ft_strequ(((t_yaml_tree *)tmp->content)->key, "programs"))
-			record_config_daemon(tmp);
+			record_config_daemon(tmp, conf);
 		else
-			record_one_proc(((t_yaml_tree *)tmp->content)->value);
+			record_one_proc(((t_yaml_tree *)tmp->content)->value, conf);
 		tmp = tmp->next;
 	}
 	ft_lstdel(&parse_lst, free_config_tree);

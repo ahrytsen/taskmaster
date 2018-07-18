@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/13 18:43:11 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 11:24:55 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void		read_sequence(yaml_parser_t *parser, t_list **values)
 			ft_fatal(EXIT_FAILURE, exit, "Config is not valid\n");
 		if (event.type == YAML_SCALAR_EVENT)
 			ft_lstpush_back(values, (char *)event.data.scalar.value,
-							event.data.scalar.length);
+							event.data.scalar.length + 1);
 		else if (event.type == YAML_SEQUENCE_END_EVENT)
 			break ;
 		yaml_event_delete(&event);
@@ -40,7 +40,7 @@ static void		read_val(yaml_parser_t *parser, t_yaml_tree *node)
 	{
 		node->type = singular_val;
 		ft_lstpush_back(&node->value, (char *)event.data.scalar.value,
-						event.data.scalar.length);
+						event.data.scalar.length + 1);
 	}
 	else if (event.type == YAML_MAPPING_START_EVENT)
 	{
@@ -108,7 +108,7 @@ static t_list	*read_config(FILE *fp)
 	return (parse_lst);
 }
 
-void			parse_config(void)
+void			parse_config(t_dconf *conf)
 {
 	FILE			*fp;
 
@@ -119,8 +119,8 @@ void			parse_config(void)
 	if ((fp = fopen(get_dconf()->config_file, "r")) == NULL)
 		ft_fatal(EXIT_FAILURE, exit, "%s: %s\n", strerror(errno),
 				get_dconf()->config_file);
-	record_config(read_config(fp));
-	if (check_config())
+	record_config(read_config(fp), conf);
+	if (check_config(conf))
 		ft_fatal(EXIT_FAILURE, exit, "%s: error while checking config\n",
 				get_dconf()->config_file);
 	fclose(fp);

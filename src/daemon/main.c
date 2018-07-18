@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 18:28:30 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 10:25:01 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	exec_cmd(char *cmd, int sock)
 	static const t_disp	disp[] = {{"status", d_status}, {"start", d_start},
 								{"stop", d_stop}, {"restart", d_restart},
 								{"reread", d_reread}, {"d_exit", d_exit},
-								{"reload", d_reload}, {NULL, d_err_cmd}};
+								{"reload", d_reload}, {"help", d_help},
+								{NULL, d_err_cmd}};
 
 	i = 0;
 	if (!(av = ft_strsplit(cmd, ' ')))
@@ -30,27 +31,39 @@ void	exec_cmd(char *cmd, int sock)
 	ft_strarr_free(av);
 }
 
+static void	*data_exchange(void *data)
+{
+	ssize_t	ret;
+	char	*cmd;
+	int 	sock;
+
+	sock = *(int *)data;
+	while ((ret = receive_msg(&cmd, sock)) > 0)
+	{
+		exec_cmd(cmd, sock);
+		free(cmd);
+	}
+	if (ret < 0)
+		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
+	close(sock);
+	return (NULL);
+}
+
 void	main_loop(void)
 {
-	int		sock;
-	int		ret;
-	char	*cmd;
+	int			sock;
+	pthread_t	p;
 
 	while ((sock = accept(get_dconf()->sockfd, NULL, NULL)) > 0)
 	{
-		while ((ret = recive_msg(&cmd, sock)) > 0)
-		{
-			exec_cmd(cmd, sock);
-			free(cmd);
-		}
-		if (ret < 0)
-			break ;
-		close(sock);
+		pthread_create(&p, NULL, data_exchange, &sock);
+		pthread_detach(p);
 	}
-	if (sock < 0 || ret < 0)
+	if (sock < 0)
 			ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	exit(0);
 }
+
 
 int		main(int ac, char **av)
 {

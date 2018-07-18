@@ -12,7 +12,7 @@
 
 #include <daemon.h>
 
-static void	proc_start(t_proc *proc, int id, int sock)
+void	proc_start(t_proc *proc, int id, int sock)
 {
 	char	*line;
 	int		i;
@@ -40,7 +40,7 @@ static void	proc_start(t_proc *proc, int id, int sock)
 	}
 }
 
-void		d_start(char **av, int sock)
+void	d_start(char **av, int sock)
 {
 	if (!*++av)
 		send_msg(sock, "Error: start requires a process name\n");

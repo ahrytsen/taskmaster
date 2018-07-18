@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 15:40:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/15 19:29:36 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/17 10:18:04 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,12 @@ t_cconf		*get_cconf(void)
 
 void	get_response(int sock)
 {
-	int		ret;
-	size_t	size;
+	ssize_t	ret;
 	char	*msg;
 
-	while ((ret = recv(sock, &size, sizeof(size_t), 0)) > 0 && size > 0)
+	while ((ret = receive_msg(&msg, sock)) > 0)
 	{
-		if (!(msg = ft_memalloc(size * sizeof(char))))
-			ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
-		if ((ret = recv(sock, msg, size, 0)) > 0)
+		if (msg)
 			ft_dprintf(1, "%s", msg);
 		free(msg);
 	}
@@ -60,7 +57,7 @@ int		socket_connect(void)
 	else if (get_cconf()->addr && get_cconf()->type == domain)
 		addr.sin_addr.s_addr = get_addr();
 	else
-		addr.sin_addr.s_addr = INADDR_LOOPBACK;
+		addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 	if (sock == -1)
 		ft_fatal(1, exit, "%s\n", strerror(errno));
 	else if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
@@ -70,7 +67,6 @@ int		socket_connect(void)
 
 int		send_commands(char **cmds, int sock)
 {
-	size_t	size;
 	int		i;
 	int		ret;
 	char	*tmp;
@@ -82,14 +78,13 @@ int		send_commands(char **cmds, int sock)
 		tmp = cmds[i];
 		cmds[i] = ft_strtrim(cmds[i]);
 		free(tmp);
-		if (!ft_strncmp(cmds[i], "exit", 4))
+		if (!ft_strncmp(cmds[i], "exit", 4) && (cmds[i][4] == ' ' ||
+												cmds[i][4] == '\0'))
 		{
 			ret = 1;
 			break ;
 		}
-		size = ft_strlen(cmds[i]) + 1;
-		send(sock, &size, sizeof(size_t), 0);
-		send(sock, cmds[i], size, 0);
+		send_msg(sock, cmds[i]);
 		get_response(sock);
 	}
 	ft_strarr_free(cmds);
@@ -99,12 +94,13 @@ int		send_commands(char **cmds, int sock)
 int		main(int ac, char **av)
 {
 	char	*line;
-	int		sock = 0;
+	int		sock;
 	char	**cmds;
 
 	ft_bzero(get_cconf(), sizeof(t_cconf));
 	check_flags(ac, av);
 	sock = socket_connect();
+	setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &(int){1}, sizeof(int));
 	while (ft_readline(0, &line) > 0)
 	{
 		cmds = ft_strsplit(line, ';');
