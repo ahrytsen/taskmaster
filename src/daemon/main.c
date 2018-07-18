@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/16 17:38:16 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 10:25:01 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	main_loop(void)
 			ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	exit(0);
 }
+
 
 int		main(int ac, char **av)
 {

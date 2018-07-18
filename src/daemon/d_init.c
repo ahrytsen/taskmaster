@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/16 14:35:38 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 11:24:55 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void		d_init(void)
 {
 	close(0);
 	signal(SIGCHLD, SIG_IGN); //del
-	parse_config();
+	parse_config(get_dconf());
 //	outputs();
 	open_logs();
 	prepare_socket();

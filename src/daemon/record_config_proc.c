@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/16 14:35:05 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 09:18:07 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	record_exitcodes(t_proc *proc, t_yaml_tree *node)
 	if (node->type != sequence_val)
 		return ;
 	tmp = node->value;
-	ft_bzero(&proc->exitcodes, 255);
+	ft_bzero(&proc->exitcodes, 256);
 	while (tmp)
 	{
 		proc->exitcodes[ft_atoi(tmp->content)] = true;
@@ -32,6 +32,7 @@ static void	record_config_env(t_proc *proc, t_yaml_tree *node)
 	t_list	*tmp;
 	int		env_amt;
 
+	proc->env = NULL;
 	tmp = node->value;
 	env_amt = 0;
 	while (tmp)
@@ -41,6 +42,8 @@ static void	record_config_env(t_proc *proc, t_yaml_tree *node)
 		tmp = tmp->next;
 	}
 	tmp = node->value;
+	if (env_amt == 0)
+		return ;
 	proc->env = ft_memalloc((env_amt + 1) * sizeof(char *));
 	while (tmp)
 	{

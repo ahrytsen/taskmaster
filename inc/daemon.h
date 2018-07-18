@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/17 13:43:43 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 12:03:48 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct	s_proc
 	char 				*workingdir;
 	uint8_t 			autostart;
 	uint8_t				autorestart;
-	char 				exitcodes[255];
+	char 				exitcodes[256];
 	time_t				starttime;
 	int 				startretries;
 	int 				stopsignal;
@@ -175,12 +175,12 @@ void			d_err_cmd(char **av, int sock);
 /*
 **				parse_config.c
 */
-void			parse_config(void);
+void parse_config(t_dconf *conf);
 t_list			*read_mapping(yaml_parser_t *parser);
 /*
 **				record_config.c
 */
-void			record_config(t_list *parse_lst);
+void record_config(t_list *parse_lst, t_dconf *conf);
 void			record_string_value(t_yaml_tree *node, char **var);
 /*
 **				record_config_proc.c
@@ -189,7 +189,7 @@ void			record_config_proc(t_proc *proc, t_yaml_tree *node);
 /*
 **				check_config.c
 */
-int				check_config(void);
+int check_config(t_dconf *conf);
 /*
 **				debug.c										TODO:delete
 */
