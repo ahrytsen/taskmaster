@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/16 17:41:57 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 13:41:15 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct	s_job
 	enum			e_status
 	{
 		stop = 0,
+		stoping,
 		start,
 		run,
 		done,
@@ -68,7 +69,7 @@ typedef struct	s_job
 	pid_t			pid;
 	time_t			t;
 	pthread_t 		serv_thread;
-	int 			startretries;
+	int 			start_tries;
 	pthread_mutex_t jmutex;
 	char			*error;
 	struct s_proc	*proc;
@@ -84,8 +85,13 @@ typedef struct	s_proc
 	mode_t 				umask;
 	char 				*workingdir;
 	uint8_t 			autostart;
-	uint8_t				autorestart;
-	char 				exitcodes[255];
+	enum				e_autorestart
+	{
+		never,
+		always,
+		unexp
+	}					autorestart;
+	char 				exitcodes[256];
 	time_t				starttime;
 	int 				startretries;
 	int 				stopsignal;

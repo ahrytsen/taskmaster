@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:02:43 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/14 22:12:46 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 18:03:18 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	proc_status(t_proc *proc, int id, int sock)
 	char		*tmp;
 
 	i = (id < 0 ? 0 : id);
-	while (i < proc->numprocs && i >= id)
+	while (i < proc->numprocs && (id >= 0 ? i == id : 1))
 	{
 		ft_asprintf(&tmp, proc->numprocs > 1 ? "%s:%d" : "%s", proc->name, i);
 		ft_asprintf(&line, "%-30.29s%-10s", tmp,
@@ -61,7 +61,9 @@ static void	proc_status(t_proc *proc, int id, int sock)
 			&& (tmp = get_uptime(time(NULL) - proc->jobs[i].t)))
 			ft_asprintf(&line, "pid%6d, uptime%9s\n", proc->jobs[i].pid, tmp);
 		else
-			ft_asprintf(&line, "%-.24s\n", ctime(&proc->jobs[i].t));
+			proc->jobs[i].status == fatal || proc->jobs[i].status == fail
+				? ft_asprintf(&line, "%-.24s\n", ctime(&proc->jobs[i].t))
+				: ft_asprintf(&line, "%s\n", proc->jobs[i].error);
 		send_msg(sock, line);
 		ft_memdel((void**)&line);
 		ft_memdel((void**)&tmp);

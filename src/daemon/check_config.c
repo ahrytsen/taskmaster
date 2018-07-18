@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 15:09:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/14 21:53:40 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 13:29:46 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	check_jobs(t_proc *proc)
 	while (++i < proc->numprocs)
 	{
 		job = proc->jobs + i;
-		job->startretries = proc->startretries;
 		job->proc = proc;
 		time(&job->t);
 		if (pthread_mutex_init(&job->jmutex, NULL)

@@ -6,7 +6,6 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 12:07:48 by ahrytsen          #+#    #+#             */
-
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,23 +56,24 @@ int		proc_start_prnt(t_job *job)
 	if ((job->pid < 0 && !(job->pid = 0)
 		&& ft_asprintf(&job->error, "%s:%zu: error while fork()",
 					job->proc->name, job - job->proc->jobs))
-		|| get_next_line(get_dconf()->service_pipe[1], &job->error))
+		|| get_next_line(get_dconf()->service_pipe[1], &job->error) > 0)
 	{
 		!job->proc->stdin ? close(job->p_in[1]) : 0;
-		!job->proc->stdout ? close(job->p_out[0]) : 0;
-		!job->proc->stderr ? close(job->p_err[0]) : 0;
+		!job->proc->stdout ? close(job->p_out[1]) : 0;
+		!job->proc->stderr ? close(job->p_err[1]) : 0;
 	}
 	else
 	{
 		pthread_mutex_lock(&get_dconf()->dmutex);
-		ft_dprintf(2, "%s:%d starting...\n", job->proc->name,
-				   job - job->proc->jobs);
+		ft_dprintf(2, "%s:%d starting...(attempt %d/%d)\n", job->proc->name,
+			job - job->proc->jobs, job->start_tries, job->proc->startretries);
 		pthread_mutex_unlock(&get_dconf()->dmutex);
 		sleep(job->proc->starttime);
 	}
-	job->pid ? waitpid(job->pid, &job->ex_st, WNOHANG) : (job->pid = 0);
+	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
+		job->pid = 0;
 	close(get_dconf()->service_pipe[1]);
-	return (job->pid ? 0 : -1);
+	return (job->pid > 0 ? 0 : -1);
 }
 
 void	proc_start_chld(t_job *job)
@@ -82,14 +82,14 @@ void	proc_start_chld(t_job *job)
 
 	pid = getpid();
 	umask(job->proc->umask);
-	chdir(job->proc->workingdir);
+	job->proc->workingdir ? chdir(job->proc->workingdir) : 0;
 	close(get_dconf()->service_pipe[1]);
-	while (*(job->proc->env))
+	while (job->proc->env && *(job->proc->env))
 		putenv(*(job->proc->env)++);
 	setpgid(pid, pid);
 	if (job->proc->stdin)
-		job->p_in[1] = open(job->proc->stdin, O_RDWR | O_CLOEXEC);
-	dup2(job->p_in[1], 0);
+		job->p_in[0] = open(job->proc->stdin, O_RDWR | O_CLOEXEC);
+	dup2(job->p_in[0], 0);
 	if (job->proc->stdout)
 		job->p_out[0] = open(job->proc->stdout,
 							O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
@@ -101,7 +101,7 @@ void	proc_start_chld(t_job *job)
 	fcntl(get_dconf()->service_pipe[0], F_SETFD, FD_CLOEXEC);
 	execvp(job->proc->argv[0], job->proc->argv);
 	ft_dprintf(get_dconf()->service_pipe[0], "%s: %s",
-			job->proc->cmd, strerror(errno));
+			job->proc->name, strerror(errno));
 	exit(1);
 }
 

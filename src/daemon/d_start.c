@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/16 20:40:52 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 17:51:36 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ static void	proc_start(t_proc *proc, int id, int sock)
 	{
 		line = NULL;
 		if (proc->jobs[i].pid)
-			ft_asprintf(&line, "ERROR: %s:%d olready running\n", proc->name, i);
+			id >= 0 ? ft_asprintf(&line, "ERROR: %s:%d olready running\n",
+								  proc->name, i) : 0;
 		else
 		{
 			pthread_create(&proc->jobs[i].serv_thread, NULL, proc_service,
 							proc->jobs + i);
 			pthread_detach(proc->jobs[i].serv_thread);
-			id >= 0 ? ft_asprintf(&line, "%s:%d starting...\n", proc->name, i) : 0;
+			id >= 0 ? ft_asprintf(&line, "%s:%d starting...\n",
+							proc->name, i) : 0;
 		}
 		line ? send_msg(sock, line) : 0;
 		free(line);
