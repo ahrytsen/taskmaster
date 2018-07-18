@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 18:43:41 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 17:48:58 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 21:05:42 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,13 @@ void	proc_stop(t_proc *proc, int id, int sock)
 			ft_asprintf(&line, "ERROR: %s:%d olready stoped\n", proc->name, i);
 		line ? send_msg(sock, line) : 0;
 		free(line);
-		if (proc->jobs[i].pid)
-
 		if (id >= 0)
 			break ;
 		i++;
 	}
 }
 
-void		d_stop(char **av, int sock)
+void	d_stop(char **av, int sock)
 {
 	ft_dprintf(1, "'d_stop' called\n");
 	if (!*++av)

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 15:02:21 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 21:03:57 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void		demonaize(void)
 		exit(get_dconf()->pid == -1 ? EXIT_FAILURE : EXIT_SUCCESS);
 	get_dconf()->pid = getpid();
 	ft_printf("taskmaster: *Daemon started successfully* [pid: %d]\n",
-			  get_dconf()->pid);
+			get_dconf()->pid);
 }
 
 void		d_init(void)
