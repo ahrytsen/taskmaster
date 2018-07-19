@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   daemon.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 09:57:48 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/18 13:41:15 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@
 # include <arpa/inet.h>
 # include <pthread.h>
 
-//# define RS_A 0
-//# define RS_N 1
-//# define RS_CRASH 2
-
 # define F_C 0b1
 # define F_N 0b10
 
@@ -50,14 +46,19 @@ typedef struct	s_dconf
 	t_list				*proc;
 	pthread_t 			serv_thread;
 	pthread_mutex_t 	dmutex;
+	int					service_pipe[2];
 	int 				max_namelen;
 }				t_dconf;
 
 typedef struct	s_job
 {
+	int		p_in[2];
+	int		p_out[2];
+	int		p_err[2];
 	enum			e_status
 	{
 		stop = 0,
+		stoping,
 		start,
 		run,
 		done,
@@ -65,15 +66,13 @@ typedef struct	s_job
 		fail,
 		fatal
 	}				status;
-	int				std_in;
-	int				std_out;
-	int				std_err;
 	int				ex_st;
 	pid_t			pid;
 	time_t			t;
 	pthread_t 		serv_thread;
-	int 			startretries;
+	int 			start_tries;
 	pthread_mutex_t jmutex;
+	char			*error;
 	struct s_proc	*proc;
 }				t_job;
 
@@ -87,7 +86,12 @@ typedef struct	s_proc
 	mode_t 				umask;
 	char 				*workingdir;
 	uint8_t 			autostart;
-	uint8_t				autorestart;
+	enum				e_autorestart
+	{
+		never,
+		always,
+		unexp
+	}					autorestart;
 	char 				exitcodes[256];
 	time_t				starttime;
 	int 				startretries;
@@ -139,12 +143,16 @@ void			d_init(void);
 **				proc_utils.c
 */
 t_proc			*get_proc_byname(t_list *proc, char *name, int *id);
-void			proc_start_chld(t_proc *proc);
+int				proc_start_prnt(t_job *job);
+void			proc_start_chld(t_job *job);
 void			ft_prociter(t_list *lst, int sock,
 							void (*f)(t_proc*, int, int));
 void			proc_action_byname(t_list *lst, char *name, int sock,
 									void (*action)(t_proc*, int, int));
-void			*wait_routine(void *data);
+/*
+**				service_routines.c
+*/
+void			*proc_service(void *data);
 /*
 **				../exchange.c
 */
@@ -174,12 +182,12 @@ void			d_err_cmd(char **av, int sock);
 /*
 **				parse_config.c
 */
-void parse_config(t_dconf *conf);
+void            parse_config(t_dconf *conf);
 t_list			*read_mapping(yaml_parser_t *parser);
 /*
 **				record_config.c
 */
-void record_config(t_list *parse_lst, t_dconf *conf);
+void            record_config(t_list *parse_lst, t_dconf *conf);
 void			record_string_value(t_yaml_tree *node, char **var);
 /*
 **				record_config_proc.c
@@ -188,7 +196,7 @@ void			record_config_proc(t_proc *proc, t_yaml_tree *node);
 /*
 **				check_config.c
 */
-int check_config(t_dconf *conf);
+int             check_config(t_dconf *conf);
 /*
 **				debug.c										TODO:delete
 */
@@ -208,4 +216,5 @@ void			d_reload(char **av, int sock);
 **				d_help.c
 */
 void			d_help(char **av, int sock);
+
 #endif

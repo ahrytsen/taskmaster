@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:02:43 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/14 22:12:46 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/18 21:06:41 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*status_to_str(enum e_status st)
 		return ("RUNNING");
 	else if (st == stop)
 		return ("STOPPED");
+	else if (st == stoping)
+		return ("STOPPING");
 	else if (st == crash)
 		return ("CRASHED");
 	else if (st == done)
@@ -49,7 +51,7 @@ static void	proc_status(t_proc *proc, int id, int sock)
 	char		*tmp;
 
 	i = (id < 0 ? 0 : id);
-	while (i < proc->numprocs && i >= id)
+	while (i < proc->numprocs && (id >= 0 ? i == id : 1))
 	{
 		ft_asprintf(&tmp, proc->numprocs > 1 ? "%s:%d" : "%s", proc->name, i);
 		ft_asprintf(&line, "%-30.29s%-10s", tmp,
@@ -61,7 +63,9 @@ static void	proc_status(t_proc *proc, int id, int sock)
 			&& (tmp = get_uptime(time(NULL) - proc->jobs[i].t)))
 			ft_asprintf(&line, "pid%6d, uptime%9s\n", proc->jobs[i].pid, tmp);
 		else
-			ft_asprintf(&line, "%-.24s\n", ctime(&proc->jobs[i].t));
+			proc->jobs[i].status == fatal || proc->jobs[i].status == fail
+				? ft_asprintf(&line, "%s\n", proc->jobs[i].error)
+				: ft_asprintf(&line, "%-.24s\n", ctime(&proc->jobs[i].t));
 		send_msg(sock, line);
 		ft_memdel((void**)&line);
 		ft_memdel((void**)&tmp);
@@ -69,7 +73,7 @@ static void	proc_status(t_proc *proc, int id, int sock)
 	}
 }
 
-void	d_status(char **av, int sock)
+void		d_status(char **av, int sock)
 {
 	ft_dprintf(1, "'d_status' called\n");
 	if (!*++av || ft_arrstr(av, "all"))
