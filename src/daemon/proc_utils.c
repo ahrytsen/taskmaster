@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 21:15:39 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 15:52:33 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,9 @@ int		proc_start_prnt(t_job *job)
 	job->proc->stderr ? 0 : close(job->p_err[0]);
 	close(get_dconf()->service_pipe[1]);
 	time(&job->t);
-	if ((job->pid < 0 && !(job->pid = 0)
+	if (job->pid < 0 && !(job->pid = 0)
 		&& ft_asprintf(&job->error, "%s:%zu: error while fork()",
 					job->proc->name, job - job->proc->jobs))
-		|| get_next_line(get_dconf()->service_pipe[0], &job->error) > 0)
 	{
 		!job->proc->stdin ? close(job->p_in[1]) : 0;
 		!job->proc->stdout ? close(job->p_out[1]) : 0;
@@ -68,7 +67,12 @@ int		proc_start_prnt(t_job *job)
 	else
 		sleep(job->proc->starttime);
 	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
+	{
+		job->status = fail;
+		if (get_next_line(get_dconf()->service_pipe[0], &job->error) > 0)
+			job->status = fatal;
 		job->pid = 0;
+	}
 	close(get_dconf()->service_pipe[0]);
 	return (job->pid > 0 ? 0 : -1);
 }

@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 22:35:53 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 21:09:25 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 16:20:57 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@ static int	proc_watch(t_job *job)
 		if (WIFSTOPPED(st) && job->proc->stopsignal == WSTOPSIG(st))
 		{
 			job->status = stoping;
+			ft_dprintf(2, "%s:%zu stop signal recived!"
+				" Program will be terminated in %d seconds\n",
+				job->proc->name, job - job->proc->jobs, job->proc->stoptime);
 			sleep(job->proc->stoptime);
 			kill(job->pid, SIGKILL);
 		}
-		else if (!WIFSTOPPED(st))
-		{
-			st = WEXITSTATUS(st);
-			job->status = stop;
+		else if (!WIFSTOPPED(st) && !(job->status = stop)
+				&& ft_dprintf(2, "%s:%zu exited with code:%d\n",
+					job->proc->name, job - job->proc->jobs, (st = WEXITSTATUS(st))))
 			return ((job->proc->autorestart == always
 					|| (job->proc->autorestart == unexp
 						&& st < 256 && !job->proc->exitcodes[st])) ? 0 : 1);
-		}
 		pthread_mutex_unlock(&job->jmutex);
 	}
 	return (1);
@@ -105,5 +106,6 @@ void		*proc_service(void *data)
 		if (proc_watch(job))
 			break ;
 	}
+	job->pid = 0;
 	return (NULL);
 }
