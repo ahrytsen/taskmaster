@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 15:52:33 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 20:34:24 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		proc_start_prnt(t_job *job)
 	job->proc->stdin ? 0 : close(job->p_in[0]);
 	job->proc->stdout ? 0 : close(job->p_out[0]);
 	job->proc->stderr ? 0 : close(job->p_err[0]);
-	close(get_dconf()->service_pipe[1]);
+	close(job->service_pipe[1]);
 	time(&job->t);
 	if (job->pid < 0 && !(job->pid = 0)
 		&& ft_asprintf(&job->error, "%s:%zu: error while fork()",
@@ -69,11 +69,11 @@ int		proc_start_prnt(t_job *job)
 	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
 	{
 		job->status = fail;
-		if (get_next_line(get_dconf()->service_pipe[0], &job->error) > 0)
+		if (get_next_line(job->service_pipe[0], &job->error) > 0)
 			job->status = fatal;
 		job->pid = 0;
 	}
-	close(get_dconf()->service_pipe[0]);
+	close(job->service_pipe[0]);
 	return (job->pid > 0 ? 0 : -1);
 }
 
@@ -84,7 +84,7 @@ void	proc_start_chld(t_job *job)
 	pid = getpid();
 	umask(job->proc->umask);
 	job->proc->workingdir ? chdir(job->proc->workingdir) : 0;
-	close(get_dconf()->service_pipe[0]);
+	close(job->service_pipe[0]);
 	while (job->proc->env && *(job->proc->env))
 		putenv(*(job->proc->env)++);
 	setpgid(pid, pid);
@@ -99,9 +99,9 @@ void	proc_start_chld(t_job *job)
 		job->p_err[0] = open(job->proc->stderr,
 							O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
 	dup2(job->p_err[0], 2);
-	fcntl(get_dconf()->service_pipe[1], F_SETFD, FD_CLOEXEC);
+	fcntl(job->service_pipe[1], F_SETFD, FD_CLOEXEC);
 	execvp(job->proc->argv[0], job->proc->argv);
-	ft_dprintf(get_dconf()->service_pipe[1], "%s: %s",
+	ft_dprintf(job->service_pipe[1], "%s: %s",
 			job->proc->cmd, strerror(errno));
 	exit(1);
 }

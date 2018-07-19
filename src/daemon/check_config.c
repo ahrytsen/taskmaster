@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 15:09:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 13:29:46 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 20:42:34 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int			check_config(t_dconf *conf)
 		proc = lst->content;
 		if ((!proc->argv && ft_dprintf(2, "Config error: you must specify the "
 									"`cmd:' for `%s' proccess\n", proc->name))
-			|| (pthread_mutex_init(&proc->pmutex, NULL)
-				&& ft_dprintf(2, "%s: mutex init failed\n", "daemon config"))
 			|| (check_jobs(proc)
 				&& ft_dprintf(2, "%s: error while checking job\n", proc->name)))
 			return (-1);

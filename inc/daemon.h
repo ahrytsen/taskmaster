@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 17:40:52 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 20:47:10 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ typedef struct	s_dconf
 	t_list				*proc;
 	pthread_t 			serv_thread;
 	pthread_mutex_t 	dmutex;
-	int					service_pipe[2];
 	int 				max_namelen;
 }				t_dconf;
 
@@ -72,6 +71,7 @@ typedef struct	s_job
 	pthread_t 		serv_thread;
 	int 			start_tries;
 	pthread_mutex_t jmutex;
+	int				service_pipe[2];
 	char			*error;
 	struct s_proc	*proc;
 }				t_job;
@@ -101,7 +101,6 @@ typedef struct	s_proc
 	char 				*stderr;
 	char 				*stdin;
 	char				**env;
-	pthread_mutex_t 	pmutex;
 }				t_proc;
 
 typedef struct	s_dispatcher

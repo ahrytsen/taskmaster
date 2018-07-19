@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 15:50:40 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 19:26:34 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,15 @@ void		demonaize(void)
 			get_dconf()->pid);
 }
 
+void		ft_atexit(void)
+{
+	ft_prociter(get_dconf()->proc, -1, proc_stop);
+}
+
 void		d_init(void)
 {
 	close(0);
+	atexit(ft_atexit);
 	parse_config(get_dconf());
 	open_logs();
 	prepare_socket();

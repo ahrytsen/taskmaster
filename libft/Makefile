@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/03 20:19:57 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/14 16:06:50 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/19 18:42:56 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -46,7 +46,16 @@ OBJ		= $(addprefix $(DIROBJ), $(SRC:.c=.o))
 
 CC		= gcc
 
+ifdef FLAGS
+	ifeq ($(FLAGS), no)
+CFLAGS		=
+	endif
+	ifeq ($(FLAGS), debug)
+CFLAGS		=	-Wall -Wextra -Werror -g
+	endif
+else
 CFLAGS	= -Wall -Wextra -Werror -Ofast -flto=thin
+endif
 
 all: $(NAME)
 

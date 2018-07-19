@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/15 14:43:03 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/19 11:55:51 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 20:11:20 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static void		delete_old_proc(void)
 	}
 }
 
-static void		cmp_conf(t_list *old_conf, t_list *new_conf)
+static void		cmp_conf(t_list *old_conf, t_list *new_conf, int sock)
 {
 	t_list	*proc;
 
@@ -120,9 +120,10 @@ static void		cmp_conf(t_list *old_conf, t_list *new_conf)
 			if (cmp_one_proc(old_conf->content, proc->content))
 			{
 				ft_printf("%s: reload\n", ((t_proc *)old_conf->content)->name);
-				proc_stop(old_conf->content, -1, get_dconf()->sockfd);
+				proc_stop(old_conf->content, -1, sock);
 				swap_content(old_conf, proc);
-				proc_start(old_conf->content, -1, get_dconf()->sockfd);
+				((t_proc*)(old_conf->content))->autostart ?
+					proc_start(old_conf->content, -1, sock) : 0;
 			}
 			proc->content_size = 0;
 		}
@@ -141,11 +142,10 @@ void		d_reload(char **av, int sock)
 
 	(void)av;
 	ft_bzero(&new_conf, sizeof(t_dconf));
-	ft_printf("'d_reload' called\n");
 	old_conf = get_dconf()->proc;
 	parse_config(&new_conf);
-	cmp_conf(old_conf, new_conf.proc);
+	cmp_conf(old_conf, new_conf.proc, sock);
 	free_config_daemon(&new_conf);
 	send_msg(sock, NULL);
-	system("leaks taskmasterd");
+//	system("leaks taskmasterd");
 }
