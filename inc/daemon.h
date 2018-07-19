@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 13:41:15 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 17:40:52 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,10 +173,20 @@ void			proc_start(t_proc *proc, int id, int sock);
 void			d_stop(char **av, int sock);
 void			proc_stop(t_proc *proc, int id, int sock);
 /*
-**				commands.c
+**				d_reload.c
+*/
+void			d_reload(char **av, int sock);
+/*
+**				d_help.c
+*/
+void			d_help(char **av, int sock);
+/*
+**				d_restart.c
 */
 void			d_restart(char **av, int sock);
-void			d_reread(char **av, int sock);
+/*
+**				commands.c
+*/
 void			d_exit(char **av, int sock);
 void			d_err_cmd(char **av, int sock);
 /*
@@ -207,14 +217,6 @@ void			outputs();
 */
 void			free_config_tree(void *content, size_t size);
 void			free_config_proc(void *content, size_t size);
-void free_config_daemon(t_dconf *conf);
-/*
-**				d_reload.c
-*/
-void			d_reload(char **av, int sock);
-/*
-**				d_help.c
-*/
-void			d_help(char **av, int sock);
+void			free_config_daemon(t_dconf *conf);
 
 #endif

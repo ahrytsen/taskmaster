@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/19 13:05:23 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 17:24:57 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,21 @@ static void		record_one_proc(t_list *procs, t_dconf *conf)
 
 static int		count_max_proclen(t_list *proc)
 {
-	int 	lenproc;
-	int 	numproc;
+	int 	namelen;
+	int		tmp;
 
-	lenproc = 0;
-	numproc = 0;
+	namelen = 0;
 	while (proc)
 	{
-		if ((int)ft_strlen(((t_proc *)proc->content)->name) > lenproc)
-			lenproc = ft_strlen(((t_proc *)proc->content)->name);
-		if (((t_proc *)proc->content)->numprocs &&
-			(int)ft_count_digits(((t_proc *)proc->content)->numprocs) > numproc)
-			numproc = ft_count_digits(((t_proc *)proc->content)->numprocs);
+		((t_proc *)proc->content)->numprocs
+			? 0 : ((t_proc *)proc->content)->numprocs++;
+		tmp = ft_strlen(((t_proc *)proc->content)->name);
+		if (((t_proc *)proc->content)->numprocs > 1)
+			tmp += ft_count_digits(((t_proc *)proc->content)->numprocs - 1) + 1;
+		tmp > namelen ? (namelen = tmp) : 0;
 		proc = proc->next;
 	}
-	return (numproc ? lenproc + numproc + 1 : lenproc);
+	return (namelen);
 }
 
 void			record_config(t_list *parse_lst, t_dconf *conf)

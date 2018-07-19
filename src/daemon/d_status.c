@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:02:43 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 21:06:41 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/19 17:26:47 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	proc_status(t_proc *proc, int id, int sock)
 	while (i < proc->numprocs && (id >= 0 ? i == id : 1))
 	{
 		ft_asprintf(&tmp, proc->numprocs > 1 ? "%s:%d" : "%s", proc->name, i);
-		ft_asprintf(&line, "%-30.29s%-10s", tmp,
+		ft_asprintf(&line, "%-*s%-10s", get_dconf()->max_namelen + 3, tmp,
 					status_to_str(proc->jobs[i].status));
 		send_msg(sock, line);
 		ft_memdel((void**)&line);
