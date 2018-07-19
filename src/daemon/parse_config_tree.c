@@ -36,7 +36,7 @@ static void		read_val(yaml_parser_t *parser, t_yaml_tree *node)
 
 	if (!yaml_parser_parse(parser, &event))
 		ft_fatal(EXIT_FAILURE, exit, "Config is not valid\n");
-	if (event.type == YAML_SCALAR_EVENT)
+	if (event.type == YAML_SCALAR_EVENT && event.data.scalar.length != 0)
 	{
 		node->type = singular_val;
 		ft_lstpush_back(&node->value, (char *)event.data.scalar.value,

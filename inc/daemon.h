@@ -206,7 +206,7 @@ void			outputs();
 **				free_config.c
 */
 void			free_config_tree(void *content, size_t size);
-void			free_config_proc(void *content, size_t size);
+void free_config_proc(void *content, size_t size);
 void free_config_daemon(t_dconf *conf);
 /*
 **				d_reload.c

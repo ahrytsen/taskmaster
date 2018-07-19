@@ -26,14 +26,19 @@ void		free_config_tree(void *content, size_t size)
 
 void		free_config_proc(void *content, size_t size)
 {
+	int 	i;
+
 	(void)size;
+	i = 0;
+	while (i < ((t_proc *)content)->numprocs)
+		free(((t_proc *)content)->jobs[i].error);
+	free(((t_proc *)content)->jobs);
 	free(((t_proc *)content)->name);
 	free(((t_proc *)content)->cmd);
 	free(((t_proc *)content)->workingdir);
 	free(((t_proc *)content)->stdout);
 	free(((t_proc *)content)->stderr);
 	free(((t_proc *)content)->stdin);
-	free(((t_proc *)content)->jobs);
 	ft_strarr_free(((t_proc *)content)->argv);
 	ft_strarr_free(((t_proc *)content)->env);
 	free(content);

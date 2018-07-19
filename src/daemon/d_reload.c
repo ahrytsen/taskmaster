@@ -12,15 +12,6 @@
 
 #include <daemon.h>
 
-//static void	swap_var(void **old_var,  void **new_var)
-//{
-//	void	*tmp;
-//
-//	tmp = *old_var;
-//	*old_var = *new_var;
-//	*new_var = tmp;
-//}
-
 static int cmp_strings(char *s1, char *s2)
 {
 	if (!s1 && !s2)
@@ -49,29 +40,6 @@ static int	cmp_one_proc(t_proc *old_conf, t_proc *new_conf)
 		return (1);
 	return (cmd_proc_env(old_conf->env, new_conf->env));
 }
-
-//static void		swap_conf_vars(t_proc *old_conf, t_proc *new_conf)
-//{
-//	if (!cmp_strings(old_conf->cmd, new_conf->cmd))
-//		swap_var((void **)&old_conf->cmd, (void **)&new_conf->cmd);
-//	if (!cmp_strings(old_conf->workingdir, new_conf->workingdir))
-//		swap_var((void **)&old_conf->workingdir,
-//				 (void **)&new_conf->workingdir);
-//	if (!cmp_strings(old_conf->stdout, new_conf->stdout))
-//		swap_var((void **)&old_conf->stdout, (void **)&new_conf->stdout);
-//	if (!cmp_strings(old_conf->stderr, new_conf->stderr))
-//		swap_var((void **)&old_conf->stderr, (void **)&new_conf->stderr);
-//	if (!cmp_strings(old_conf->stdin, new_conf->stdin))
-//		swap_var((void **)&old_conf->stdin, (void **)&new_conf->stdin);
-//	if (old_conf->numprocs != new_conf->numprocs)
-//		swap_var((void **)&old_conf->numprocs,
-//				 (void **)&new_conf->numprocs);
-//	if (old_conf->umask != new_conf->umask)
-//		swap_var((void **)&old_conf->umask, (void **)&new_conf->umask);
-//	while (old_conf->env && *old_conf->env)
-//		if (!new_conf->env || !ft_strequ(*old_conf->env++, *new_conf->env++))
-//			swap_var((void **)&old_conf->env, (void **)&new_conf->env);
-//}
 
 static void		swap_content(t_list *node1, t_list *node2)
 {

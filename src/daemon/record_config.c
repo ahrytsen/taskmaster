@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/19 13:05:23 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 16:29:24 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,5 @@ void			record_config(t_list *parse_lst, t_dconf *conf)
 		tmp = tmp->next;
 	}
 	conf->max_namelen = count_max_proclen(conf->proc);
-	ft_printf("MAX: %i\n", conf->max_namelen);
 	ft_lstdel(&parse_lst, free_config_tree);
 }

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/18 09:18:07 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 16:22:14 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	record_config_proc2(t_proc *proc, t_yaml_tree *node)
 	if (ft_strequ(node->key, "exitcodes"))
 		record_exitcodes(proc, node);
 	if (ft_strequ(node->key, "starttime"))
-		proc->starttime = ft_atol(node->value->content);
+		proc->starttime = labs(ft_atol(node->value->content));
 	else if (ft_strequ(node->key, "stoptime"))
 		proc->stoptime = ft_atol(node->value->content);
 	else if (ft_strequ(node->key, "stderr"))
@@ -90,9 +90,9 @@ static void	record_config_proc2(t_proc *proc, t_yaml_tree *node)
 	else if (ft_strequ(node->key, "stdin"))
 		record_string_value(node, &proc->stdin);
 	else if (ft_strequ(node->key, "numprocs"))
-		proc->numprocs = ft_atoi(node->value->content);
+		proc->numprocs = abs(ft_atoi(node->value->content));
 	else if (ft_strequ(node->key, "umask"))
-		proc->umask = ft_atoi_base(node->value->content, 8);
+		proc->umask = abs(ft_atoi_base(node->value->content, 8));
 	else if (ft_strequ(node->key, "env"))
 		record_config_env(proc, node);
 	else if (ft_strequ(node->key, "stopsignal"))
@@ -101,7 +101,7 @@ static void	record_config_proc2(t_proc *proc, t_yaml_tree *node)
 
 void		record_config_proc(t_proc *proc, t_yaml_tree *node)
 {
-	if (!node->value->content)
+	if (!node->value || !node->value->content)
 		return ;
 	if (ft_strequ(node->key, "cmd"))
 	{
@@ -123,7 +123,7 @@ void		record_config_proc(t_proc *proc, t_yaml_tree *node)
 			proc->autorestart = 0;
 	}
 	else if (ft_strequ(node->key, "startretries"))
-		proc->startretries = ft_atol(node->value->content);
+		proc->startretries = labs(ft_atol(node->value->content));
 	else
 		record_config_proc2(proc, node);
 }
