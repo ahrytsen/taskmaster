@@ -106,6 +106,5 @@ void			record_config(t_list *parse_lst, t_dconf *conf)
 		tmp = tmp->next;
 	}
 	conf->max_namelen = count_max_proclen(conf->proc);
-	ft_printf("MAX: %i\n", conf->max_namelen);
 	ft_lstdel(&parse_lst, free_config_tree);
 }
