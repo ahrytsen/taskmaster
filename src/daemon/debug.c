@@ -70,5 +70,4 @@ void	outputs()
 	ft_printf("ip: %s\n", get_dconf()->ip);
 	ft_printf("port: %i\n", get_dconf()->port);
 	ft_printf("max_namelen: %i\n", get_dconf()->max_namelen);
-	ft_printf("max_numprocs: %i\n", get_dconf()->max_numprocs);
 }

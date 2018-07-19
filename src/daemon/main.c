@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 10:25:01 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 12:20:44 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,26 @@ void	main_loop(void)
 	exit(0);
 }
 
+void 			sighup_handler(int sig)
+{
+	(void)sig;
+	d_reload(NULL, get_dconf()->sockfd);
+}
+
+static void		handle_signals(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = sighup_handler;
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGHUP, &sa, NULL) < 0)
+		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
+}
 
 int		main(int ac, char **av)
 {
+	handle_signals();
 	ft_bzero(get_dconf(), sizeof(t_dconf));
 	check_flags(ac, av);
 	d_init();

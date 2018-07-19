@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/15 14:43:03 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/18 16:59:11 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 11:55:51 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,23 +104,18 @@ static void		add_new_proc(t_list *conf)
 	{
 		if (conf->content_size)
 		{
-			ft_lstadd(&get_dconf()->proc, conf);
-			proc_start(conf->content, -1, get_dconf()->sockfd);
 			prev_node ? prev_node->next = conf->next :
-									(first_node = conf->next);
+										(first_node = conf->next);
+			ft_lstadd_end(&get_dconf()->proc, conf);
 			conf->next = NULL;
+			proc_start(conf->content, -1, get_dconf()->sockfd);
 			conf = prev_node ? prev_node->next : first_node;
 			continue ;
 		}
 		prev_node = conf;
 		conf = conf->next;
 	}
-	while (first_node)
-	{
-		ft_printf("%s\n", ((t_proc *)first_node->content)->name);
-		first_node = first_node->next;
-	}
-//	ft_lstdel(&first_node, free_config_proc);
+	ft_lstdel(&first_node, free_config_proc);
 }
 
 static void		delete_old_proc(void)
@@ -182,7 +177,7 @@ void		d_reload(char **av, int sock)
 	old_conf = get_dconf()->proc;
 	parse_config(&new_conf);
 	cmp_conf(old_conf, new_conf.proc);
-//	ft_prociter(old_conf, sock, proc_stop);
-//	ft_lstdel(&old_conf, free_config_proc);
+	free_config_daemon(&new_conf);
 	send_msg(sock, NULL);
+	system("leaks taskmasterd");
 }

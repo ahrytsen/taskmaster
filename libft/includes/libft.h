@@ -142,5 +142,6 @@ long			ft_atol_base(const char *str, int base);
 int				ft_atoi_base(const char *str, int base);
 void			ft_strarr_free(char **arr);
 char			*ft_arrstr(char **arr, char *str);
+size_t			ft_count_digits(size_t n);
 
 #endif

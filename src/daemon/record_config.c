@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/18 12:47:51 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 13:05:23 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,25 @@ static void		record_one_proc(t_list *procs, t_dconf *conf)
 	}
 }
 
+static int		count_max_proclen(t_list *proc)
+{
+	int 	lenproc;
+	int 	numproc;
+
+	lenproc = 0;
+	numproc = 0;
+	while (proc)
+	{
+		if ((int)ft_strlen(((t_proc *)proc->content)->name) > lenproc)
+			lenproc = ft_strlen(((t_proc *)proc->content)->name);
+		if (((t_proc *)proc->content)->numprocs &&
+			(int)ft_count_digits(((t_proc *)proc->content)->numprocs) > numproc)
+			numproc = ft_count_digits(((t_proc *)proc->content)->numprocs);
+		proc = proc->next;
+	}
+	return (numproc ? lenproc + numproc + 1 : lenproc);
+}
+
 void			record_config(t_list *parse_lst, t_dconf *conf)
 {
 	t_list	*tmp;
@@ -86,5 +105,7 @@ void			record_config(t_list *parse_lst, t_dconf *conf)
 			record_one_proc(((t_yaml_tree *)tmp->content)->value, conf);
 		tmp = tmp->next;
 	}
+	conf->max_namelen = count_max_proclen(conf->proc);
+	ft_printf("MAX: %i\n", conf->max_namelen);
 	ft_lstdel(&parse_lst, free_config_tree);
 }

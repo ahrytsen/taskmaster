@@ -97,10 +97,6 @@ static void	record_config_proc2(t_proc *proc, t_yaml_tree *node)
 		record_config_env(proc, node);
 	else if (ft_strequ(node->key, "stopsignal"))
 		record_config_signal(proc, node);
-	if (proc->numprocs > get_dconf()->max_numprocs)
-		get_dconf()->max_numprocs = proc->numprocs;
-	if ((int)ft_strlen(proc->name) > get_dconf()->max_namelen)
-		get_dconf()->max_namelen = ft_strlen(proc->name);
 }
 
 void		record_config_proc(t_proc *proc, t_yaml_tree *node)

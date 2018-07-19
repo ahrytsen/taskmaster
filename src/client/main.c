@@ -50,6 +50,8 @@ int		socket_connect(void)
 
 	ft_printf("Addr: %s\nPort: %i\n", get_cconf()->addr, get_cconf()->port);
 	sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &(int){1}, sizeof(int)) < 0)
+		ft_fatal(1, exit, "%s\n", strerror(errno));
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(get_cconf()->port ? get_cconf()->port : 7279);
 	if (get_cconf()->addr && get_cconf()->type == ip)
@@ -100,7 +102,6 @@ int		main(int ac, char **av)
 	ft_bzero(get_cconf(), sizeof(t_cconf));
 	check_flags(ac, av);
 	sock = socket_connect();
-	setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &(int){1}, sizeof(int));
 	while (ft_readline(0, &line) > 0)
 	{
 		cmds = ft_strsplit(line, ';');

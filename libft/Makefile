@@ -34,7 +34,7 @@ SRC		= ft_lstpush_back.c ft_putstr.c ft_strmapi.c ft_lstpush_front.c		\
 		ft_sort_params.c ft_strdup_arr.c ft_isalnum_str.c ft_isalpha_str.c	\
 		ft_isnumeric_str.c ft_isascii_str.c ft_isprint_str.c				\
 		ft_iswhitespace.c ft_atoi_base.c ft_atol_base.c ft_strarr_free.c	\
-		ft_strhalfextend.c  ft_arrstr.c                                     \
+		ft_strhalfextend.c  ft_arrstr.c ft_count_digits.c                   \
 		\
 		ft_printf/ft_printf.c ft_printf/ft_phendler.c ft_printf/ft_pbuf.c	\
 		ft_printf/ft_pfloat.c ft_printf/ft_phelper.c ft_printf/ft_fatal.c	\

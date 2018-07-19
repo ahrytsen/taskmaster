@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 12:03:48 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/19 09:57:48 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct	s_dconf
 	pthread_t 			serv_thread;
 	pthread_mutex_t 	dmutex;
 	int 				max_namelen;
-	int 				max_numprocs;
 }				t_dconf;
 
 typedef struct	s_job
@@ -200,7 +199,7 @@ void			outputs();
 */
 void			free_config_tree(void *content, size_t size);
 void			free_config_proc(void *content, size_t size);
-void			free_config_daemon(void);
+void free_config_daemon(t_dconf *conf);
 /*
 **				d_reload.c
 */
