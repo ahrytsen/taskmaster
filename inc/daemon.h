@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 11:50:24 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/20 17:03:14 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,12 @@ typedef struct	s_yaml_tree
 		mapping_val
 	}		type;
 }				t_yaml_tree;
+
+typedef struct	s_help
+{
+	char 		*cmd;
+	char 		*desc;
+}				t_help;
 
 /*
 **				d_flags.c

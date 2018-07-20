@@ -18,7 +18,7 @@ void		exec_cmd(char *cmd, int sock)
 	char				**av;
 	static const t_disp	disp[] = {{"status", d_status}, {"start", d_start},
 								{"stop", d_stop}, {"restart", d_restart},
-								{"d_exit", d_exit}, {"reload", d_reload},
+								{"daemon_exit", d_exit}, {"reload", d_reload},
 								{"help", d_help}, {NULL, d_err_cmd}};
 
 	i = 0;
