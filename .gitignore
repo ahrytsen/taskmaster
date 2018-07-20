@@ -2,3 +2,5 @@ CMakeLists.txt
 cmake-build-debug
 .idea/
 .idea/*
+obj/*.o
+obj

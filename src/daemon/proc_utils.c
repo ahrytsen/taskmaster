@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 20:34:24 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 16:19:37 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		proc_start_prnt(t_job *job)
 		!job->proc->stderr ? close(job->p_err[1]) : 0;
 	}
 	else
-		sleep(job->proc->starttime);
+		sleep(job->proc->starttime ? job->proc->starttime : 1);
 	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
 	{
 		job->status = fail;
