@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 16:19:37 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 18:26:54 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	proc_start_chld(t_job *job)
 	execvp(job->proc->argv[0], job->proc->argv);
 	ft_dprintf(job->service_pipe[1], "%s: %s",
 			job->proc->cmd, strerror(errno));
-	exit(1);
+	abort();
 }
 
 void	proc_action_byname(t_list *lst, char *name, int sock,

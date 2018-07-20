@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 22:35:53 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 15:48:09 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 18:29:49 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	create_chld(t_job *job)
 {
 	int ret;
 
-	ret = 0;
+	ret = 1;
 	job->status = start;
 	job->proc->stdin ? 0 : pipe(job->p_in);
 	job->proc->stdout ? 0 : pipe(job->p_out);
