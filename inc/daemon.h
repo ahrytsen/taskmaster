@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 10:52:08 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/20 11:50:24 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,5 +231,6 @@ int				count_max_proclen(t_list *proc);
 */
 int				cmp_one_proc(t_proc *old_conf, t_proc *new_conf);
 void			swap_content(t_list *node1, t_list *node2);
+void			run_autostart(t_proc *proc, int id, int sock);
 
 #endif
