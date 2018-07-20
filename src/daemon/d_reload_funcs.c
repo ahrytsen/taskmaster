@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/20 10:32:40 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/20 10:35:44 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/20 12:34:11 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,10 @@ void		swap_content(t_list *node1, t_list *node2)
 	tmp = node1->content;
 	node1->content = node2->content;
 	node2->content = tmp;
+}
+
+void		run_autostart(t_proc *proc, int id, int sock)
+{
+	if (proc->autostart)
+		proc_start(proc, id, sock);
 }

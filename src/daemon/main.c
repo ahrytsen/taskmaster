@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 10:30:36 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:30:54 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int			main(int ac, char **av)
 	check_flags(ac, av);
 	d_init();
 	demonaize();
+	ft_prociter(get_dconf()->proc, get_dconf()->sockfd, run_autostart);
 	main_loop();
 }
