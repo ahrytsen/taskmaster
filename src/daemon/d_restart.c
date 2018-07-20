@@ -6,23 +6,26 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/19 17:28:38 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 17:41:03 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 15:49:39 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
-void	d_restart(char **av, int sock)
+static void	proc_restart(t_proc *proc, int id, int sock)
 {
-	size_t	size;
-	char	*msg;
+	proc_stop(proc, id, sock);
+	proc_start(proc, id, sock);
+}
 
-	(void)av;
-	msg = "'d_restart' called on server side\n";
-	ft_dprintf(1, "'d_restert' called\n");
-	size = ft_strlen(msg) + 1;
-	send(sock, &size, sizeof(size_t), 0);
-	send(sock, msg, size, 0);
-	size = 0;
-	send(sock, &size, sizeof(size_t), 0);
+void		d_restart(char **av, int sock)
+{
+	if (!*++av)
+		send_msg(sock, "Error: restart requires a process name\n");
+	else if (ft_arrstr(av, "all"))
+		ft_prociter(get_dconf()->proc, sock, proc_restart);
+	else
+		while (*av)
+			proc_action_byname(get_dconf()->proc, *av++, sock, proc_restart);
+	send_msg(sock, NULL);
 }
