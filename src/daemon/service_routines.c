@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   service_routines.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 22:35:53 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 21:48:56 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:03:03 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	proc_watch(t_job *job)
 		if (WIFSTOPPED(st) && job->proc->stopsignal == WSTOPSIG(st))
 		{
 			job->status = stoping;
-			ft_dprintf(2, "%s:%zu stop signal recived!"
+			ft_dprintf(2, "%s:%zu stop signal received!"
 				" Program will be terminated in %d seconds\n",
 				job->proc->name, job - job->proc->jobs, job->proc->stoptime);
 			sleep(job->proc->stoptime);
@@ -37,8 +37,8 @@ static int	proc_watch(t_job *job)
 				job->proc->name, job - job->proc->jobs, (st = WEXITSTATUS(st))))
 			break ;
 	}
-	return ((job->proc->autorestart == always || (job->proc->autorestart == unexp
-			&& st < 256 && !job->proc->exitcodes[st])) ? 0 : 1);
+	return ((job->proc->autorestart == always || (job->proc->autorestart ==
+		unexp && st < 256 && !job->proc->exitcodes[st])) ? 0 : 1);
 }
 
 static int	create_chld(t_job *job)
@@ -78,7 +78,7 @@ static int	proc_spawn(t_job *job)
 		pthread_mutex_unlock(&get_dconf()->dmutex);
 		st = create_chld(job);
 		pthread_mutex_lock(&get_dconf()->dmutex);
-		ft_dprintf(2, !st ? "%s:%zu successfuly started (%d/%d)\n"
+		ft_dprintf(2, !st ? "%s:%zu successfully started (%d/%d)\n"
 				: "%s:%zu start attempt failed (%d/%d)\n",
 				job->proc->name, job - job->proc->jobs,
 				job->start_tries, job->proc->startretries);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   daemon.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 20:47:10 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:52:08 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct	s_dconf
 	char				*config_file;
 	char				*out_log;
 	char				*err_log;
+	char 				*email;
 	int					flags;
 	pid_t				pid;
 	uint16_t			port;
@@ -44,16 +45,16 @@ typedef struct	s_dconf
 	int					err_fd;
 	int					out_fd;
 	t_list				*proc;
-	pthread_t 			serv_thread;
-	pthread_mutex_t 	dmutex;
-	int 				max_namelen;
+	pthread_t			serv_thread;
+	pthread_mutex_t		dmutex;
+	int					max_namelen;
 }				t_dconf;
 
 typedef struct	s_job
 {
-	int		p_in[2];
-	int		p_out[2];
-	int		p_err[2];
+	int				p_in[2];
+	int				p_out[2];
+	int				p_err[2];
 	enum			e_status
 	{
 		stop = 0,
@@ -68,8 +69,8 @@ typedef struct	s_job
 	int				ex_st;
 	pid_t			pid;
 	time_t			t;
-	pthread_t 		serv_thread;
-	int 			start_tries;
+	pthread_t		serv_thread;
+	int				start_tries;
 	pthread_mutex_t jmutex;
 	int				service_pipe[2];
 	char			*error;
@@ -78,28 +79,28 @@ typedef struct	s_job
 
 typedef struct	s_proc
 {
-	char 				*cmd;
-	char 				*name;
+	char				*cmd;
+	char				*name;
 	char				**argv;
 	t_job				*jobs;
 	uint16_t			numprocs;
-	mode_t 				umask;
-	char 				*workingdir;
-	uint8_t 			autostart;
+	mode_t				umask;
+	char				*workingdir;
+	uint8_t				autostart;
 	enum				e_autorestart
 	{
 		never,
 		always,
 		unexp
 	}					autorestart;
-	char 				exitcodes[256];
+	char				exitcodes[256];
 	time_t				starttime;
-	int 				startretries;
-	int 				stopsignal;
-	time_t 				stoptime;
-	char 				*stdout;
-	char 				*stderr;
-	char 				*stdin;
+	int					startretries;
+	int					stopsignal;
+	time_t				stoptime;
+	char				*stdout;
+	char				*stderr;
+	char				*stdin;
 	char				**env;
 }				t_proc;
 
@@ -191,12 +192,12 @@ void			d_err_cmd(char **av, int sock);
 /*
 **				parse_config.c
 */
-void            parse_config(t_dconf *conf);
+void			parse_config(t_dconf *conf);
 t_list			*read_mapping(yaml_parser_t *parser);
 /*
 **				record_config.c
 */
-void            record_config(t_list *parse_lst, t_dconf *conf);
+void			record_config(t_list *parse_lst, t_dconf *conf);
 void			record_string_value(t_yaml_tree *node, char **var);
 /*
 **				record_config_proc.c
@@ -205,7 +206,7 @@ void			record_config_proc(t_proc *proc, t_yaml_tree *node);
 /*
 **				check_config.c
 */
-int             check_config(t_dconf *conf);
+int				check_config(t_dconf *conf);
 /*
 **				debug.c										TODO:delete
 */
@@ -217,5 +218,18 @@ void			outputs();
 void			free_config_tree(void *content, size_t size);
 void			free_config_proc(void *content, size_t size);
 void			free_config_daemon(t_dconf *conf);
+/*
+**				signals.c
+*/
+void			handle_signals(void);
+/*
+**				count_max_proclen.c
+*/
+int				count_max_proclen(t_list *proc);
+/*
+**				d_reload_funcs.c
+*/
+int				cmp_one_proc(t_proc *old_conf, t_proc *new_conf);
+void			swap_content(t_list *node1, t_list *node2);
 
 #endif

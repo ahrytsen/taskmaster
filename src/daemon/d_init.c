@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 19:26:34 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 12:01:40 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,14 @@ void		demonaize(void)
 
 void		ft_atexit(void)
 {
+	char 	*cmd;
+
+	cmd = NULL;
 	ft_prociter(get_dconf()->proc, -1, proc_stop);
+	ft_asprintf(&cmd, "mail -s %s %s < %s ; mail -s %s %s < %s\n",
+				get_dconf()->out_log, get_dconf()->email, get_dconf()->out_log,
+				get_dconf()->err_log, get_dconf()->email, get_dconf()->err_log);
+	system(cmd);
 }
 
 void		d_init(void)

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 15:09:40 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 20:42:34 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 12:07:52 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int			check_config(t_dconf *conf)
 	t_proc	*proc;
 
 	lst = conf->proc;
-	get_dconf()->port ? 0 : (conf->port = 7279);
+	conf->port ? 0 : (conf->port = 7279);
 	if (pthread_mutex_init(&conf->dmutex, NULL)
 		&& ft_dprintf(2, "%s: mutex init failed\n", "daemon config"))
 		return (-1);
@@ -56,5 +56,9 @@ int			check_config(t_dconf *conf)
 		proc->stopsignal ? 0 : (proc->stopsignal = SIGTERM);
 		lst = lst->next;
 	}
+	!conf->out_log ? conf->out_log = ft_strdup("taskmasterd.out") : 0;
+	!conf->err_log ? conf->err_log = ft_strdup("taskmasterd.err") : 0;
+	!conf->email ? conf->email = ft_strdup(getenv("MAIL")) : 0;
+	!conf->email ? conf->email = ft_strdup(getenv("USER")) : 0;
 	return (0);
 }

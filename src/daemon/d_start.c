@@ -22,7 +22,7 @@ void	proc_start(t_proc *proc, int id, int sock)
 	{
 		line = NULL;
 		if (proc->jobs[i].pid)
-			id >= 0 ? ft_asprintf(&line, "ERROR: %s:%d olready running\n",
+			id >= 0 ? ft_asprintf(&line, "ERROR: %s:%d already running\n",
 								proc->name, i) : 0;
 		else
 		{

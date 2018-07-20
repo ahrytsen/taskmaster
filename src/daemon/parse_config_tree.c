@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 11:24:55 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:27:20 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ static t_list	*read_config(FILE *fp)
 	}
 	yaml_event_delete(&event);
 	yaml_parser_delete(&parser);
-//	output_parse_tree(parse_lst);
 	return (parse_lst);
 }
 

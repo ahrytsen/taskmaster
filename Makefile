@@ -37,6 +37,7 @@ SRC			=	exchange.c
 
 SRC_C		=	main.c\
 				c_flags.c\
+				socket_connect.c\
 				\
 				ft_readline/ft_autocomplit.c\
 				ft_readline/ft_readline.c\
@@ -58,6 +59,7 @@ SRC_D		=	main.c\
 				parse_config_tree.c\
 				record_config.c\
 				record_config_proc.c\
+				count_max_proclen.c\
 				free_config.c\
 				check_config.c\
 				debug.c\
@@ -67,8 +69,10 @@ SRC_D		=	main.c\
 				proc_utils.c\
 				service_routines.c\
 				d_reload.c\
+				d_reload_funcs.c\
 				d_help.c\
-				d_restart.c
+				d_restart.c\
+				signals.c
 
 HDR_C		=	inc/ft_readline.h
 HDR_D		=	inc/daemon.h

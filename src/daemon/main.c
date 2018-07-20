@@ -6,13 +6,13 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 18:00:10 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:30:36 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
-void	exec_cmd(char *cmd, int sock)
+void		exec_cmd(char *cmd, int sock)
 {
 	int					i;
 	char				**av;
@@ -34,7 +34,7 @@ static void	*data_exchange(void *data)
 {
 	ssize_t	ret;
 	char	*cmd;
-	int 	sock;
+	int		sock;
 
 	sock = *(int *)data;
 	while ((ret = receive_msg(&cmd, sock)) > 0)
@@ -48,7 +48,7 @@ static void	*data_exchange(void *data)
 	return (NULL);
 }
 
-void	main_loop(void)
+void		main_loop(void)
 {
 	int			sock;
 	pthread_t	p;
@@ -59,34 +59,16 @@ void	main_loop(void)
 		pthread_detach(p);
 	}
 	if (sock < 0)
-			ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
+		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	exit(0);
 }
 
-void 			sighup_handler(int sig)
-{
-	(void)sig;
-	d_reload(NULL, get_dconf()->sockfd);
-}
-
-static void		handle_signals(void)
-{
-	struct sigaction	sa;
-
-	ft_bzero(&sa, sizeof(sa));
-	sa.sa_handler = sighup_handler;
-	sa.sa_flags = SA_RESTART;
-	if (sigaction(SIGHUP, &sa, NULL) < 0)
-		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
-}
-
-int		main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	handle_signals();
 	ft_bzero(get_dconf(), sizeof(t_dconf));
 	check_flags(ac, av);
 	d_init();
-//	outputs();
 	demonaize();
 	main_loop();
 }

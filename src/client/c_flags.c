@@ -6,13 +6,13 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 10:27:05 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/14 18:49:39 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/20 11:06:19 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <client.h>
 
-static void		c_usage(char *av)
+static void	c_usage(char *av)
 {
 	ft_dprintf(2,
 	"taskmasterctl -- control applications run by taskmasterd"
@@ -28,8 +28,8 @@ static void		c_usage(char *av)
 
 static int	check_regex(const char *pattern, char *s)
 {
-	regex_t		re;
-	int 		ret;
+	regex_t	re;
+	int		ret;
 
 	ret = 0;
 	if (regcomp(&re, pattern, REG_EXTENDED) == 0)
@@ -41,11 +41,11 @@ static int	check_regex(const char *pattern, char *s)
 
 static void	record_url(char *s)
 {
+	const char	*pattern_domain = "^https?:\\/\\/[a-zA-Z0-9.]+:[0-9]{1,5}$";
 	const char	*pattern_ip = "^https?:\\/\\/((25[0-5]|2[0-4][0-9]|1[0-9][0-9]"
-								"|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1"
-								"[0-9][0-9]|[1-9]?[0-9]):[0-9]{1,5}$";
-	const char 	*pattern_domain = "^https?:\\/\\/[a-zA-Z0-9.]+:[0-9]{1,5}$";
 
+	"|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1"
+	"[0-9][0-9]|[1-9]?[0-9]):[0-9]{1,5}$";
 	if (s == NULL)
 		ft_fatal(EXIT_FAILURE, exit, "Error: option -s requires argument\n");
 	if (check_regex(pattern_ip, s))
@@ -55,7 +55,7 @@ static void	record_url(char *s)
 	else
 	{
 		ft_fatal(EXIT_FAILURE, exit, "Bad URL\n");
-		return;
+		return ;
 	}
 	get_cconf()->port = ft_atoi(ft_strrchr(s, ':') + 1);
 	get_cconf()->addr = s;

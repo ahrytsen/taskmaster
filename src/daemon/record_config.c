@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 16:49:59 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/19 17:24:57 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:26:45 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static void		record_config_daemon(t_list *lst, t_dconf *conf)
 		conf->port = ft_atoi(tmp->value->content);
 	else if (ft_strequ(tmp->key, "ip"))
 		record_string_value(tmp, &conf->ip);
+	else if (ft_strequ(tmp->key, "email"))
+		record_string_value(tmp, &conf->email);
 }
 
 static t_proc	*find_proc(char *proc_name, t_dconf *conf)
@@ -57,7 +59,7 @@ static void		record_one_proc(t_list *procs, t_dconf *conf)
 
 	while (procs)
 	{
-		proc = find_proc(((t_yaml_tree *) procs->content)->key, conf);
+		proc = find_proc(((t_yaml_tree *)procs->content)->key, conf);
 		if (proc->name == NULL)
 		{
 			proc->name = ((t_yaml_tree *)procs->content)->key;
@@ -71,25 +73,6 @@ static void		record_one_proc(t_list *procs, t_dconf *conf)
 		}
 		procs = procs->next;
 	}
-}
-
-static int		count_max_proclen(t_list *proc)
-{
-	int 	namelen;
-	int		tmp;
-
-	namelen = 0;
-	while (proc)
-	{
-		((t_proc *)proc->content)->numprocs
-			? 0 : ((t_proc *)proc->content)->numprocs++;
-		tmp = ft_strlen(((t_proc *)proc->content)->name);
-		if (((t_proc *)proc->content)->numprocs > 1)
-			tmp += ft_count_digits(((t_proc *)proc->content)->numprocs - 1) + 1;
-		tmp > namelen ? (namelen = tmp) : 0;
-		proc = proc->next;
-	}
-	return (namelen);
 }
 
 void			record_config(t_list *parse_lst, t_dconf *conf)

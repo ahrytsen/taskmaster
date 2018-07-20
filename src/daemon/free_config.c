@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 16:10:34 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/19 21:16:43 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 10:57:30 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void		free_config_tree(void *content, size_t size)
 
 void		free_config_proc(void *content, size_t size)
 {
-	int 	i;
+	int		i;
 
 	(void)size;
 	i = 0;
 	while (i < ((t_proc *)content)->numprocs)
 	{
-		pthread_mutex_destroy(&((t_proc *)content)->jobs[i++].jmutex);
+		pthread_mutex_destroy(&((t_proc *)content)->jobs[i].jmutex);
 		free(((t_proc *)content)->jobs[i++].error);
 	}
 	free(((t_proc *)content)->jobs);
@@ -47,10 +47,11 @@ void		free_config_proc(void *content, size_t size)
 	free(content);
 }
 
-void	free_config_daemon(t_dconf *conf)
+void		free_config_daemon(t_dconf *conf)
 {
 	free(conf->out_log);
 	free(conf->err_log);
+	free(conf->email);
 	free(conf->ip);
 	free(conf->config_file);
 	pthread_mutex_destroy(&conf->dmutex);

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 18:43:41 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 19:27:08 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/20 09:54:29 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	proc_stop(t_proc *proc, int id, int sock)
 		if (proc->jobs[i].pid)
 		{
 			kill(proc->jobs[i].pid, proc->stopsignal);
-			id >= 0 ? ft_asprintf(&line, "%s: stoping...\n", proc->name) : 0;
+			id >= 0 ? ft_asprintf(&line, "%s: stopping...\n", proc->name) : 0;
 		}
 		else if (id >= 0)
-			ft_asprintf(&line, "ERROR: %s:%d olready stoped\n", proc->name, i);
+			ft_asprintf(&line, "ERROR: %s:%d already stopped\n", proc->name, i);
 		line && sock >= 0 ? send_msg(sock, line) : 0;
 		free(line);
 		if (id >= 0)
