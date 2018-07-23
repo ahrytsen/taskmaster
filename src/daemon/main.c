@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/23 14:51:58 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 19:17:09 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,26 @@
 
 static void	ft_atexit(void)
 {
-	char	*cmd;
+	pid_t		pid;
+	int			fd;
+	extern char	**environ;
+	char *const argv[] = {"/usr/bin/mail", "-s", get_dconf()->out_log,
+						  get_dconf()->email, NULL};
 
-	cmd = NULL;
-	ft_prociter(get_dconf()->proc, -1, proc_stop);
-	if (!(get_dconf()->flags & F_N) && get_dconf()->email)
+	if (get_dconf()->email)
 	{
-		ft_asprintf(&cmd, "mail -s %s %s < %s",
-					get_dconf()->out_log, get_dconf()->email,
-					get_dconf()->out_log);
-		system(cmd);
+		ft_printf("%s", get_dconf()->email);
+		if ((pid = fork()))
+			waitpid(pid, NULL, 0);
+		else
+		{
+			fd = open(get_dconf()->out_log, O_RDONLY);
+			dup2(fd, 0);
+			execve("/usr/bin/mail", argv, environ);
+			abort();
+		}
 	}
+	ft_prociter(get_dconf()->proc, -1, proc_stop);
 }
 
 static void	exec_cmd(char *cmd, int sock)
@@ -90,8 +99,8 @@ int			main(int ac, char **av)
 	ft_bzero(get_dconf(), sizeof(t_dconf));
 	check_flags(ac, av);
 	d_init();
-	atexit(ft_atexit);
 	demonaize();
+	atexit(ft_atexit);
 	ft_prociter(get_dconf()->proc, get_dconf()->sockfd, run_autostart);
 	main_loop();
 }
