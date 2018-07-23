@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/23 19:17:09 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 19:20:55 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	ft_atexit(void)
 	int			fd;
 	extern char	**environ;
 	char *const argv[] = {"/usr/bin/mail", "-s", get_dconf()->out_log,
-						  get_dconf()->email, NULL};
+						get_dconf()->email, NULL};
 
 	if (get_dconf()->email)
 	{
