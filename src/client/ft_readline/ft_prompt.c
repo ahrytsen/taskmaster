@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/22 12:37:06 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/05 15:48:18 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 16:02:37 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void		ft_prompt(void)
 	{
 		if (ft_getcurx() != 1)
 			ft_dprintf(2, "%s%%%s\n", get_term()->iv_on, get_term()->iv_off);
-		tmp = ft_dprintf(2, "taskmaster> ");
+		ft_dprintf(2, "{b_yellow}{black}");
+		tmp = ft_dprintf(2, "taskmaster") + 2;
+		ft_dprintf(2, "{eoc}{yellow}{eoc} ");
 	}
 	get_term()->cury = tmp / get_term()->width;
 	get_term()->curx = tmp % get_term()->width;

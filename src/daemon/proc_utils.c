@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/23 13:18:34 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 15:14:12 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int		proc_start_prnt(t_job *job)
 		sleep(job->proc->starttime ? job->proc->starttime : 1);
 	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
 	{
-		job->status = fail;
+		job->status = (job->ex_st ? fail : stop);
 		if (get_next_line(job->service_pipe[0], &job->error) > 0)
 			job->status = fatal;
 		job->pid = 0;
