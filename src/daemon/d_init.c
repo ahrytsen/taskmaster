@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/23 14:48:56 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 17:04:06 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	open_logs(void)
 {
 	if (!(get_dconf()->flags & F_N))
 		get_dconf()->out_fd = open(get_dconf()->out_log,
-								O_CREAT | O_RDWR | O_APPEND,
+								O_CREAT | O_RDWR | O_TRUNC,
 								S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 }
 
