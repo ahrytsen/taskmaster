@@ -6,7 +6,7 @@
 #    By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/30 18:43:03 by ahrytsen          #+#    #+#              #
-#    Updated: 2018/07/19 17:53:48 by ahrytsen         ###   ########.fr        #
+#    Updated: 2018/07/23 14:52:58 by ahrytsen         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -62,7 +62,6 @@ SRC_D		=	main.c\
 				count_max_proclen.c\
 				free_config.c\
 				check_config.c\
-				debug.c\
 				d_status.c\
 				d_start.c\
 				d_stop.c\

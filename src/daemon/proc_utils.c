@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/21 13:33:59 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 13:18:34 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		proc_start_prnt(t_job *job)
 		!job->proc->stderr ? close(job->p_err[1]) : 0;
 	}
 	else
-		sleep(job->proc->starttime);
+		sleep(job->proc->starttime ? job->proc->starttime : 1);
 	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
 	{
 		job->status = fail;
@@ -82,22 +82,21 @@ void	proc_start_chld(t_job *job)
 	pid_t	pid;
 
 	pid = getpid();
-	umask(job->proc->umask);
 	job->proc->workingdir ? chdir(job->proc->workingdir) : 0;
 	close(job->service_pipe[0]);
 	while (job->proc->env && *(job->proc->env))
 		putenv(*(job->proc->env)++);
 	setpgid(pid, pid);
 	if (job->proc->stdin)
-		job->p_in[0] = open(job->proc->stdin, O_RDWR | O_CLOEXEC);
+		job->p_in[0] = open(job->proc->stdin, O_RDONLY);
 	dup2(job->p_in[0], 0);
 	if (job->proc->stdout)
-		job->p_out[0] = open(job->proc->stdout,
-					O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
+		job->p_out[0] = open(job->proc->stdout, O_CREAT | O_WRONLY | O_APPEND,
+							job->proc->umask);
 	dup2(job->p_out[0], 1);
 	if (job->proc->stderr)
-		job->p_err[0] = open(job->proc->stderr,
-					O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
+		job->p_err[0] = open(job->proc->stderr, O_CREAT | O_WRONLY | O_APPEND,
+							job->proc->umask);
 	dup2(job->p_err[0], 2);
 	fcntl(job->service_pipe[1], F_SETFD, FD_CLOEXEC);
 	execvp(job->proc->argv[0], job->proc->argv);

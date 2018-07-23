@@ -6,13 +6,28 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/21 12:14:19 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:51:58 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <daemon.h>
 
-void		exec_cmd(char *cmd, int sock)
+static void	ft_atexit(void)
+{
+	char	*cmd;
+
+	cmd = NULL;
+	ft_prociter(get_dconf()->proc, -1, proc_stop);
+	if (!(get_dconf()->flags & F_N) && get_dconf()->email)
+	{
+		ft_asprintf(&cmd, "mail -s %s %s < %s",
+					get_dconf()->out_log, get_dconf()->email,
+					get_dconf()->out_log);
+		system(cmd);
+	}
+}
+
+static void	exec_cmd(char *cmd, int sock)
 {
 	int					i;
 	char				**av;
@@ -54,7 +69,7 @@ static void	*data_exchange(void *data)
 	return (NULL);
 }
 
-void		main_loop(void)
+static void	main_loop(void)
 {
 	int			sock;
 	pthread_t	p;
@@ -75,6 +90,7 @@ int			main(int ac, char **av)
 	ft_bzero(get_dconf(), sizeof(t_dconf));
 	check_flags(ac, av);
 	d_init();
+	atexit(ft_atexit);
 	demonaize();
 	ft_prociter(get_dconf()->proc, get_dconf()->sockfd, run_autostart);
 	main_loop();

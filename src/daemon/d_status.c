@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/10 12:02:43 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/19 17:26:47 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 12:42:24 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	proc_status(t_proc *proc, int id, int sock)
 			&& (tmp = get_uptime(time(NULL) - proc->jobs[i].t)))
 			ft_asprintf(&line, "pid%6d, uptime%9s\n", proc->jobs[i].pid, tmp);
 		else
-			proc->jobs[i].status == fatal || proc->jobs[i].status == fail
+			proc->jobs[i].status == fatal
 				? ft_asprintf(&line, "%s\n", proc->jobs[i].error)
 				: ft_asprintf(&line, "%-.24s\n", ctime(&proc->jobs[i].t));
 		send_msg(sock, line);

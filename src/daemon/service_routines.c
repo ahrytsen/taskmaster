@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/14 22:35:53 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 18:29:49 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:34:59 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	proc_watch(t_job *job)
 			sleep(job->proc->stoptime);
 			kill(job->pid, SIGKILL);
 			waitpid(job->pid, &job->ex_st, WUNTRACED);
+			return (1);
 		}
 		if (!WIFSTOPPED(job->ex_st) && !(job->status = stop)
 			&& ft_dprintf(1, "%s:%zu exited with code:%d\n", job->proc->name,
@@ -81,7 +82,7 @@ static int	proc_spawn(t_job *job)
 				job->proc->name, job - job->proc->jobs,
 				job->start_tries, job->proc->startretries);
 		pthread_mutex_unlock(&get_dconf()->dmutex);
-		job->status = !st ? run : fail;
+		!st ? (job->status = run) : 0;
 		job->start_tries++;
 		if (!st)
 			return (0);

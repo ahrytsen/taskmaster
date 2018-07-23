@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/21 12:29:18 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:52:06 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct	s_dconf
 {
 	char				*config_file;
 	char				*out_log;
-	char 				*email;
+	char				*email;
 	int					flags;
 	pid_t				pid;
 	uint16_t			port;
@@ -128,8 +128,8 @@ typedef struct	s_yaml_tree
 
 typedef struct	s_help
 {
-	char 		*cmd;
-	char 		*desc;
+	char	*cmd;
+	char	*desc;
 }				t_help;
 
 /*
@@ -211,11 +211,6 @@ void			record_config_proc(t_proc *proc, t_yaml_tree *node);
 **				check_config.c
 */
 int				check_config(t_dconf *conf);
-/*
-**				debug.c										TODO:delete
-*/
-void			output_parse_tree(t_list *parse_lst);
-void			outputs();
 /*
 **				free_config.c
 */

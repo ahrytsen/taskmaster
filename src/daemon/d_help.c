@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/16 11:04:01 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/20 18:12:18 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:36:09 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ const static t_help	g_cmds[] =
 
 void			d_help(char **av, int sock)
 {
-	int 	i;
+	int	i;
 
 	i = 0;
 	if (!av[1])

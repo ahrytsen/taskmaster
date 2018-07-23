@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/15 14:43:03 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/21 12:02:26 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:32:14 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,5 @@ void			d_reload(char **av, int sock)
 	parse_config(&new_conf);
 	cmp_conf(old_conf, new_conf.proc, sock);
 	free_config_daemon(&new_conf);
-	send_msg(sock, NULL);
+	sock >= 0 ? send_msg(sock, NULL) : 0;
 }

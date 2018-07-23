@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 15:50:47 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/21 13:15:19 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 12:32:06 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	record_exitcodes(t_proc *proc, t_yaml_tree *node)
 	ft_bzero(&proc->exitcodes, 256);
 	while (tmp)
 	{
-		proc->exitcodes[ft_atoi(tmp->content)] = true;
+		proc->exitcodes[(uint8_t)ft_atoi(tmp->content)] = true;
 		tmp = tmp->next;
 	}
 }

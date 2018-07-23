@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/07 14:37:05 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 12:48:48 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:48:56 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	prepare_socket(void)
 			&(int){1}, sizeof(int)) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	if (setsockopt(get_dconf()->sockfd, SOL_SOCKET, SO_NOSIGPIPE,
-				   &(int){1}, sizeof(int)) < 0)
+					&(int){1}, sizeof(int)) < 0)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	get_dconf()->addr.sin_family = AF_INET;
 	get_dconf()->addr.sin_port = htons(get_dconf()->port
@@ -58,8 +58,8 @@ void		demonaize(void)
 	else if (!get_dconf()->pid && !(get_dconf()->flags & F_N))
 	{
 		dup2(get_dconf()->out_fd, 1);
+		dup2(get_dconf()->out_fd, 2);
 		setsid();
-		umask(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	}
 	else if (get_dconf()->pid == -1)
 		perror("(ERROR)taskmaster");
@@ -70,25 +70,9 @@ void		demonaize(void)
 			get_dconf()->pid);
 }
 
-void		ft_atexit(void)
-{
-	char 	*cmd;
-
-	cmd = NULL;
-	ft_prociter(get_dconf()->proc, -1, proc_stop);
-	if(!(get_dconf()->flags & F_N) && get_dconf()->email)
-	{
-		ft_asprintf(&cmd, "mail -s %s %s < %s",
-					get_dconf()->out_log, get_dconf()->email,
-					get_dconf()->out_log);
-		system(cmd);
-	}
-}
-
 void		d_init(void)
 {
 	close(0);
-	atexit(ft_atexit);
 	parse_config(get_dconf());
 	open_logs();
 	prepare_socket();

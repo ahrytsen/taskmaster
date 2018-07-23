@@ -6,7 +6,7 @@
 /*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 20:29:07 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/18 21:03:36 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/23 14:31:56 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	proc_start(t_proc *proc, int id, int sock)
 			id >= 0 ? ft_asprintf(&line, "%s:%d starting...\n",
 							proc->name, i) : 0;
 		}
-		line ? send_msg(sock, line) : 0;
+		line && sock >= 0 ? send_msg(sock, line) : 0;
 		free(line);
 		if (id >= 0)
 			break ;
