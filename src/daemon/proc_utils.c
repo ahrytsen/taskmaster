@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   proc_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahrytsen <ahrytsen@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 20:23:13 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 18:26:54 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/21 13:33:59 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		proc_start_prnt(t_job *job)
 		!job->proc->stderr ? close(job->p_err[1]) : 0;
 	}
 	else
-		sleep(job->proc->starttime ? job->proc->starttime : 1);
+		sleep(job->proc->starttime);
 	if (job->pid > 0 && waitpid(job->pid, &job->ex_st, WNOHANG) > 0)
 	{
 		job->status = fail;
@@ -93,16 +93,15 @@ void	proc_start_chld(t_job *job)
 	dup2(job->p_in[0], 0);
 	if (job->proc->stdout)
 		job->p_out[0] = open(job->proc->stdout,
-							O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
+					O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
 	dup2(job->p_out[0], 1);
 	if (job->proc->stderr)
 		job->p_err[0] = open(job->proc->stderr,
-							O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
+					O_CREAT | O_RDWR | O_APPEND | O_CLOEXEC);
 	dup2(job->p_err[0], 2);
 	fcntl(job->service_pipe[1], F_SETFD, FD_CLOEXEC);
 	execvp(job->proc->argv[0], job->proc->argv);
-	ft_dprintf(job->service_pipe[1], "%s: %s",
-			job->proc->cmd, strerror(errno));
+	ft_dprintf(job->service_pipe[1], "%s: %s", job->proc->cmd, strerror(errno));
 	abort();
 }
 

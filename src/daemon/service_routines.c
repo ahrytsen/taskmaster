@@ -21,7 +21,7 @@ static int	proc_watch(t_job *job)
 			&& job->proc->stopsignal == WSTOPSIG(job->ex_st))
 		{
 			job->status = stoping;
-			ft_dprintf(2, "%s:%zu stop signal received!"
+			ft_dprintf(1, "%s:%zu stop signal received!"
 				" Program will be terminated in %d seconds\n",
 				job->proc->name, job - job->proc->jobs, job->proc->stoptime);
 			sleep(job->proc->stoptime);
@@ -29,7 +29,7 @@ static int	proc_watch(t_job *job)
 			waitpid(job->pid, &job->ex_st, WUNTRACED);
 		}
 		if (!WIFSTOPPED(job->ex_st) && !(job->status = stop)
-			&& ft_dprintf(2, "%s:%zu exited with code:%d\n", job->proc->name,
+			&& ft_dprintf(1, "%s:%zu exited with code:%d\n", job->proc->name,
 						job - job->proc->jobs, WEXITSTATUS(job->ex_st)))
 			break ;
 	}
@@ -71,12 +71,12 @@ static int	proc_spawn(t_job *job)
 	while (job->start_tries <= job->proc->startretries)
 	{
 		pthread_mutex_lock(&get_dconf()->dmutex);
-		ft_dprintf(2, "%s:%zu starting...(attempt %d/%d)\n", job->proc->name,
+		ft_dprintf(1, "%s:%zu starting...(attempt %d/%d)\n", job->proc->name,
 			job - job->proc->jobs, job->start_tries, job->proc->startretries);
 		pthread_mutex_unlock(&get_dconf()->dmutex);
 		st = create_chld(job);
 		pthread_mutex_lock(&get_dconf()->dmutex);
-		ft_dprintf(2, !st ? "%s:%zu successfully started (%d/%d)\n"
+		ft_dprintf(1, !st ? "%s:%zu successfully started (%d/%d)\n"
 				: "%s:%zu start attempt failed (%d/%d)\n",
 				job->proc->name, job - job->proc->jobs,
 				job->start_tries, job->proc->startretries);

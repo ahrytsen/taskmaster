@@ -66,7 +66,6 @@ void	outputs()
 		ft_printf("\n--------------\n\n");
 	}
 	ft_printf("logout: %s\n", get_dconf()->out_log);
-	ft_printf("logerr: %s\n", get_dconf()->err_log);
 	ft_printf("ip: %s\n", get_dconf()->ip);
 	ft_printf("port: %i\n", get_dconf()->port);
 	ft_printf("max_namelen: %i\n", get_dconf()->max_namelen);

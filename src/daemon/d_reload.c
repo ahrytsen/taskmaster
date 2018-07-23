@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/15 14:43:03 by yvyliehz          #+#    #+#             */
-/*   Updated: 2018/07/20 10:35:44 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/21 12:02:26 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,31 +70,32 @@ static void		delete_old_proc(void)
 	}
 }
 
-static void		cmp_conf(t_list *old_conf, t_list *new_conf, int sock)
+static void		cmp_conf(t_list *old, t_list *new, int sock)
 {
 	t_list	*proc;
 
-	while (old_conf)
+	while (old)
 	{
-		if ((proc = get_node_by_name(new_conf,
-				((t_proc *)old_conf->content)->name)))
+		if ((proc = get_node_by_name(new, ((t_proc *)old->content)->name)))
 		{
-			if (cmp_one_proc(old_conf->content, proc->content))
+			if (cmp_one_proc(old->content, proc->content))
 			{
-				ft_printf("%s: reload\n", ((t_proc *)old_conf->content)->name);
-				proc_stop(old_conf->content, -1, sock);
-				swap_content(old_conf, proc);
-				((t_proc*)(old_conf->content))->autostart ?
-					proc_start(old_conf->content, -1, sock) : 0;
+				pthread_mutex_lock(&get_dconf()->dmutex);
+				ft_dprintf(1, "%s: reloading\n", ((t_proc*)old->content)->name);
+				pthread_mutex_unlock(&get_dconf()->dmutex);
+				proc_stop(old->content, -1, sock);
+				swap_content(old, proc);
+				((t_proc*)(old->content))->autostart ?
+					proc_start(old->content, -1, sock) : 0;
 			}
 			proc->content_size = 0;
 		}
 		else
-			old_conf->content_size = 0;
-		old_conf = old_conf->next;
+			old->content_size = 0;
+		old = old->next;
 	}
 	delete_old_proc();
-	add_new_proc(new_conf);
+	add_new_proc(new);
 }
 
 void			d_reload(char **av, int sock)

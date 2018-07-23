@@ -35,7 +35,7 @@ void	d_err_cmd(char **av, int sock)
 	char	*msg;
 
 	msg = "error: command not found: ";
-	ft_dprintf(2, "error: command not found: %s\n", *av);
+	ft_dprintf(1, "error: command not found: %s\n", *av);
 	size = ft_strlen(msg) + 1;
 	send(sock, &size, sizeof(size_t), 0);
 	send(sock, msg, size, 0);

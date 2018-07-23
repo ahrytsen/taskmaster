@@ -30,8 +30,6 @@ static void		record_config_daemon(t_list *lst, t_dconf *conf)
 		return ;
 	if (ft_strequ(tmp->key, "logout"))
 		record_string_value(tmp, &conf->out_log);
-	else if (ft_strequ(tmp->key, "logerr"))
-		record_string_value(tmp, &conf->err_log);
 	else if (ft_strequ(tmp->key, "port"))
 		conf->port = ft_atoi(tmp->value->content);
 	else if (ft_strequ(tmp->key, "ip"))

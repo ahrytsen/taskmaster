@@ -42,7 +42,6 @@ void			d_help(char **av, int sock)
 {
 	int 	i;
 
-	ft_printf("d_help called\n");
 	i = 0;
 	if (!av[1])
 		send_msg(sock,

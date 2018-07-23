@@ -75,7 +75,6 @@ static void	proc_status(t_proc *proc, int id, int sock)
 
 void		d_status(char **av, int sock)
 {
-	ft_dprintf(1, "'d_status' called\n");
 	if (!*++av || ft_arrstr(av, "all"))
 		ft_prociter(get_dconf()->proc, sock, proc_status);
 	else

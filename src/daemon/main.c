@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 10:30:54 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/21 12:14:19 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ void		exec_cmd(char *cmd, int sock)
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
 	while (disp[i].cmd && ft_strcmp(disp[i].cmd, *av))
 		i++;
+	if (disp[i].cmd)
+	{
+		pthread_mutex_lock(&get_dconf()->dmutex);
+		ft_dprintf(1, "command received: %s\n", disp[i].cmd);
+		pthread_mutex_unlock(&get_dconf()->dmutex);
+	}
 	disp[i].exec(av, sock);
 	ft_strarr_free(av);
 }

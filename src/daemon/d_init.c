@@ -15,15 +15,9 @@
 static void	open_logs(void)
 {
 	if (!(get_dconf()->flags & F_N))
-	{
 		get_dconf()->out_fd = open(get_dconf()->out_log,
 								O_CREAT | O_RDWR | O_APPEND,
 								S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-		get_dconf()->err_fd = get_dconf()->err_log
-			? open(get_dconf()->err_log, O_CREAT | O_RDWR | O_APPEND,
-				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
-			: get_dconf()->out_fd;
-	}
 }
 
 static void	prepare_socket(void)
@@ -64,7 +58,6 @@ void		demonaize(void)
 	else if (!get_dconf()->pid && !(get_dconf()->flags & F_N))
 	{
 		dup2(get_dconf()->out_fd, 1);
-		dup2(get_dconf()->err_fd, 2);
 		setsid();
 		umask(S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	}
@@ -85,11 +78,9 @@ void		ft_atexit(void)
 	ft_prociter(get_dconf()->proc, -1, proc_stop);
 	if(!(get_dconf()->flags & F_N) && get_dconf()->email)
 	{
-		ft_asprintf(&cmd, "mail -s %s %s < %s ; mail -s %s %s < %s\n",
+		ft_asprintf(&cmd, "mail -s %s %s < %s",
 					get_dconf()->out_log, get_dconf()->email,
-					get_dconf()->out_log,
-					get_dconf()->err_log, get_dconf()->email,
-					get_dconf()->err_log);
+					get_dconf()->out_log);
 		system(cmd);
 	}
 }

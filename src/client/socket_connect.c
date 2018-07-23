@@ -26,7 +26,6 @@ int				socket_connect(void)
 	int					sock;
 	struct sockaddr_in	addr;
 
-	ft_printf("Addr: %s\nPort: %i\n", get_cconf()->addr, get_cconf()->port);
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &(int){1}, sizeof(int)) < 0)
 		ft_fatal(1, exit, "%s\n", strerror(errno));

@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/13 19:15:12 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/20 17:03:14 by yvyliehz         ###   ########.fr       */
+/*   Updated: 2018/07/21 12:29:18 by yvyliehz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct	s_dconf
 {
 	char				*config_file;
 	char				*out_log;
-	char				*err_log;
 	char 				*email;
 	int					flags;
 	pid_t				pid;
@@ -42,7 +41,6 @@ typedef struct	s_dconf
 	char				*ip;
 	int					sockfd;
 	struct sockaddr_in	addr;
-	int					err_fd;
 	int					out_fd;
 	t_list				*proc;
 	pthread_t			serv_thread;

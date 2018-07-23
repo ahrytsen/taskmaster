@@ -50,7 +50,6 @@ void		free_config_proc(void *content, size_t size)
 void		free_config_daemon(t_dconf *conf)
 {
 	free(conf->out_log);
-	free(conf->err_log);
 	free(conf->email);
 	free(conf->ip);
 	free(conf->config_file);
