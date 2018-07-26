@@ -6,7 +6,7 @@
 /*   By: yvyliehz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/05 20:15:18 by ahrytsen          #+#    #+#             */
-/*   Updated: 2018/07/23 19:20:55 by ahrytsen         ###   ########.fr       */
+/*   Updated: 2018/07/26 15:43:23 by ahrytsen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ static void	exec_cmd(char *cmd, int sock)
 	i = 0;
 	if (!(av = ft_strsplit(cmd, ' ')))
 		ft_fatal(EXIT_FAILURE, exit, "%s\n", strerror(errno));
+	if (!av || !*av)
+	{
+		send_msg(sock, NULL);
+		return ;
+	}
 	while (disp[i].cmd && ft_strcmp(disp[i].cmd, *av))
 		i++;
 	if (disp[i].cmd)
